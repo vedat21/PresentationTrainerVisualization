@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "37f5IpYecRh5/OUkXigfF+lVgcF1ZXdep9169RFBcpGt8ez/c03JvaCfCaqyE6NxP7vFEwqzb3bIUUJv0FLGCw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\vedat\\source\\repos\\PresentationTrainerVisualization\\PresentationTrainerVisualization\\PresentationTrainerVisualization.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\vedat\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
