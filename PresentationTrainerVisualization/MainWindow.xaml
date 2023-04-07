@@ -5,5 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PresentationTrainerVisualization"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="900" Width="1700">
+    <Grid>
+        <WpfPlot x:Name="TestPlot"  Margin="23,24,1187,447"/>
+        <WpfPlot x:Name="TestPlot1"  Margin="518,24,647,535"/>
+        <WpfPlot x:Name="TestPlot2"  Margin="0,442,1194,161"/>
+        <WpfPlot x:Name="TestPlot3"  Margin="1058,13,10,490"/>
+        <WpfPlot x:Name="TestPlot4"  Margin="506,383,647,172"/>
+        <WpfPlot x:Name="TestPlot5"  Margin="1088,431,106,172"/>
+    </Grid>
 </Window>
