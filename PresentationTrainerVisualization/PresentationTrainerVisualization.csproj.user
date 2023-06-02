@@ -7,15 +7,87 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="ChartComponents\Window1.xaml.cs">
+    <Compile Update="DashboardComponents\CardAverageNumberOfBadActions.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\CardAverageNumberOfGoodActions.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\CardNumberOfSessions.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\CardTotalTimeSpent.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\GoalDurationOfSession.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\GoalMaxNumberOfBadActions.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\GoalMinNumberOfActions.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\GoalNumberOfSessions.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\ChartsConfigurationPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\FeedbackDashboard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\ProgressDashboard.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\GoalSettingPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="VideoPlayerWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="DashboardComponents\CardAverageNumberOfBadActions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\CardAverageNumberOfGoodActions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\CardNumberOfSessions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\CardTotalTimeSpent.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\GoalDurationOfSession.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\GoalMaxNumberOfBadActions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\GoalMinNumberOfActions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\GoalNumberOfSessions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\ChartsConfigurationPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\FeedbackDashboard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\ProgressDashboard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\GoalSettingPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="ChartComponents\Window1.xaml">
+    <Page Update="VideoPlayerWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

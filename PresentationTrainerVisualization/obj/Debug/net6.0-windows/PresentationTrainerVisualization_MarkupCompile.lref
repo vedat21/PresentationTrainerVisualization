@@ -1,5 +1,17 @@
 ﻿
-
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\App.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\DashboardComponents\CardAverageNumberOfBadActions.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\DashboardComponents\CardAverageNumberOfGoodActions.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\DashboardComponents\CardNumberOfSessions.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\DashboardComponents\CardTotalTimeSpent.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\DashboardComponents\GoalDurationOfSession.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\DashboardComponents\GoalMaxNumberOfBadActions.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\DashboardComponents\GoalMinNumberOfActions.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\DashboardComponents\GoalNumberOfSessions.xaml;;
 FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\MainWindow.xaml;;
-FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\ChartComponents\Window1.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\Pages\ChartsConfigurationPage.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\Pages\FeedbackDashboard.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\Pages\GoalSettingPage.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\Pages\ProgressDashboard.xaml;;
+FC:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\VideoPlayerWindow.xaml;;
 

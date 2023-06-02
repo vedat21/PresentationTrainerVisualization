@@ -1,0 +1,51 @@
+﻿<Page x:Class="PresentationTrainerVisualization.Pages.ProgressDashboard"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PresentationTrainerVisualization.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:DashboardComponents="clr-namespace:PresentationTrainerVisualization.DashboardComponents"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1200"
+      Title="ProgressDashboard">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="1.5*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+
+        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <DashboardComponents:CardNumberOfSessions Margin="5" Grid.Column="0" />
+            <DashboardComponents:CardTotalTimeSpent Margin="5" Grid.Column="1" />
+            <DashboardComponents:CardAverageNumberOfBadActions Margin="5" Grid.Column="2" />
+            <DashboardComponents:CardAverageNumberOfGoodActions Margin="5" Grid.Column="3" />
+
+            <materialDesign:Card Style="{StaticResource CardNormalComponent}" Margin="5" Grid.Column="4" Width="250" Height="200">
+                <WpfPlot x:Name="PlotTest" />
+            </materialDesign:Card>
+        </Grid>
+
+        <WpfPlot x:Name="PlotNumberOfSessionsInTimeline" Margin="10" Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" />
+        <WpfPlot x:Name="PlotPercentageOfRecongnisedSentences" Margin="10" Grid.Row="1"  Grid.Column="2"  Grid.ColumnSpan="2"  />
+
+
+    </Grid>
+</Page>

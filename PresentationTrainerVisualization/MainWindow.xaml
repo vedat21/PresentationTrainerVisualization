@@ -1,17 +1,145 @@
-﻿<Window x:Class="PresentationTrainerVisualization.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PresentationTrainerVisualization"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
+        x:Class="PresentationTrainerVisualization.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1700">
-    <Grid>
-        <WpfPlot x:Name="TestPlot"  Margin="23,24,1187,447"/>
-        <WpfPlot x:Name="TestPlot1"  Margin="518,24,647,535"/>
-        <WpfPlot x:Name="TestPlot2"  Margin="0,442,1194,161"/>
-        <WpfPlot x:Name="TestPlot3"  Margin="1058,13,10,490"/>
-        <WpfPlot x:Name="TestPlot4"  Margin="506,383,647,172"/>
-        <WpfPlot x:Name="TestPlot5"  Margin="1088,431,106,172"/>
+        Title="MainWindow" 
+        Height="800" 
+        Width="1300"
+        Background="WhiteSmoke">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel x:Name="DashboardConfiguration" Grid.Column="1" Orientation="Horizontal">
+            <ComboBox x:Name="ComboSessions" x:FieldModifier="public" SelectionChanged="HandleComboBoxChanged" Width="200" Margin="10">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontWeight="Bold" Text="Session: " />
+                            <TextBlock  FontWeight="Bold" Text="{Binding TextForComboBox}" />
+                            <TextBlock Text=" " />
+                            <TextBlock  FontWeight="Bold" Text="{Binding StartForComboBox}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <StackPanel x:Name="SelectDateSpan" Orientation="Horizontal" Margin="10">
+                <StackPanel HorizontalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"> From</TextBlock>
+                    <DatePicker x:Name="StartDate"  VerticalAlignment="Center" HorizontalAlignment="Left" SelectedDateChanged="HandleDatePickerChanged"></DatePicker>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"> To</TextBlock>
+                    <DatePicker x:Name="EndDate" VerticalAlignment="Center" HorizontalAlignment="Left"  SelectedDateChanged="HandleDatePickerChanged" ></DatePicker>
+                </StackPanel>
+            </StackPanel>
+            <Grid x:Name="SelectLastSessions" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="5" Orientation="Horizontal">
+                    <Slider x:Name="NumberOfX" VerticalAlignment="Center" TickFrequency="1" IsSnapToTickEnabled="True" Width="200" Minimum="1" Grid.Row="1" Thumb.DragCompleted="HandleSliderDragCompleted" />
+                    <TextBox Text="{Binding ElementName=NumberOfX, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource GoalDescriptionStyle}" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Right" Width="50" Grid.Row="1" Grid.Column="1" />
+                </StackPanel>
+
+                <StackPanel Margin="5" Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Left"> Last Days</TextBlock>
+                    <ToggleButton x:Name="DaysOrSessions" Click="HandleLastSessionsToggle" HorizontalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right"> Last Sessions</TextBlock>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+
+        <Border Name="Sidebar"  Grid.RowSpan="2" CornerRadius="8 0 0 8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Background="#673AB7" CornerRadius="8 0 0 8">
+                    <Grid x:Name="Navigation" Width="60">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="0.2*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="1" Margin="-1 40 0 20">
+                            <Button ToolTip="Dashboard 1" Click="HandleDashboardClicked" Margin="10" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource Default}" >
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Foreground="WhiteSmoke" Height="30" Width="30" Kind="ViewDashboardOutline"></materialDesign:PackIcon>
+                                    <TextBlock x:Name="TextDashboard1" Style="{StaticResource SidebarText}" Visibility="Hidden" VerticalAlignment="Center">Dashboard 1</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <!--
+                            <Button ToolTip="Dashboard 2" Click="ButtonDashboard2Click" Margin="10" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource Default}"  >
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Foreground="WhiteSmoke" Height="30" Width="30" Kind="ViewDashboardVariantOutline"></materialDesign:PackIcon>
+                                    <TextBlock x:Name="TextDashboard2" Style="{StaticResource SidebarText}" Visibility="Hidden" VerticalAlignment="Center">Dashboard 2</TextBlock>
+                                </StackPanel>
+                            </Button>
+                             -->
+                            <Button ToolTip="Goals" Click="HandleGoalClicked" Margin="10" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource Default}" >
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon  Foreground="WhiteSmoke" Height="30" Width="30" Kind="FlagOutline"></materialDesign:PackIcon>
+                                    <TextBlock x:Name="TextGoalsSetting" Style="{StaticResource SidebarText}" Visibility="Hidden" VerticalAlignment="Center">Goals Setting</TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <!--
+                        <Button Grid.Row="2" ToolTip="Configurations" Click="TestClick" Margin="10" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource Default}" >
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Foreground="WhiteSmoke" Height="30" Width="30" Kind="SettingsOutline"></materialDesign:PackIcon>
+                                <TextBlock x:Name="TextConfiguration" Style="{StaticResource SidebarText}" Visibility="Hidden" VerticalAlignment="Center">Configurations</TextBlock>
+                            </StackPanel>
+                        </Button>
+                                                     -->
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ToggleButton Style="{StaticResource HamburgerButtonStyle}" Checked="HandleSidebarChecked" Unchecked="HandleSidebarUnchecked" VerticalAlignment="Center" Background="Transparent" BorderThickness="0"  Height="35" Width="30">
+                        <ToggleButton.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                <BeginStoryboard>
+                                    <Storyboard x:Name="HideStackPanel">
+                                        <DoubleAnimation Storyboard.TargetName="Navigation" Storyboard.TargetProperty="Width" BeginTime="0:0:0" From="210" To="60" Duration="0:0:0.7">
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard x:Name="ShowStackPanel">
+                                        <DoubleAnimation Storyboard.TargetName="Navigation" Storyboard.TargetProperty="Width" BeginTime="0:0:0" From="60" To="210" Duration="0:0:0.7">
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ToggleButton.Triggers>
+                    </ToggleButton>
+                </Grid>
+
+            </Grid>
+        </Border>
+
+        <Frame x:Name="MainContainer" Margin="20" NavigationUIVisibility="Hidden" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"/>
+
     </Grid>
-</Window>
+</Window> 
