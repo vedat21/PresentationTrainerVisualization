@@ -49,6 +49,9 @@ namespace PresentationTrainerVisualization.helper
 
             GetAverageNumberOfRecongnisedSentencesByTime();
             GetAllActionsFromLastSession();
+
+
+            Trace.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
         }
 
         public List<Session> GetCopyOfAllSessions()
@@ -112,15 +115,7 @@ namespace PresentationTrainerVisualization.helper
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
             DateOnly firstSession = DateOnly.FromDateTime( sessionsRoot.Sessions.First().Start);
-            DateTime x = sessionsRoot.Sessions.First().Start;
-
-            foreach(var session in sessionsRoot.Sessions)
-            {
-                Trace.WriteLine("Sesion " + session.VideoId  + " " + session.Start);
-            }
-
-            Trace.WriteLine( firstSession);
-
+         
             return today.DayNumber - firstSession.DayNumber;
         }
 
