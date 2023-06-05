@@ -28,6 +28,7 @@ namespace PresentationTrainerVisualization.Pages
 
         private int DEFAULT_NUMBER_OF_SESSIONS = 7;
 
+
         public FeedbackDashboard()
         {
             InitializeComponent();
@@ -58,7 +59,7 @@ namespace PresentationTrainerVisualization.Pages
             PlotRadarWithBadLabelsFromVideo();
             PlotRadarWithGoodLabelsFromVideo();
             PlotGoalDurationOfSession();
-      //      PlotPercentageOfIdentifiedSentencesInLastSession();
+            PlotPercentageOfIdentifiedSentencesInSelectedSession();
           //  PlotTest();
         }
 
@@ -375,34 +376,37 @@ namespace PresentationTrainerVisualization.Pages
         /// <summary>
         /// Plots a donutchart that shows the percantage of identified sentences in the last session.
         /// </summary>
-        private void PlotPercentageOfIdentifiedSentencesInLastSession()
+        private void PlotPercentageOfIdentifiedSentencesInSelectedSession()
         {
 
-            List<AggregatedSession> dataAllSessions = processedSessionsData.GetIdentifiedAndNotIdentifiedSentenceBySession();
-            AggregatedSession dataLastSession = ProcessedSessionsDataHelper.GetAverageOfLastSessions(dataAllSessions, 1);
+            List<AggregatedSession> dataAllSessions = processedSessionsData.GetPercentageOfRecongnisedSentenceBySession();
+            AggregatedSession result = dataAllSessions.Find(x => x.SessionDate == selectedSession.Start);
+            double percentageOfRecongnisedSentences = result.AggregatedObjects[0].Count;
 
-            var values = new List<double>();
-            foreach (var x in dataLastSession.AggregatedObjects)
-                values.Add(x.Count);
+            Color prograssColor;
+            if (percentageOfRecongnisedSentences < 25)
+                prograssColor = Color.Red;
+            else if (percentageOfRecongnisedSentences < 50 && percentageOfRecongnisedSentences >= 25)
+                prograssColor = Color.Orange;
+            else if (percentageOfRecongnisedSentences < 75 && percentageOfRecongnisedSentences >= 50)
+                prograssColor = Color.FromArgb(255, 255, 244, 0); //yellow
+            else
+                prograssColor = Color.FromArgb(255, 44, 186, 0); //green
 
-            Color color1 = Color.FromArgb(255, 0, 150, 200);
-            Color color2 = Color.FromArgb(100, 0, 150, 200);
 
             WpfPlot plot = (WpfPlot)FindName("DonutForCard");
-            var pie = plot.Plot.AddPie(values.ToArray());
+            var pie = plot.Plot.AddPie(new double[] { percentageOfRecongnisedSentences, 100 - percentageOfRecongnisedSentences });
 
             // Chart Configuration
+            plot.Plot.XAxis.Label("Recongnised Sentences", size: 16, color: Color.Gray, bold: true);
             pie.DonutSize = .7;
-            pie.DonutLabel = $"{values[0] / values.Sum() * 100:0.0}%";
-            pie.CenterFont.Color = color1;
-            pie.OutlineSize = 0.6f;
-            pie.SliceFillColors = new Color[] { color1, color2 };
-            pie.CenterFont.Size = 15f;
-
-            plot.ToolTip = "Percentage of Sentences that were recognized.";
-            //     plot.Plot.Title("Recongized Sentence", size: 13f);
+            pie.Size = 0.8;
+            pie.DonutLabel = percentageOfRecongnisedSentences.ToString() + "%";
+            pie.CenterFont.Color = prograssColor;
+            pie.CenterFont.Size = 24f;
+            pie.OutlineSize = 0.7f;
+            pie.SliceFillColors = new Color[] { prograssColor, Color.LightGray };
             plot.Refresh();
-
         }
 
        

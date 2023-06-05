@@ -123,7 +123,6 @@ namespace PresentationTrainerVisualization.Pages
 
             // Chart Configuration
             plot.Plot.XAxis.Label("Average Recongnised Sentences", size: 16, color: Color.Gray, bold: true);
-            //   plot.FontSize = 30;
             pie.DonutSize = .7;
             pie.Size = 0.7;
             pie.DonutLabel = percentageOfRecongnisedSentences.ToString() + "%";

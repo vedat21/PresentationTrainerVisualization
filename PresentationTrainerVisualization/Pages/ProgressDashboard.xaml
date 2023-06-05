@@ -31,16 +31,17 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
 
             <DashboardComponents:CardNumberOfSessions Margin="5" Grid.Column="0" />
             <DashboardComponents:CardTotalTimeSpent Margin="5" Grid.Column="1" />
             <DashboardComponents:CardAverageNumberOfBadActions Margin="5" Grid.Column="2" />
             <DashboardComponents:CardAverageNumberOfGoodActions Margin="5" Grid.Column="3" />
-
             <materialDesign:Card Style="{StaticResource CardNormalComponent}" Margin="5" Grid.Column="4" Width="250" Height="200">
                 <WpfPlot x:Name="PlotTest" />
             </materialDesign:Card>
+            <DashboardComponents:GoalNumberOfSessions Grid.Column="5" Grid.Row="0" Margin="5"/>
         </Grid>
 
         <WpfPlot x:Name="PlotNumberOfSessionsInTimeline" Margin="10" Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" />
