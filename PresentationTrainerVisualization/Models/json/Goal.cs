@@ -16,7 +16,7 @@ namespace PresentationTrainerVisualization.models.json
         public string Label { get; set; }
 
         [JsonProperty("description")]
-        public Dictionary<string, string> Description { get; set; }
+        public Dictionary<string, dynamic> Description { get; set; }
     }
 
     public class GoalsRoot

@@ -1,9 +1,13 @@
 ﻿using Newtonsoft.Json;
+using PresentationTrainerVisualization.helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PresentationTrainerVisualization.models.json
 {
@@ -20,8 +24,24 @@ namespace PresentationTrainerVisualization.models.json
 
         [JsonProperty("logAction")]
         public string? LogAction { get; set; }
-
+        public string? LogActionDisplay { get; set; }
         [JsonProperty("mistake")]
         public bool Mistake { get; set; }
+        public bool isSelected { get; set; } // Only for listbox needed
+
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            LogActionDisplay = Constants.ACTION_FROM_VIDEO[LogAction];
+        }
+
+        // Only for ListBox items needed
+        public Action(string? logAction, string? logActionDisplay, bool isSelected)
+        {
+            LogAction = logAction;
+            LogActionDisplay = logActionDisplay;
+            this.isSelected = isSelected;
+        }
     }
 }

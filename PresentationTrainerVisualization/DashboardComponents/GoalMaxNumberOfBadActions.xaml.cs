@@ -43,8 +43,8 @@ namespace PresentationTrainerVisualization.DashboardComponents
             int max = int.Parse(goal.Description[GoalsDescription.max_number_of_bad_actions.ToString()]);
 
             List<AggregatedSession> result = processedSessionsData.GetBadActionsBySession();
-            List<double> stack1 = new List<double>();
-            List<double> stack2 = new List<double>();
+            List<double> result1 = new List<double>();
+            List<double> result2 = new List<double>();
 
             foreach (var aggregatedSession in result)
             {
@@ -52,24 +52,24 @@ namespace PresentationTrainerVisualization.DashboardComponents
 
                 if (numberOfActions > max)
                 {
-                    stack1.Add(max);
-                    stack2.Add(numberOfActions - max);
+                    result1.Add(max);
+                    result2.Add(numberOfActions - max);
                 }
                 else
                 {
-                    stack1.Add(numberOfActions);
-                    stack2.Add(0);
+                    result1.Add(numberOfActions);
+                    result2.Add(0);
                 }
             }
 
-            double[] stack2New = new double[stack2.Count];
-            for (int i = 0; i < stack2.Count; i++)
-                stack2New[i] = stack1[i] + stack2[i];
+            double[] stack2New = new double[result2.Count];
+            for (int i = 0; i < result2.Count; i++)
+                stack2New[i] = result1[i] + result2[i];
 
             WpfPlot plot = (WpfPlot)FindName("GoalPlot");
             var bar1 = plot.Plot.AddBar(stack2New);
             bar1.Color = Color.Red;
-            var bar2 = plot.Plot.AddBar(stack1.ToArray());
+            var bar2 = plot.Plot.AddBar(result1.ToArray());
             bar2.Color = Color.SkyBlue;
 
             plot.Plot.SetAxisLimits(yMin: 0);

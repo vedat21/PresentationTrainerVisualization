@@ -8,15 +8,17 @@ namespace PresentationTrainerVisualization.helper
     {
         public static string PATH_TO_DIRECTORY = AppDomain.CurrentDomain.BaseDirectory;
         public static string PATH_TO_SESSION_DATA = "C:\\Users\\vedat\\OneDrive\\Desktop\\BachelorNeu\\testdata\\neueDaten\\Downloads\\PracticeSession.json"; // PATH TO SESSION DATA 
-        public static string PATH_TO_CONFIG_DATA =  PATH_TO_DIRECTORY + @"..\\..\\..\\UserConfig\\configurations.json";
+        public static string PATH_TO_CONFIG_DATA = PATH_TO_DIRECTORY + @"..\\..\\..\\UserConfig\\configurations.json";
         public static string PATH_TO_GOALSCONFIG_DATA = PATH_TO_DIRECTORY + @"..\\..\\..\\UserConfig\\goals.json";
 
 
-        // Die jeweiligen Button GoalSettingWindow müssen selben namen haben.
+        // The Buttons in GoalSettingWindow should habe same name
         public enum GoalsLabel
         {
             NumberOfSessionsForDays,
             DurationOfSession,
+            BadActions,
+            GoodActions,
             MaxNumberOfBadActions,
             MinNumberOfGoodActions
         }
@@ -31,6 +33,8 @@ namespace PresentationTrainerVisualization.helper
             session_duration_max_seconds,
             max_number_of_bad_actions,
             min_number_of_good_actions,
+            list_of_bad_actions,
+            list_of_good_actions,
         }
 
         public enum ConfigurationLabel
@@ -41,18 +45,47 @@ namespace PresentationTrainerVisualization.helper
 
         public static Dictionary<string, string> ACTION_FROM_VIDEO = new Dictionary<string, string>()
         {
-            {"long_pause", "Long Pause"},
-            {"lefthandnotvisible", "Left Hand unvisable"},
-            {"low_volume", "Low Volume"},
-            {"dancing", "Dancing"},
-            {"big_gesture", "Big Gesture"},
-            {"gesture", "Gesture"},
-            {"good_pause", "Good Pause"},
-            {"hands_not_moving", "Hands not moving" },
-            {"long_talk", "Long Talk" },
-            {"armscrossed", "Arms crossed" },
-            {"legscrossed", "Legs crossed" },
-            {"high_volume", "High Volume" }
+            {"ARMSCROSSED", "Arms crossed" },
+            {"BIG_GESTURE", "Big Gesture"},
+            {"DANCING", "Dancing"},
+            {"GESTURE", "Gesture"},
+            {"GOOD_PAUSE", "Good Pause"},
+            {"HANDS_NOT_MOVING", "Hands not moving" },
+            {"HIGH_VOLUME", "High Volume" },
+            {"HANDS_NEAR_FACE", "Hands near Face" },
+            {"HMMMM", "HMMMM" },
+            {"LEFTHANDNOTVISIBLE", "Left Hand unvisable"},
+            {"LEGSCROSSED", "Legs crossed" },
+            {"LONG_PAUSE", "Long Pause"},
+            {"LONG_TALK", "Long Talk" },
+            {"LOW_VOLUME", "Low Volume"},
+            {"RIGHTHANDNOTVISIBLE",  "Right Hand unvisable"},
+            {"SMILE", "Smile" },
+        };
+
+        public static Dictionary<string, string> BAD_ACTION_FROM_VIDEO = new Dictionary<string, string>()
+        {
+            {"ARMSCROSSED", "Arms crossed" },
+            {"DANCING", "Dancing"},
+            {"HANDS_NOT_MOVING", "Hands not moving" },
+            {"HIGH_VOLUME", "High Volume" },
+            {"HANDS_NEAR_FACE", "Hands near Face" },
+            {"HMMMM", "HMMMM" },
+            {"LEFTHANDNOTVISIBLE", "Left Hand unvisable"},
+            {"LEGSCROSSED", "Legs crossed" },
+            {"LONG_PAUSE", "Long Pause"},
+            {"LONG_TALK", "Long Talk" },
+            {"LOW_VOLUME", "Low Volume"},
+            {"RIGHTHANDNOTVISIBLE",  "Right Hand unvisable"},
+        };
+
+        public static Dictionary<string, string> GOOD_ACTION_FROM_VIDEO = new Dictionary<string, string>()
+        {
+            {"BIG_GESTURE", "Big Gesture"},
+            {"GESTURE", "Gesture"},
+            {"GOOD_PAUSE", "Good Pause"},
+            {"RESETPOSTURE", "Reset Posture" },
+            {"SMILE", "Smile" },
         };
 
     }

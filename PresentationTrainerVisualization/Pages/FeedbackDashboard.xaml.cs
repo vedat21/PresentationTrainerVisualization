@@ -285,7 +285,7 @@ namespace PresentationTrainerVisualization.Pages
         {
             Configuration configuration = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_LAST_X.ToString());
 
-            List<AggregatedSession> resultData = processedSessionsData.GetAggregatedActionsBySession(true);
+            List<AggregatedSession> resultData = processedSessionsData.GetAggregatedActionsBySession(false);
             AggregatedSession result1 = resultData.Find(x => x.SessionDate == selectedSession.Start);
             AggregatedSession result2;
             string[] groupLabels;

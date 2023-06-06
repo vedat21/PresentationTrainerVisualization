@@ -23,7 +23,7 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel x:Name="DashboardConfiguration" Grid.Column="1" Orientation="Horizontal">
-            <ComboBox x:Name="ComboSessions" x:FieldModifier="public" SelectionChanged="HandleComboBoxChanged" Width="200" Margin="10">
+            <ComboBox x:Name="ComboSessions" SelectionChanged="HandleComboBoxChanged" Width="200" Margin="10">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

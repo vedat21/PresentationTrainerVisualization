@@ -13,7 +13,7 @@ using System.Windows.Media;
 namespace PresentationTrainerVisualization.Pages
 {
     /// <summary>
-    /// Interaktionslogik für ChartsConfigurationPage.xaml
+    /// CURRENTLY NOT USED
     /// </summary>
     public partial class ChartsConfigurationPage : Page
     {

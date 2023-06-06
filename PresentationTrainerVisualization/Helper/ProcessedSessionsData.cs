@@ -3,11 +3,9 @@ using PresentationTrainerVisualization.models;
 using PresentationTrainerVisualization.models.json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Documents;
-using static SkiaSharp.HarfBuzz.SKShaper;
+using static PresentationTrainerVisualization.helper.Constants;
 
 namespace PresentationTrainerVisualization.helper
 {
@@ -19,9 +17,14 @@ namespace PresentationTrainerVisualization.helper
         private Configuration configurationLastDays;
         private Configuration configurationTimeSpan;
 
+        private ProcessedGoalsData processedGoalsData;
+
+
         public ProcessedSessionsData()
         {
             sessionsRoot = JsonConvert.DeserializeObject<SessionsRoot>(File.ReadAllText(Constants.PATH_TO_SESSION_DATA));
+            processedGoalsData = new ProcessedGoalsData();
+
 
             if (File.Exists(Constants.PATH_TO_CONFIG_DATA))
             {
@@ -46,12 +49,6 @@ namespace PresentationTrainerVisualization.helper
                     LastDaysOrSessions = 7,
                 };
             }
-
-            GetAverageNumberOfRecongnisedSentencesByTime();
-            GetAllActionsFromLastSession();
-
-
-            Trace.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
         }
 
         public List<Session> GetCopyOfAllSessions()
@@ -103,7 +100,7 @@ namespace PresentationTrainerVisualization.helper
             {
                 if (action.Start.StartsWith("-"))
                 {
-                    action.Start = action.Start.Substring(1, action.Start.Length-1);
+                    action.Start = action.Start.Substring(1, action.Start.Length - 1);
                 }
             }
             actions = actions.OrderBy(x => x.Start).ToList();
@@ -114,8 +111,8 @@ namespace PresentationTrainerVisualization.helper
         public int NumberOfDaysBetweenFirstSessionAndToday()
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-            DateOnly firstSession = DateOnly.FromDateTime( sessionsRoot.Sessions.First().Start);
-         
+            DateOnly firstSession = DateOnly.FromDateTime(sessionsRoot.Sessions.First().Start);
+
             return today.DayNumber - firstSession.DayNumber;
         }
 
@@ -346,6 +343,12 @@ namespace PresentationTrainerVisualization.helper
         /// <returns></returns>
         public List<AggregatedSession> GetAggregatedActionsBySession(bool mistake = true)
         {
+            Goal goal = mistake ? processedGoalsData.GetGoalWithLabel(GoalsLabel.BadActions.ToString()) : processedGoalsData.GetGoalWithLabel(GoalsLabel.GoodActions.ToString());
+            var goalDesc = mistake ? goal.Description[GoalsDescription.list_of_bad_actions.ToString()] : goal.Description[GoalsDescription.list_of_good_actions.ToString()];
+            List<string> selectedActions = new List<string>();
+            foreach (var description in goalDesc)
+                selectedActions.Add(description.ToString());
+
             List<AggregatedSession> result = new List<AggregatedSession>();
             List<string> allPossibleLabels = new List<string>();
 
@@ -356,9 +359,9 @@ namespace PresentationTrainerVisualization.helper
 
                 foreach (var action in session.Actions)
                 {
-                    if (mistake == action.Mistake)
+                    string logAction = action.LogAction.ToUpper();
+                    if (mistake == action.Mistake && selectedActions.Contains(logAction))
                     {
-                        string logAction = action.LogAction.ToLower();
                         if (countOfLabels.ContainsKey(logAction))
                             countOfLabels[logAction] = countOfLabels[logAction] + 1;
                         else

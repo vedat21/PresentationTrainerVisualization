@@ -21,7 +21,7 @@ namespace PresentationTrainerVisualization
     {
         private ProcessedSessionsData processedSessions;
         private ConfigurationRoot configurationRoot;
-        private ComboBox comboBox;
+        private ComboBox comboBoxSelectedSession;
 
         private bool isLastSession;
 
@@ -32,7 +32,7 @@ namespace PresentationTrainerVisualization
             InitializeComponent();
             WindowState = WindowState.Maximized;
             processedSessions = new ProcessedSessionsData();
-            comboBox = (ComboBox)FindName("ComboSessions");
+            comboBoxSelectedSession = (ComboBox)FindName("ComboSessions");
 
 
             // json file only exists if user has set goals in the past.
@@ -243,7 +243,7 @@ namespace PresentationTrainerVisualization
         /// </summary>
         private void LoadDashboard()
         {
-            var selectedString = ((Session)comboBox.SelectedItem).TextForComboBox;
+            var selectedString = ((Session)comboBoxSelectedSession.SelectedItem).TextForComboBox;
 
             // Average Dashboard is shown
             if (selectedString != null)
