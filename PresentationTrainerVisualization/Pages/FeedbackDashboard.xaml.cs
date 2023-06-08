@@ -56,11 +56,11 @@ namespace PresentationTrainerVisualization.Pages
                 }
             }
 
-            PlotRadarWithBadLabelsFromVideo();
+          //  PlotRadarWithBadLabelsFromVideo();
             PlotRadarWithGoodLabelsFromVideo();
             PlotGoalDurationOfSession();
             PlotPercentageOfIdentifiedSentencesInSelectedSession();
-          //  PlotTest();
+            PlotTest();
         }
 
         private void PlotTest()
@@ -381,6 +381,12 @@ namespace PresentationTrainerVisualization.Pages
 
             List<AggregatedSession> dataAllSessions = processedSessionsData.GetPercentageOfRecongnisedSentenceBySession();
             AggregatedSession result = dataAllSessions.Find(x => x.SessionDate == selectedSession.Start);
+
+            if(result == null)
+            {
+                return;
+            }
+
             double percentageOfRecongnisedSentences = result.AggregatedObjects[0].Count;
 
             Color prograssColor;

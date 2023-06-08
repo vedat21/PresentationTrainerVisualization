@@ -55,9 +55,6 @@
                 </Grid>
             </materialDesign:Card>
 
-            <CardComponents:GoalMinNumberOfActions Grid.Column="0" Grid.Row="2" Margin="10"/>
-            <CardComponents:GoalMaxNumberOfBadActions Grid.Column="0" Grid.Row="2" Margin="10"/>
-
         </StackPanel>
 
     </Grid>
