@@ -34,6 +34,12 @@ namespace PresentationTrainerVisualization.models.json
         private void OnDeserialized(StreamingContext context)
         {
             LogActionDisplay = Constants.ACTION_FROM_VIDEO[LogAction];
+
+            // actions that are labeled as mistake have negative timestamp
+            if (Start.StartsWith("-"))
+                Start = Start.Substring(1, Start.Length - 1);
+            if (End.StartsWith("-"))
+                End = End.Substring(1, End.Length - 1);
         }
 
         // Only for ListBox items needed

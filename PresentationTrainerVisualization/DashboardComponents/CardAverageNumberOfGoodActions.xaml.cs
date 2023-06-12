@@ -15,7 +15,6 @@ namespace PresentationTrainerVisualization.DashboardComponents
         {
             InitializeComponent();
             processedSessionsData = new ProcessedSessionsData();
-
             PlotCard();
         }
 

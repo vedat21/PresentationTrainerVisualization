@@ -6,45 +6,68 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:PresentationTrainerVisualization.windows"
         mc:Ignorable="d"
-        Title="VideoPlayerWindow" Height="800" Width="1200">
+        Title="VideoPlayerWindow" Height="800" Width="1200" x:Name="VideoPlayerWindowElement">
 
-    <StackPanel Background="Black">
+    <Grid Background="Black" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
 
-        <!-- To interactively stop, pause, and play the media, the LoadedBehavior 
-           property of the MediaElement must be set to "Manual". -->
         <MediaElement Source="C:\\Users\\vedat\\OneDrive\\Desktop\\BachelorNeu\\testdata\\neueDaten\\Downloads\\5344641c.mp4" x:Name="VideoPlayer" 
-     Width="800" Height="600" LoadedBehavior="Manual" UnloadedBehavior="Manual" Stretch="Fill" MediaEnded="MediaElement_MediaEnded" />
+                            Width="Auto" Height="Auto" MaxWidth="1200" LoadedBehavior="Manual" UnloadedBehavior="Manual" Stretch="Fill" MediaEnded="MediaElement_MediaEnded" />
 
-        <StackPanel HorizontalAlignment="Center" Width="450" Orientation="Horizontal">
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.2*"/>
+            </Grid.RowDefinitions>
 
+            <ListBox x:Name="ListBoxActions" SelectionChanged="HandleListBox" Width="200" Height="800" Background="LightGray" Visibility="{Binding Path= IsActionVideo, ElementName=VideoPlayerWindowElement, Converter={StaticResource BoolToVisibility}}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="Red" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= Mistake, Converter={StaticResource BoolToVisibility}}" />
+                            <Rectangle Fill="Green" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= Mistake, Converter={StaticResource InverseBoolToVisConverter}}" />
+                            <TextBlock  FontWeight="Bold" Text="{Binding LogActionDisplay}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <ListBox x:Name="ListBoxSentences" SelectionChanged="HandleListBox" Width="200" Height="800" Background="LightGray" Visibility="{Binding Path= IsActionVideo, ElementName=VideoPlayerWindowElement, Converter={StaticResource InverseBoolToVisConverter}}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="Red" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= WasIdentified, Converter={StaticResource InverseBoolToVisConverter}}" />
+                            <Rectangle Fill="Green" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= WasIdentified, Converter={StaticResource BoolToVisibility}}" />
+                            <TextBlock  FontWeight="Bold" Text="{Binding SentenceText}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+
+        <StackPanel HorizontalAlignment="Center" Width="450" Orientation="Horizontal" Grid.Row="1">
             <Button  Click="OnButtonClickPlayMedia" Margin="5">
-                <materialDesign:PackIcon x:Name="playButtonIcon" Kind="Play"></materialDesign:PackIcon>
+                <materialDesign:PackIcon x:Name="playButtonIcon" Kind="Pause"></materialDesign:PackIcon>
             </Button>
-
             <Button Click="LeftButtonClicked" Margin="5">
                 <materialDesign:PackIcon Kind="ArrowLeftBold"></materialDesign:PackIcon>
             </Button>
-
             <Button  Click="RightButtonClicked" Margin="5">
                 <materialDesign:PackIcon Kind="ArrowRightBold"></materialDesign:PackIcon>
             </Button>
-
             <Button x:Name="LoopButton" Click="LoopButtonClicked" Margin="5">
                 <materialDesign:PackIcon Kind="Loop"></materialDesign:PackIcon>
             </Button>
 
-            <!-- Volume slider. This slider allows a Volume range between 0 and 1. -->
             <TextBlock Foreground="White" VerticalAlignment="Center" Margin="5"  >Volume</TextBlock>
-            <Slider Name="VolumeSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaVolume" 
-       Minimum="0" Maximum="1" Value="0.5" Width="70"/>
-
-            <!-- Volume slider. This slider allows you to change the speed of the media playback. -->
+            <Slider Name="VolumeSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaVolume" Minimum="0" Maximum="1" Value="0.5" Width="70"/>
             <TextBlock Foreground="White" Margin="5"  VerticalAlignment="Center">Speed</TextBlock>
-            <Slider Name="speedRatioSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaSpeedRatio" 
-       Value="1" Width="70" />
-            
-
-
+            <Slider Name="speedRatioSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaSpeedRatio" Value="1" Width="70" />
         </StackPanel>
-    </StackPanel>
+    </Grid>
 </Window>

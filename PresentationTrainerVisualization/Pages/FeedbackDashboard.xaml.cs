@@ -2,6 +2,7 @@
 using PresentationTrainerVisualization.helper;
 using PresentationTrainerVisualization.models;
 using PresentationTrainerVisualization.models.json;
+using PresentationTrainerVisualization.windows;
 using ScottPlot;
 using ScottPlot.Drawing;
 using System;
@@ -12,7 +13,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Wpf.Ui.Controls;
 using static PresentationTrainerVisualization.helper.Constants;
 using Color = System.Drawing.Color;
 
@@ -56,44 +56,12 @@ namespace PresentationTrainerVisualization.Pages
                 }
             }
 
-          //  PlotRadarWithBadLabelsFromVideo();
-            PlotRadarWithGoodLabelsFromVideo();
             PlotGoalDurationOfSession();
             PlotPercentageOfIdentifiedSentencesInSelectedSession();
-            PlotTest();
-        }
-
-        private void PlotTest()
-        {
-            var actions = processedSessionsData.GetAllActionsFromLastSession();
-            WpfPlot plot = (WpfPlot)FindName("RadarBadActions");
-
-            int index = 0;
-            foreach (var value in actions)
-            {
-
-                if (value.Mistake)
-                {
-                    var lolipop = plot.Plot.AddLollipop(
-                                       values: new double[] { 10 },
-                                       positions: new double[] { index },
-                                       color: Color.Red);
-
-                }
-                else
-                {
-                    var lolipop = plot.Plot.AddLollipop(
-                                       values: new double[] { 10 },
-                                       positions: new double[] { index },
-                                       color: Color.Gray);
-                }
-                index++;
-            }
-            // var lolipop = plot.Plot.AddLollipop(values);
-            double[] xPositions = { 0, (int)actions.Count * 1/4, (int)actions.Count * 1/2, (int)actions.Count * 3/4, actions.Count };
-            string[] xLabels = { "0:00", "0:30", "1:00", "1:30", "2:00" };
-            plot.Plot.XAxis.ManualTickPositions(xPositions, xLabels);
-            plot.Refresh();
+            PlotRadarWithBadLabelsFromVideo();
+            PlotRadarWithGoodLabelsFromVideo();
+            PlotCandleSentences();
+            PlotCandleActions();
         }
 
         private void PlotGoalDurationOfSession()
@@ -177,6 +145,80 @@ namespace PresentationTrainerVisualization.Pages
             }
 
 
+        }
+
+        private void PlotCandleActions()
+        {
+            var actions = processedSessionsData.GetSelectedSession().Actions;
+            WpfPlot plot = (WpfPlot)FindName("CandleActions");
+
+            int index = 0;
+            foreach (var value in actions)
+            {
+
+                if (value.Mistake)
+                {
+                    var lolipop = plot.Plot.AddLollipop(
+                                       values: new double[] { 10 },
+                                       positions: new double[] { index },
+                                       color: Color.Red);
+
+                }
+                else
+                {
+                    var lolipop = plot.Plot.AddLollipop(
+                                       values: new double[] { 10 },
+                                       positions: new double[] { index },
+                                       color: Color.Gray);
+                }
+                index++;
+            }
+            // var lolipop = plot.Plot.AddLollipop(values);
+            double[] xPositions = { 0, (int)actions.Count * 1 / 4, (int)actions.Count * 1 / 2, (int)actions.Count * 3 / 4, actions.Count };
+            string[] xLabels = { "0:00", "0:30", "1:00", "1:30", "2:00" };
+            plot.Plot.XAxis.ManualTickPositions(xPositions, xLabels);
+            plot.Plot.YAxis.Ticks(false);
+            plot.Plot.Title("Distribution of detected Actions");
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
+            plot.Plot.Legend();
+            plot.Refresh();
+        }
+
+        private void PlotCandleSentences()
+        {
+            var sentences = processedSessionsData.GetSelectedSession().Sentences;
+            WpfPlot plot = (WpfPlot)FindName("CandleSentences");
+
+            int index = 0;
+            foreach (var value in sentences)
+            {
+
+                if (value.WasIdentified)
+                {
+                    var lolipop = plot.Plot.AddLollipop(
+                                       values: new double[] { 10 },
+                                       positions: new double[] { index },
+                                       color: Color.Green);
+
+                }
+                else
+                {
+                    var lolipop = plot.Plot.AddLollipop(
+                                       values: new double[] { 10 },
+                                       positions: new double[] { index },
+                                       color: Color.Red);
+                }
+                index++;
+            }
+            // var lolipop = plot.Plot.AddLollipop(values);
+            double[] xPositions = { 0, (int)sentences.Count * 1 / 4, (int)sentences.Count * 1 / 2, (int)sentences.Count * 3 / 4, sentences.Count };
+            string[] xLabels = { "0:00", "0:30", "1:00", "1:30", "2:00" };
+            plot.Plot.XAxis.ManualTickPositions(xPositions, xLabels);
+            plot.Plot.YAxis.Ticks(false);
+            plot.Plot.Title("Distribution of Sentences");
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
+            plot.Plot.Legend();
+            plot.Refresh();
         }
 
 
@@ -274,6 +316,7 @@ namespace PresentationTrainerVisualization.Pages
 
             plot.Plot.Title("Detected mistakes");
             plot.Plot.Legend();
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
         }
 
@@ -315,7 +358,7 @@ namespace PresentationTrainerVisualization.Pages
             if (result1.AggregatedObjects.Count == 0 || result2.AggregatedObjects.Count == 0)
                 return;
 
-            // entferne Einträge kleiner gleich 1
+            // remove elements with zero count
             for (int i = 0; i < result1.AggregatedObjects.Count; i++)
             {
                 if (result1.AggregatedObjects[i].Count == 0 && result2.AggregatedObjects[i].Count == 0)
@@ -350,7 +393,7 @@ namespace PresentationTrainerVisualization.Pages
             Array.Reverse(categoryLabelsArr);
 
             // Chart Configuration
-            WpfPlot plot = (WpfPlot)FindName("RadarActions");
+            WpfPlot plot = (WpfPlot)FindName("RadarGoodActions");
             var radar = plot.Plot.AddRadar(UtilityHelper.ConvertJaggedTo2D(resultArr));
             radar.CategoryLabels = categoryLabels.ToArray();
             radar.GroupLabels = new[] { "Last Session", "Average last 7 Session" };
@@ -370,6 +413,7 @@ namespace PresentationTrainerVisualization.Pages
 
             plot.Plot.Title("Detected actions");
             plot.Plot.Legend();
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
         }
 
@@ -412,6 +456,7 @@ namespace PresentationTrainerVisualization.Pages
             pie.CenterFont.Size = 24f;
             pie.OutlineSize = 0.7f;
             pie.SliceFillColors = new Color[] { prograssColor, Color.LightGray };
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
         }
 
@@ -477,7 +522,7 @@ namespace PresentationTrainerVisualization.Pages
             plot.Plot.Legend(location: Alignment.UpperRight);
             plot.Plot.SetAxisLimits(yMin: 0);
             plot.Plot.Title("Sentence by Session");
-
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
         }
 
@@ -620,6 +665,12 @@ namespace PresentationTrainerVisualization.Pages
             plot.Plot.Legend();
 
             plot.Refresh();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            VideoPlayerWindow win2 = new VideoPlayerWindow();
+            win2.Show();
         }
     }
 }

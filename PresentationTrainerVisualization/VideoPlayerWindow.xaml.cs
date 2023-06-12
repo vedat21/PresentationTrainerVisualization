@@ -1,48 +1,117 @@
-﻿using PresentationTrainerVisualization.helper;
+﻿using Newtonsoft.Json;
+using PresentationTrainerVisualization.helper;
 using PresentationTrainerVisualization.models.json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
-using System.Text;
+using System.Printing;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
+using static PresentationTrainerVisualization.helper.Constants;
+using Action = PresentationTrainerVisualization.models.json.Action;
 
 namespace PresentationTrainerVisualization.windows
 {
 
     public partial class VideoPlayerWindow : Window
     {
+        // videoplayer can be inistiated with senteces or actions. This bool is to know which is chosen.
+        public bool IsActionVideo { get; set; }
+
+        private ListBox listBox;
         private MediaElement mediaElement;
         private ProcessedSessionsData processedSessionsData;
-        private DispatcherTimer loopTimer;
-        private List<models.json.Action> actions;
 
-        private bool isPlaying = false;
+        private DispatcherTimer videoCurrentTime;
+        private DispatcherTimer loopTimer;
+        private bool isPlaying = true;
         private bool doLoop = true;
-        private int videoIndex = 0;
+
+        private List<Action> actions;
+        private Action selectedAction; // only has property logAction and Log
+
+        private List<Sentence> sentences;
+        private Sentence selectedSentence;
+
+        // keeps track of which annotation is currently selected
+        private int selectedAnnotationIndex = 0;
+
         private TimeSpan loopStartTime = TimeSpan.FromSeconds(10);  // Start time of the loop
         private TimeSpan loopEndTime = TimeSpan.FromSeconds(13);    // End time of the loop
 
 
         public VideoPlayerWindow()
         {
+            // Has to be initialized before InitializeComponent is called.
+            IsActionVideo = false; 
+
             InitializeComponent();
             mediaElement = (MediaElement)FindName("VideoPlayer");
-            InitValues();
-            processedSessionsData = new ProcessedSessionsData();
-            actions = processedSessionsData.GetAllActionsFromLastSession();
+            listBox = IsActionVideo ? (ListBox)FindName("ListBoxActions") : (ListBox)FindName("ListBoxSentences");
 
+            processedSessionsData = new ProcessedSessionsData();
+            actions = processedSessionsData.GetActionsFromLastSession();
+            sentences = processedSessionsData.GetSentencesFromLastSession();
+
+
+            // Initialize the timer
+            //     videoCurrentTime = new DispatcherTimer();
+            //     videoCurrentTime.Interval = TimeSpan.FromSeconds(1); // Update time every second
+            //     videoCurrentTime.Tick += Timer_Tick;
+            //    mediaElement.Loaded += (sender, e) =>
+            //    {
+            //         videoCurrentTime.Start();
+            //     };
+
+            // Stop the timer when the media is unloaded
+            //   mediaElement.Unloaded += (sender, e) =>
+            //   {
+            //       videoCurrentTime.Stop();
+            //   };
+
+            InitValues();
             StartLoop();
+            InitListBox();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            TimeSpan videoPosition = mediaElement.Position;
+            // Update the time TextBlock
+
+            selectedAction = actions.FirstOrDefault(x => videoPosition >= TimeSpan.Parse(x.Start) && videoPosition <= TimeSpan.Parse(x.End));
+            selectedAnnotationIndex = actions.FindIndex(x => videoPosition >= TimeSpan.Parse(x.Start) && videoPosition <= TimeSpan.Parse(x.End));
+
+        }
+
+        private void InitListBox()
+        {
+            if (IsActionVideo)
+                listBox.ItemsSource = actions;
+            else
+                listBox.ItemsSource = sentences;
+        }
+
+        public async void HandleListBox(object sender, RoutedEventArgs e)
+        {
+            if (IsActionVideo)
+            {
+                selectedAction = (Action)listBox.SelectedItem;
+                selectedAnnotationIndex = actions.IndexOf(selectedAction);
+            }
+            else
+            {
+                selectedSentence = (Sentence)listBox.SelectedItem;
+                selectedAnnotationIndex = sentences.IndexOf(selectedSentence);
+            }
+
+            SmoothSeekToPosition();
         }
 
         private void SeekToPosition(TimeSpan position)
@@ -57,8 +126,11 @@ namespace PresentationTrainerVisualization.windows
             }
         }
 
-        private async Task SmoothSeekToPosition(TimeSpan position)
+        private async Task SmoothSeekToPosition()
         {
+            TimeSpan position = TimeSpan.Parse(actions[selectedAnnotationIndex].Start);
+
+
             const int framesPerSecond = 30;
             const int frameDurationMilliseconds = 1000 / framesPerSecond;
 
@@ -97,7 +169,7 @@ namespace PresentationTrainerVisualization.windows
 
         public void TestIwas(object sender, RoutedEventArgs e)
         {
-            List<models.json.Action> actions = processedSessionsData.GetAllActionsFromLastSession();
+            List<Action> actions = processedSessionsData.GetSelectedSession().Actions;
 
 
             string x = actions[0].Start;
@@ -112,11 +184,6 @@ namespace PresentationTrainerVisualization.windows
             //  StopMediaPlayer();
 
 
-        }
-
-        public async void TestIwasNeu(object sender, RoutedEventArgs e)
-        {
-            await SmoothSeekToPosition(TimeSpan.Parse("00:00:53.3053082"));
         }
 
         /// <summary>
@@ -182,7 +249,7 @@ namespace PresentationTrainerVisualization.windows
         private void StartLoop()
         {
             // Set the initial position to the loop start time
-            mediaElement.Position = TimeSpan.Parse(actions[videoIndex].Start);
+            mediaElement.Position = TimeSpan.Parse(actions[selectedAnnotationIndex].Start);
 
             // Subscribe to the MediaEnded event
             mediaElement.MediaEnded += MediaElement_MediaEnded;
@@ -217,10 +284,10 @@ namespace PresentationTrainerVisualization.windows
         {
 
             // Check if the current position is past the loop end time
-            if (mediaElement.Position >= TimeSpan.Parse(actions[videoIndex].End))
+            if (mediaElement.Position >= TimeSpan.Parse(actions[selectedAnnotationIndex].End))
             {
                 // Set the position back to the loop start time
-                mediaElement.Position = TimeSpan.Parse(actions[videoIndex].Start);
+                mediaElement.Position = TimeSpan.Parse(actions[selectedAnnotationIndex].Start);
             }
         }
 
@@ -247,12 +314,17 @@ namespace PresentationTrainerVisualization.windows
 
         private void LeftButtonClicked(object sender, RoutedEventArgs e)
         {
-            videoIndex = Math.Max(videoIndex, 0);
+            selectedAnnotationIndex--;
+            selectedAnnotationIndex = Math.Max(selectedAnnotationIndex, 0);
+            SmoothSeekToPosition();
         }
 
         private void RightButtonClicked(object sender, RoutedEventArgs e)
         {
-            videoIndex = Math.Min(videoIndex, actions.Count - 1);
+            Trace.WriteLine(selectedAnnotationIndex);
+            selectedAnnotationIndex++;
+      //      selectedActionIndex = Math.Min(selectedActionIndex, actions.Count - 1);
+            SmoothSeekToPosition();
         }
 
         private void LoopButtonClicked(object sender, RoutedEventArgs e)

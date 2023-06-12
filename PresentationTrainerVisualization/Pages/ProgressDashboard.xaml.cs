@@ -19,8 +19,6 @@ namespace PresentationTrainerVisualization.Pages
         private ProcessedSessionsData processedSessionsData { get; }
         private ProcessedGoalsData processedGoalsData;
         private ConfigurationRoot configurationRoot;
-        private Configuration configuration;
-
 
         public ProgressDashboard()
         {
@@ -33,7 +31,6 @@ namespace PresentationTrainerVisualization.Pages
             {
                 string json = File.ReadAllText(Constants.PATH_TO_CONFIG_DATA);
                 configurationRoot = JsonConvert.DeserializeObject<ConfigurationRoot>(json);
-                configuration = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_DATES.ToString());
             }
             else
             {
@@ -65,41 +62,52 @@ namespace PresentationTrainerVisualization.Pages
                 return;
             }
 
-            plot.Plot.AddFill(xs, ys, color: Color.DodgerBlue);
+            plot.Plot.AddFill(xs, ys, color: Color.LightSkyBlue);
             plot.Plot.AddScatter(xs, ys, color: Color.DodgerBlue, markerSize: 7);
 
             // Chart Configuration
             plot.Plot.XAxis.DateTimeFormat(true);
             plot.Plot.Title("Percentage of identified Sentences by Session");
             plot.Plot.SetAxisLimits(yMin: 0);
-            plot.Plot.Legend(location: Alignment.UpperRight);
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
         }
 
-        /// <summary> PROGRESS
+        /// <summary> 
         /// Plot the number of Sessions by dateonly in a timelinechart.
         /// </summary>
         private void PlotNumberOfSessionsInTimeLine()
         {
-            var numberOfSessions = processedSessionsData.GetNumberOfSessionsByDate();
+            Configuration configurationTimeSpan = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_DATES.ToString());
 
-            var timeSpentByDate = processedSessionsData.GetDurationByDate();
+            double[] xs;
+            double[] ys;
 
-            // Convert DateTime[] to double[] before plotting
-            double[] xs = numberOfSessions.Keys.Select(x => x.ToDateTime(TimeOnly.Parse("00:00 PM")).ToOADate()).ToArray();
-            double[] ys = numberOfSessions.Values.Select(x => (double)x).ToArray();
+            // When user selection of timespan includes only one day than show number of sessions for datetime. Else show number of sessions for dateonly.
+            if (configurationTimeSpan.StartDate == configurationTimeSpan.EndDate)
+            {
+                var numberOfSessions = processedSessionsData.GetNumberOfSessionsByDateTime();
+                xs = numberOfSessions.Keys.Select(x => x.ToOADate()).ToArray();
+                ys = numberOfSessions.Values.Select(x => (double)x).ToArray();
+            }
+            else
+            {
+                var numberOfSessions = processedSessionsData.GetNumberOfSessionsByDateOnly();
+                xs = numberOfSessions.Keys.Select(x => x.ToDateTime(TimeOnly.Parse("00:00 PM")).ToOADate()).ToArray();
+                ys = numberOfSessions.Values.Select(x => (double)x).ToArray();
+            }
+
             Array.Sort(xs, ys);
-
-            double[] ys2 = timeSpentByDate.Values.Select(x => (double)x).ToArray();
-            Array.Sort(xs, ys2);
+            //      double[] ys2 = timeSpentByDate.Values.Select(x => (double)x).ToArray();
+            //      Array.Sort(xs, ys2);
 
             WpfPlot plot = (WpfPlot)FindName("PlotNumberOfSessionsInTimeline");
-            plot.Plot.AddFill(xs, ys);
+            plot.Plot.AddFill(xs, ys, color: Color.LightSkyBlue);
             plot.Plot.AddScatter(xs, ys, color: Color.DodgerBlue, label: "Number of Sessions");
             plot.Plot.XAxis.DateTimeFormat(true);
             plot.Plot.Title("Number of Sessions");
             plot.Plot.SetAxisLimits(yMin: 0);
-            plot.Plot.Legend(location: Alignment.UpperRight);
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
         }
 
@@ -130,7 +138,6 @@ namespace PresentationTrainerVisualization.Pages
             pie.CenterFont.Color = prograssColor;
             pie.OutlineSize = 0.9f;
             pie.SliceFillColors = new Color[] { prograssColor, Color.LightGray };
-
             plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
 

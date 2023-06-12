@@ -13,16 +13,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
             <RowDefinition Height="3*" />
-            <RowDefinition Height="1.5*" />
+            <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="0.1*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-
-        <WpfPlot x:Name="RadarBadActions"  Grid.Row="1" Grid.Column="0"/>
-        <WpfPlot x:Name="RadarActions"  Grid.Row="1" Grid.Column="3"/>
 
         <StackPanel Grid.ColumnSpan="10" Orientation="Horizontal">
             <materialDesign:Card Background="White" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Height="190" Width="200" Margin="10">
@@ -54,8 +50,12 @@
 
                 </Grid>
             </materialDesign:Card>
-
         </StackPanel>
+
+        <WpfPlot x:Name="RadarBadActions" Style="{StaticResource PlotStyle}"  Grid.Row="1" Grid.Column="0"/>
+        <WpfPlot x:Name="RadarGoodActions" Style="{StaticResource PlotStyle}"  Grid.Row="1" Grid.Column="1"/>
+        <WpfPlot x:Name="CandleActions" Style="{StaticResource PlotStyle}"  Grid.Row="2" Grid.Column="0"/>
+        <WpfPlot x:Name="CandleSentences" Style="{StaticResource PlotStyle}"  Grid.Row="2" Grid.Column="1"/>
 
     </Grid>
 </Page>

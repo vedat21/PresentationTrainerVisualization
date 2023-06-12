@@ -31,7 +31,7 @@
     <Compile Update="DashboardComponents\GoalNumberOfSessions.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\ChartsConfigurationPage.xaml.cs">
+    <Compile Update="NewVideoPlayerWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\FeedbackDashboard.xaml.cs">
@@ -72,7 +72,7 @@
     <Page Update="DashboardComponents\GoalNumberOfSessions.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\ChartsConfigurationPage.xaml">
+    <Page Update="NewVideoPlayerWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\FeedbackDashboard.xaml">

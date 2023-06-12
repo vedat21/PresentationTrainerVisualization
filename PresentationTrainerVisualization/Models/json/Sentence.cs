@@ -9,10 +9,16 @@ namespace PresentationTrainerVisualization.models.json
 {
     public class Sentence
     {
-        [JsonProperty("wasIdentified")]
-        public bool WasIdentified { get; set; }
+        [JsonProperty("end")]
+        public TimeSpan End { get; set; }
 
         [JsonProperty("sentence")]
-        public string? SentenceS { get; set; }
+        public string? SentenceText { get; set; }
+
+        [JsonProperty("start")]
+        public TimeSpan Start { get; set; }
+
+        [JsonProperty("wasIdentified")]
+        public bool WasIdentified { get; set; }
     }
 }

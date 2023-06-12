@@ -3,15 +3,23 @@ using PresentationTrainerVisualization.models;
 using PresentationTrainerVisualization.models.json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using static PresentationTrainerVisualization.helper.Constants;
+using Action = PresentationTrainerVisualization.models.json.Action;
+
 
 namespace PresentationTrainerVisualization.helper
 {
     public class ProcessedSessionsData
     {
+        private static ProcessedSessionsData instance;
+
         private SessionsRoot sessionsRoot;
+        private Session selectedSession; // selected session by user in dashboard 
 
         private ConfigurationRoot configurationRoot;
         private Configuration configurationLastDays;
@@ -19,12 +27,10 @@ namespace PresentationTrainerVisualization.helper
 
         private ProcessedGoalsData processedGoalsData;
 
-
         public ProcessedSessionsData()
         {
             sessionsRoot = JsonConvert.DeserializeObject<SessionsRoot>(File.ReadAllText(Constants.PATH_TO_SESSION_DATA));
             processedGoalsData = new ProcessedGoalsData();
-
 
             if (File.Exists(Constants.PATH_TO_CONFIG_DATA))
             {
@@ -49,6 +55,24 @@ namespace PresentationTrainerVisualization.helper
                     LastDaysOrSessions = 7,
                 };
             }
+
+            // Get selectedSession from combobox
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.GetType() == typeof(MainWindow))
+                {
+                    selectedSession = (Session)(window as MainWindow).ComboSessions.SelectedItem;
+                }
+            }
+
+        }
+
+        public static ProcessedSessionsData GetInstance()
+        {
+            if (instance == null)
+                instance = new ProcessedSessionsData();
+
+            return instance;
         }
 
         public List<Session> GetCopyOfAllSessions()
@@ -82,30 +106,22 @@ namespace PresentationTrainerVisualization.helper
             return sessionsRoot.Sessions.Count;
         }
 
-        public TimeSpan GetDurationOfLastSession()
+        // Wird zum testen von VideoPlayer gebraucht. Danach kann weg
+        public List<Sentence> GetSentencesFromLastSession()
         {
-            return sessionsRoot.Sessions.Last().Duration;
-
+            return sessionsRoot.Sessions[1].Sentences;
         }
 
-        public List<Sentence> GetAllSentencesFromLastSession()
+        public Session GetSelectedSession()
         {
-            return sessionsRoot.Sessions.Last().Sentences;
+            return selectedSession;
         }
 
-        public List<models.json.Action> GetAllActionsFromLastSession()
+        // Wird zum testen von VideoPlayer gebraucht. Danach kann weg
+        public List<Action> GetActionsFromLastSession()
         {
             var actions = sessionsRoot.Sessions.Last().Actions;
-            foreach (var action in actions)
-            {
-                if (action.Start.StartsWith("-"))
-                {
-                    action.Start = action.Start.Substring(1, action.Start.Length - 1);
-                }
-            }
-            actions = actions.OrderBy(x => x.Start).ToList();
-
-            return sessionsRoot.Sessions.Last().Actions;
+            return actions.OrderBy(x => x.Start).ToList();
         }
 
         public int NumberOfDaysBetweenFirstSessionAndToday()
@@ -145,15 +161,13 @@ namespace PresentationTrainerVisualization.helper
             {
                 DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
 
+                // get only the data that is in timespan of user selection
                 if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
-                {
-
                     foreach (var sentence in session.Sentences)
                         if (sentence.WasIdentified)
                             numberOfRecongnised++;
                         else
                             numberOfNotRecongnised++;
-                }
             }
 
             double result = (numberOfRecongnised / (numberOfRecongnised + numberOfNotRecongnised)) * 100;
@@ -171,14 +185,11 @@ namespace PresentationTrainerVisualization.helper
                 DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
 
                 if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
-                {
-
                     foreach (var action in session.Actions)
                         if (action.Mistake)
                             numberOfBadActions++;
                         else
                             numberOfGoodActions++;
-                }
             }
 
             double result = (numberOfBadActions / (numberOfBadActions + numberOfGoodActions)) * 100;
@@ -196,14 +207,11 @@ namespace PresentationTrainerVisualization.helper
                 DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
 
                 if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
-                {
-
                     foreach (var action in session.Actions)
                         if (action.Mistake)
                             numberOfBadActions++;
                         else
                             numberOfGoodActions++;
-                }
             }
 
             double result = (numberOfGoodActions / (numberOfBadActions + numberOfGoodActions)) * 100;
@@ -218,6 +226,7 @@ namespace PresentationTrainerVisualization.helper
             foreach (var session in sessionsRoot.Sessions)
             {
                 DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
+
                 if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
                     numberOfSessions++;
             }
@@ -238,6 +247,7 @@ namespace PresentationTrainerVisualization.helper
             {
                 DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
 
+                // get only the data that is in timespan of user selection
                 if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
                 {
                     List<AggregatedObject> aggregatedObjects = new List<AggregatedObject>();
@@ -293,10 +303,8 @@ namespace PresentationTrainerVisualization.helper
             int numberOfSessions = 0;
 
             foreach (var session in sessionsRoot.Sessions)
-            {
                 if (session.Start.Date == DateTime.Today)
                     numberOfSessions++;
-            }
 
             return numberOfSessions;
         }
@@ -314,22 +322,43 @@ namespace PresentationTrainerVisualization.helper
         }
 
         /// <summary>
-        /// Returns the number of sessions by each date only.
+        /// Returns the number of sessions by each datetime.
         /// </summary>
         /// <returns></returns>
-        public SortedDictionary<DateOnly, int> GetNumberOfSessionsByDate()
+        public SortedDictionary<DateTime, int> GetNumberOfSessionsByDateTime()
+        {
+            SortedDictionary<DateTime, int> numberOfSesions = new SortedDictionary<DateTime, int>();
+
+            foreach (var session in sessionsRoot.Sessions)
+            {
+                var sessionDate = session.Start;
+
+                // get only the data that is in timespan of user selection
+                if (configurationTimeSpan.StartDate <= DateOnly.FromDateTime(sessionDate) && configurationTimeSpan.EndDate >= DateOnly.FromDateTime(sessionDate))
+                    if (numberOfSesions.ContainsKey(sessionDate))
+                        numberOfSesions[sessionDate] = numberOfSesions[sessionDate] + 1;
+                    else
+                        numberOfSesions[sessionDate] = 1;
+            }
+
+            return numberOfSesions;
+        }
+
+        public SortedDictionary<DateOnly, int> GetNumberOfSessionsByDateOnly()
         {
             // Count number of sessions by dateonly
             SortedDictionary<DateOnly, int> numberOfSesions = new SortedDictionary<DateOnly, int>();
 
             foreach (var session in sessionsRoot.Sessions)
             {
-                var date = DateOnly.FromDateTime(session.Start);
+                var sessionDate = DateOnly.FromDateTime(session.Start);
 
-                if (numberOfSesions.ContainsKey(date))
-                    numberOfSesions[date] = numberOfSesions[date] + 1;
-                else
-                    numberOfSesions[date] = 1;
+                // get only the data that is in timespan of user selection
+                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
+                    if (numberOfSesions.ContainsKey(sessionDate))
+                        numberOfSesions[sessionDate] = numberOfSesions[sessionDate] + 1;
+                    else
+                        numberOfSesions[sessionDate] = 1;
             }
 
             return numberOfSesions;

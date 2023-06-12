@@ -23,6 +23,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Controls.Ribbon;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms.Integration;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -35,13 +36,6 @@ using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
-using Wpf.Ui;
-using Wpf.Ui.Common;
-using Wpf.Ui.Controls;
-using Wpf.Ui.Controls.Navigation;
-using Wpf.Ui.Converters;
-using Wpf.Ui.Markup;
-using Wpf.Ui.ValidationRules;
 
 
 namespace PresentationTrainerVisualization {

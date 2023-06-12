@@ -35,7 +35,7 @@ namespace PresentationTrainerVisualization.Pages
         public GoalSettingPage()
         {
             InitializeComponent();
-            processedSessionsData = new ProcessedSessionsData();
+            processedSessionsData = ProcessedSessionsData.GetInstance();
             badActions = new List<Action>();
             goodActions = new List<Action>();
             badActionsListBox = (ListBox)FindName("ListBoxBadActions");
