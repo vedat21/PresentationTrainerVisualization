@@ -40,17 +40,17 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Height" Value="200" />
                 <Setter Property="Width" Value="550" />
-                <Setter Property="Margin" Value="10"/>
+                <Setter Property="Margin" Value="5"/>
             </Style>
 
             <Style TargetType="materialDesign:Card" x:Key="CardNormalComponent">
                 <Setter Property="UniformCornerRadius" Value="15" />
                 <Setter Property="Background" Value="GhostWhite" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="Height" Value="130" />
-                <Setter Property="Width" Value="250" />
-                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Height" Value="Auto" />
+                <Setter Property="MaxHeight" Value="170" />
+                <Setter Property="MaxWidth" Value="300"/>
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="Margin" Value="10"/>
             </Style>
 
             <Style x:Key="HamburgerButtonStyle" TargetType="ToggleButton">

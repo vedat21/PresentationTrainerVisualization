@@ -66,10 +66,14 @@ namespace PresentationTrainerVisualization.Pages
 
         private void PlotGoalDurationOfSession()
         {
-            TextBlock timeLastSession = (TextBlock)FindName("TimeLastSession");
-            TextBlock tipTimeLastSession = (TextBlock)FindName("TimeTipLastSession");
+            TextBlock timeSelectedSession = (TextBlock)FindName("TimeLastSession");
+            TextBlock tipTimeSelectedSession = (TextBlock)FindName("TimeTipLastSession");
             TextBlock timeLastXSession = (TextBlock)FindName("TimeLastXSession");
             TextBlock tipTimeLastXSession = (TextBlock)FindName("TimeTipLastXSession");
+
+            Goal goal = processedGoalsData.GetGoalWithLabel(GoalsLabel.DurationOfSession.ToString());
+            TimeSpan minTime = new TimeSpan(0, 0, int.Parse(goal.Description[GoalsDescription.session_duration_min_minutes.ToString()]), int.Parse(goal.Description[GoalsDescription.session_duration_min_seconds.ToString()]));
+            TimeSpan maxTime = new TimeSpan(0, 0, int.Parse(goal.Description[GoalsDescription.session_duration_max_minutes.ToString()]), int.Parse(goal.Description[GoalsDescription.session_duration_max_seconds.ToString()]));
 
             Configuration configuration = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_LAST_X.ToString());
 
@@ -77,17 +81,51 @@ namespace PresentationTrainerVisualization.Pages
             TimeSpan result1 = sessions.Find(x => x.Start == selectedSession.Start).Duration;
             List<Session> sessionsResult2;
 
+            // If data is empty for chosen timespan
+            if (result1 == null)
+                return;
+
+            // display result for selected session
+            if (result1 > maxTime)
+            {
+                TimeSpan difference = maxTime - result1;
+                timeSelectedSession.Foreground = new SolidColorBrush(Colors.Red);
+                tipTimeSelectedSession.Text = Math.Abs(difference.TotalSeconds).ToString() + "sec overdrawn";
+            }
+            else if (result1 < minTime)
+            {
+                TimeSpan difference = result1 - minTime;
+                timeSelectedSession.Foreground = new SolidColorBrush(Colors.Red);
+                tipTimeSelectedSession.Text = Math.Abs(difference.TotalSeconds).ToString() + "sec short";
+            }
+            else
+            {
+                timeSelectedSession.Foreground = new SolidColorBrush(Colors.LimeGreen);
+                tipTimeSelectedSession.Text = "Goal achieved";
+            }
+            timeSelectedSession.Text = result1.ToString("mm\\:ss") + " min";
+
+
             // Decides what is shown
             if (configuration == null)
+            {
                 sessionsResult2 = ProcessedSessionsDataHelper.GetLastSessions(sessions, DEFAULT_NUMBER_OF_SESSIONS);
+                LastXSession.Text = "Last 7 Sessions";
+            }
             else
                 if (configuration.IsLastSessions)
+            {
                 sessionsResult2 = ProcessedSessionsDataHelper.GetLastSessions(sessions, configuration.LastDaysOrSessions);
+                LastXSession.Text = "Last " + configuration.LastDaysOrSessions + " Sessions";
+            }
             else
+            {
                 sessionsResult2 = ProcessedSessionsDataHelper.GetSessionsOfLastDays(sessions, configuration.LastDaysOrSessions);
+                LastXSession.Text = "Last " + configuration.LastDaysOrSessions + " Days";
+            }
 
-            // If data is emoty for chosen timespan
-            if(result1 == null || sessionsResult2.Count == 0 )
+
+            if (sessionsResult2.Count == 0)
                 return;
 
             int index = 0;
@@ -99,31 +137,7 @@ namespace PresentationTrainerVisualization.Pages
             }
 
             TimeSpan result2 = new TimeSpan(tempResult2.Ticks / index);
-
-            Goal goal = processedGoalsData.GetGoalWithLabel(GoalsLabel.DurationOfSession.ToString());
-            TimeSpan minTime = new TimeSpan(0, 0, int.Parse(goal.Description[GoalsDescription.session_duration_min_minutes.ToString()]), int.Parse(goal.Description[GoalsDescription.session_duration_min_seconds.ToString()]));
-            TimeSpan maxTime = new TimeSpan(0, 0, int.Parse(goal.Description[GoalsDescription.session_duration_max_minutes.ToString()]), int.Parse(goal.Description[GoalsDescription.session_duration_max_seconds.ToString()]));
-
-            timeLastSession.Text = result1.ToString("mm\\:ss") + " min";
             timeLastXSession.Text = result2.ToString("mm\\:ss") + " min";
-
-            if (result1 > maxTime)
-            {
-                TimeSpan difference = maxTime - result1;
-                timeLastSession.Foreground = new SolidColorBrush(Colors.Red);
-                tipTimeLastSession.Text = Math.Abs(difference.TotalSeconds).ToString() + "sec overdrawn";
-            }
-            else if (result1 < minTime)
-            {
-                TimeSpan difference = result1 - minTime;
-                timeLastSession.Foreground = new SolidColorBrush(Colors.Red);
-                tipTimeLastSession.Text = Math.Abs(difference.TotalSeconds).ToString() + "sec short";
-            }
-            else
-            {
-                timeLastSession.Foreground = new SolidColorBrush(Colors.LimeGreen);
-                tipTimeLastSession.Text = "Goal achieved";
-            }
 
             // same with result2
             if (result2 > maxTime)
@@ -143,7 +157,6 @@ namespace PresentationTrainerVisualization.Pages
                 timeLastXSession.Foreground = new SolidColorBrush(Colors.LimeGreen);
                 tipTimeLastXSession.Text = "Goal achieved";
             }
-
 
         }
 
@@ -300,7 +313,6 @@ namespace PresentationTrainerVisualization.Pages
             var radar = plot.Plot.AddRadar(UtilityHelper.ConvertJaggedTo2D(resultArr));
             radar.CategoryLabels = categoryLabelsArr;
             radar.GroupLabels = groupLabels;
-            radar.ShowAxisValues = true;
             radar.LineColors = new Color[2]
             {
                 Color.FromArgb(255,171, 50, 50) ,Color.Gray
@@ -396,7 +408,7 @@ namespace PresentationTrainerVisualization.Pages
             WpfPlot plot = (WpfPlot)FindName("RadarGoodActions");
             var radar = plot.Plot.AddRadar(UtilityHelper.ConvertJaggedTo2D(resultArr));
             radar.CategoryLabels = categoryLabels.ToArray();
-            radar.GroupLabels = new[] { "Last Session", "Average last 7 Session" };
+            radar.GroupLabels = new[] { "Selected Session", "Average last 7 Session" };
             radar.ShowAxisValues = false;
             radar.LineColors = new Color[2]
             {
@@ -426,7 +438,7 @@ namespace PresentationTrainerVisualization.Pages
             List<AggregatedSession> dataAllSessions = processedSessionsData.GetPercentageOfRecongnisedSentenceBySession();
             AggregatedSession result = dataAllSessions.Find(x => x.SessionDate == selectedSession.Start);
 
-            if(result == null)
+            if (result == null)
             {
                 return;
             }
@@ -448,7 +460,6 @@ namespace PresentationTrainerVisualization.Pages
             var pie = plot.Plot.AddPie(new double[] { percentageOfRecongnisedSentences, 100 - percentageOfRecongnisedSentences });
 
             // Chart Configuration
-            plot.Plot.XAxis.Label("Recongnised Sentences", size: 16, color: Color.Gray, bold: true);
             pie.DonutSize = .7;
             pie.Size = 0.8;
             pie.DonutLabel = percentageOfRecongnisedSentences.ToString() + "%";
@@ -459,8 +470,6 @@ namespace PresentationTrainerVisualization.Pages
             plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
         }
-
-       
 
         private void PlotStackedBarChart()
         {

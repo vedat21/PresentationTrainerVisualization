@@ -298,24 +298,20 @@ namespace PresentationTrainerVisualization.helper
             return result;
         }
 
-        public int GetNumberOfSessionsToday()
-        {
-            int numberOfSessions = 0;
-
-            foreach (var session in sessionsRoot.Sessions)
-                if (session.Start.Date == DateTime.Today)
-                    numberOfSessions++;
-
-            return numberOfSessions;
-        }
-
         public TimeSpan GetTotalTimeSpent()
         {
             TimeSpan totalTime = new TimeSpan();
             foreach (var session in sessionsRoot.Sessions)
             {
-                TimeSpan timeDifference = session.End - session.Start;
-                totalTime += timeDifference;
+                var sessionDate = session.Start;
+
+                // get only the data that is in timespan of user selection
+                if (configurationTimeSpan.StartDate <= DateOnly.FromDateTime(sessionDate) && configurationTimeSpan.EndDate >= DateOnly.FromDateTime(sessionDate))
+                {
+                    TimeSpan timeDifference = session.End - session.Start;
+                    totalTime += timeDifference;
+                }
+                   
             }
 
             return totalTime;

@@ -67,6 +67,9 @@ namespace PresentationTrainerVisualization
             {
                 startDate.Text = configurationTimeSpan.StartDate.ToString();
                 endDate.Text = configurationTimeSpan.EndDate.ToString();
+
+                startDate.DisplayDateEnd = endDate.SelectedDate;
+                endDate.DisplayDateStart = startDate.SelectedDate;
             }
             else
             {
@@ -125,6 +128,9 @@ namespace PresentationTrainerVisualization
 
             DateTime selectedStartDate = (DateTime)startDate.SelectedDate;
             DateTime selectedEndDate = (DateTime)endDate.SelectedDate;
+            // set date restriction
+            startDate.DisplayDateEnd = endDate.SelectedDate;
+            endDate.DisplayDateStart = startDate.SelectedDate;
 
 
             if (configurationTimeSpan != null)
@@ -214,27 +220,27 @@ namespace PresentationTrainerVisualization
 
         private void HandleDashboardClicked(object sender, RoutedEventArgs e)
         {
-            ((StackPanel)FindName("DashboardConfiguration")).Visibility = Visibility.Visible;
+            ((DockPanel)FindName("DashboardConfiguration")).Visibility = Visibility.Visible;
             LoadDashboard();
         }
 
         private void HandleGoalClicked(object sender, RoutedEventArgs e)
         {
-            ((StackPanel)FindName("DashboardConfiguration")).Visibility = Visibility.Hidden;
+            ((DockPanel)FindName("DashboardConfiguration")).Visibility = Visibility.Hidden;
             ((Frame)FindName("MainContainer")).Content = new GoalSettingPage();
         }
 
         private void LoadProgressDashboard()
         {
             ((Frame)FindName("MainContainer")).Content = new ProgressDashboard();
-            ((StackPanel)FindName("SelectDateSpan")).Visibility = Visibility.Visible;
+            ((Grid)FindName("SelectDateSpan")).Visibility = Visibility.Visible;
             ((Grid)FindName("SelectLastSessions")).Visibility = Visibility.Collapsed;
         }
 
         private void LoadFeedbackDashboard()
         {
             ((Frame)FindName("MainContainer")).Content = new FeedbackDashboard();
-            ((StackPanel)FindName("SelectDateSpan")).Visibility = Visibility.Collapsed;
+            ((Grid)FindName("SelectDateSpan")).Visibility = Visibility.Collapsed;
             ((Grid)FindName("SelectLastSessions")).Visibility = Visibility.Visible;
         }
 

@@ -5,6 +5,7 @@ using PresentationTrainerVisualization.models.json;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
@@ -96,17 +97,25 @@ namespace PresentationTrainerVisualization.Pages
                 xs = numberOfSessions.Keys.Select(x => x.ToDateTime(TimeOnly.Parse("00:00 PM")).ToOADate()).ToArray();
                 ys = numberOfSessions.Values.Select(x => (double)x).ToArray();
             }
-
             Array.Sort(xs, ys);
+
+
+            WpfPlot plot = (WpfPlot)FindName("PlotNumberOfSessionsInTimeline");
+            if (xs.Length == 0 || ys.Length == 0)
+            {
+                plot.Plot.Title("No Data Available for chosen time");
+                return;
+            }
+
             //      double[] ys2 = timeSpentByDate.Values.Select(x => (double)x).ToArray();
             //      Array.Sort(xs, ys2);
 
-            WpfPlot plot = (WpfPlot)FindName("PlotNumberOfSessionsInTimeline");
             plot.Plot.AddFill(xs, ys, color: Color.LightSkyBlue);
             plot.Plot.AddScatter(xs, ys, color: Color.DodgerBlue, label: "Number of Sessions");
             plot.Plot.XAxis.DateTimeFormat(true);
             plot.Plot.Title("Number of Sessions");
             plot.Plot.SetAxisLimits(yMin: 0);
+            plot.Plot.YAxis.ManualTickSpacing(1);
             plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
         }
@@ -114,6 +123,9 @@ namespace PresentationTrainerVisualization.Pages
         private void PlotAverageORecongnisedSentences()
         {
             double percentageOfRecongnisedSentences = processedSessionsData.GetAverageNumberOfRecongnisedSentencesByTime();
+
+            if (Double.IsNaN(percentageOfRecongnisedSentences))
+                return;
 
             Color prograssColor;
             if (percentageOfRecongnisedSentences < 25)
@@ -125,16 +137,16 @@ namespace PresentationTrainerVisualization.Pages
             else
                 prograssColor = Color.FromArgb(255, 44, 186, 0); //green
 
+      
 
             WpfPlot plot = (WpfPlot)FindName("PlotTest");
             var pie = plot.Plot.AddPie(new double[] { percentageOfRecongnisedSentences, 100 - percentageOfRecongnisedSentences });
 
             // Chart Configuration
-            plot.Plot.XAxis.Label("Average Recongnised Sentences", size: 16, color: Color.Gray, bold: true);
             pie.DonutSize = .7;
-            pie.Size = 0.7;
+            pie.Size = 0.8;
             pie.DonutLabel = percentageOfRecongnisedSentences.ToString() + "%";
-            pie.CenterFont.Size = 24f; // size of text inside donut
+            pie.CenterFont.Size = 20f; // size of text inside donut
             pie.CenterFont.Color = prograssColor;
             pie.OutlineSize = 0.9f;
             pie.SliceFillColors = new Color[] { prograssColor, Color.LightGray };

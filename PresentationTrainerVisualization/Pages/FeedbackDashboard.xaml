@@ -11,51 +11,59 @@
       Title="Dashboard1">
     <Grid >
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*" />
             <RowDefinition Height="2*" />
             <RowDefinition Height="3*" />
             <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.ColumnSpan="10" Orientation="Horizontal">
-            <materialDesign:Card Background="White" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Height="190" Width="200" Margin="10">
+        <materialDesign:Card Style="{StaticResource CardNormalComponent}" Grid.Column="0" Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="0.2*"/>
+                </Grid.RowDefinitions>
                 <WpfPlot x:Name="DonutForCard"/>
-            </materialDesign:Card>
+                <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Gray" Width="Auto" Height="Auto" TextWrapping="Wrap" FontSize="16">Average Recongnised Sentences</TextBlock>
+            </Grid>
+        </materialDesign:Card>
 
-            <materialDesign:Card Grid.Row="2" Grid.Column="2" UniformCornerRadius="12" Background="White" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="150" Width="400">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.4*"></RowDefinition>
-                        <RowDefinition Height="1*"></RowDefinition>
-                        <RowDefinition Height="1*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"></ColumnDefinition>
-                        <ColumnDefinition Width="1*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
+        <materialDesign:Card x:Name="DurationOfSession" Style="{StaticResource CardNormalComponent}" MaxWidth="450" Grid.Column="1" Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.4*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="14" Text="Last Session" />
-                    <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="14" Text="Last X Session" />
+                <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="14" Text="Selected Session" />
+                <TextBlock x:Name="LastXSession" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="14" />
 
-                    <TextBlock x:Name="TimeLastSession" Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Text="mm:ss" />
-                    <TextBlock x:Name="TimeLastXSession" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Text="mm:ss" />
+                <TextBlock x:Name="TimeLastSession" Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Text="mm:ss" />
+                <TextBlock x:Name="TimeLastXSession" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Text="mm:ss" />
 
-                    <TextBlock x:Name="TimeTipLastSession" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center"  FontSize="12" />
-                    <TextBlock x:Name="TimeTipLastXSession" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center"  FontSize="12" />
+                <TextBlock x:Name="TimeTipLastSession" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center"  FontSize="12" />
+                <TextBlock x:Name="TimeTipLastXSession" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center"  FontSize="12" />
 
-                    <Border Grid.ColumnSpan="10" Grid.RowSpan="10" BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Center" Height="128" VerticalAlignment="Center"/>
+                <Border Grid.ColumnSpan="10" Grid.RowSpan="10" BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Center" Height="128" VerticalAlignment="Center"/>
 
-                </Grid>
-            </materialDesign:Card>
-        </StackPanel>
+            </Grid>
+        </materialDesign:Card>
 
-        <WpfPlot x:Name="RadarBadActions" Style="{StaticResource PlotStyle}"  Grid.Row="1" Grid.Column="0"/>
-        <WpfPlot x:Name="RadarGoodActions" Style="{StaticResource PlotStyle}"  Grid.Row="1" Grid.Column="1"/>
-        <WpfPlot x:Name="CandleActions" Style="{StaticResource PlotStyle}"  Grid.Row="2" Grid.Column="0"/>
-        <WpfPlot x:Name="CandleSentences" Style="{StaticResource PlotStyle}"  Grid.Row="2" Grid.Column="1"/>
+        <WpfPlot x:Name="RadarBadActions" Style="{StaticResource PlotStyle}"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <WpfPlot x:Name="RadarGoodActions" Style="{StaticResource PlotStyle}"  Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <WpfPlot x:Name="CandleActions" Style="{StaticResource PlotStyle}"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <WpfPlot x:Name="CandleSentences" Style="{StaticResource PlotStyle}"  Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Page>

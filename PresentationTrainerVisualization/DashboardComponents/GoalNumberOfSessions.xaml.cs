@@ -86,6 +86,7 @@ namespace PresentationTrainerVisualization.DashboardComponents
             pie.OutlineSize = 0.6f;
             pie.SliceFillColors = new Color[] { prograssColor, Color.LightGray };
             pie.CenterFont.Size = 15f;
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
 
 
