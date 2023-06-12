@@ -68,5 +68,5 @@ C:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainer
 C:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\bin\Debug\net6.0-windows\Vortice.MediaFoundation.dll
 C:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\bin\Debug\net6.0-windows\Vortice.XAudio2.dll
 C:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\bin\Debug\net6.0-windows\WpfColorFontDialog.dll
-C:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\obj\Debug\net6.0-windows\NewVideoPlayerWindow.g.cs
-C:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\obj\Debug\net6.0-windows\NewVideoPlayerWindow.baml
+C:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\obj\Debug\net6.0-windows\VideoPlayerWindowOld.g.cs
+C:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\obj\Debug\net6.0-windows\VideoPlayerWindowOld.baml

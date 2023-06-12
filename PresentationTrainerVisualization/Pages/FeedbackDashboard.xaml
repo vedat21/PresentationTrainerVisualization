@@ -30,7 +30,7 @@
                     <RowDefinition Height="0.2*"/>
                 </Grid.RowDefinitions>
                 <WpfPlot x:Name="DonutForCard"/>
-                <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Gray" Width="Auto" Height="Auto" TextWrapping="Wrap" FontSize="16">Average Recongnised Sentences</TextBlock>
+                <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Gray" Width="Auto" Height="Auto" TextWrapping="Wrap" FontSize="16"> Recongnised Sentences</TextBlock>
             </Grid>
         </materialDesign:Card>
 
@@ -60,10 +60,34 @@
             </Grid>
         </materialDesign:Card>
 
-        <WpfPlot x:Name="RadarBadActions" Style="{StaticResource PlotStyle}"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <WpfPlot x:Name="RadarGoodActions" Style="{StaticResource PlotStyle}"  Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <WpfPlot x:Name="CandleActions" Style="{StaticResource PlotStyle}"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <WpfPlot x:Name="CandleSentences" Style="{StaticResource PlotStyle}"  Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <WpfPlot x:Name="RadarBadActions" Style="{StaticResource PlotStyle}"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <WpfPlot x:Name="RadarGoodActions" Style="{StaticResource PlotStyle}"  Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.16*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <WpfPlot x:Name="CandleActions" Style="{StaticResource PlotStyle}"  Grid.ColumnSpan="2"  Grid.RowSpan="2" />
+            <Button ToolTip="Show in Video" Click="ActionVideoButtonClicked" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Right" Width="Auto" Height="Auto">
+                <materialDesign:PackIcon Foreground="Black"  MaxHeight="30" MaxWidth="30" Height="Auto" Width="Auto" Kind="VideoOutline"></materialDesign:PackIcon>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.16*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <WpfPlot x:Name="CandleSentences" Style="{StaticResource PlotStyle}"  Grid.RowSpan="2" Grid.Column="2" Grid.ColumnSpan="2"/>
+            <Button ToolTip="Show in Video" Click="SentenceVideoButtonClicked" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Right" Width="Auto" Height="Auto">
+                <materialDesign:PackIcon Foreground="Black" MaxHeight="30" MaxWidth="30" Height="Auto" Width="Auto" Kind="VideoOutline"></materialDesign:PackIcon>
+            </Button>
+        </Grid>
 
     </Grid>
 </Page>

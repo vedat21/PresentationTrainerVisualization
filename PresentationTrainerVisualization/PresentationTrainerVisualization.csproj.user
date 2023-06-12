@@ -31,7 +31,7 @@
     <Compile Update="DashboardComponents\GoalNumberOfSessions.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="NewVideoPlayerWindow.xaml.cs">
+    <Compile Update="VideoPlayerWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\FeedbackDashboard.xaml.cs">
@@ -43,7 +43,7 @@
     <Compile Update="Pages\GoalSettingPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="VideoPlayerWindow.xaml.cs">
+    <Compile Update="VideoPlayerWindowOld.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -72,7 +72,7 @@
     <Page Update="DashboardComponents\GoalNumberOfSessions.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="NewVideoPlayerWindow.xaml">
+    <Page Update="VideoPlayerWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\FeedbackDashboard.xaml">
@@ -87,7 +87,7 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="VideoPlayerWindow.xaml">
+    <Page Update="VideoPlayerWindowOld.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

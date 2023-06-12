@@ -117,6 +117,22 @@ namespace PresentationTrainerVisualization.helper
             return selectedSession;
         }
 
+        public double GetPercentageOfIdentifiedFromSelectedSession()
+        {
+            int numberOfIdentified = 0;
+            int numberOfNotIdentified = 0;
+
+            foreach (var sentence in selectedSession.Sentences)
+                if (sentence.WasIdentified)
+                    numberOfIdentified++;
+                else
+                    numberOfNotIdentified++;
+
+            double percentageIdentified = Math.Round((double)numberOfIdentified / (numberOfIdentified + numberOfNotIdentified) * 100, 2);
+
+            return percentageIdentified;
+        }
+
         // Wird zum testen von VideoPlayer gebraucht. Danach kann weg
         public List<Action> GetActionsFromLastSession()
         {
@@ -311,7 +327,7 @@ namespace PresentationTrainerVisualization.helper
                     TimeSpan timeDifference = session.End - session.Start;
                     totalTime += timeDifference;
                 }
-                   
+
             }
 
             return totalTime;

@@ -163,7 +163,17 @@ namespace PresentationTrainerVisualization.Pages
         private void PlotCandleActions()
         {
             var actions = processedSessionsData.GetSelectedSession().Actions;
+            var durationOfSelectedSession = processedSessionsData.GetSelectedSession().Duration;
             WpfPlot plot = (WpfPlot)FindName("CandleActions");
+
+            string[] xLabels = new string[5];
+            TimeSpan fractionDuration = TimeSpan.FromTicks(durationOfSelectedSession.Ticks / 4);
+            // Display time in equal fractions
+            for (int i = 0; i <= 4; i++)
+            {
+                TimeSpan fraction = TimeSpan.FromTicks(fractionDuration.Ticks * i);
+                xLabels[i] = fraction.ToString("mm\\:ss");
+            }
 
             int index = 0;
             foreach (var value in actions)
@@ -187,8 +197,7 @@ namespace PresentationTrainerVisualization.Pages
                 index++;
             }
             // var lolipop = plot.Plot.AddLollipop(values);
-            double[] xPositions = { 0, (int)actions.Count * 1 / 4, (int)actions.Count * 1 / 2, (int)actions.Count * 3 / 4, actions.Count };
-            string[] xLabels = { "0:00", "0:30", "1:00", "1:30", "2:00" };
+            double[] xPositions = { -0.5 ,(int)actions.Count * 1 / 4, (int)actions.Count * 1 / 2, (int)actions.Count * 3 / 4, actions.Count }; // postion of x labels
             plot.Plot.XAxis.ManualTickPositions(xPositions, xLabels);
             plot.Plot.YAxis.Ticks(false);
             plot.Plot.Title("Distribution of detected Actions");
@@ -200,7 +209,17 @@ namespace PresentationTrainerVisualization.Pages
         private void PlotCandleSentences()
         {
             var sentences = processedSessionsData.GetSelectedSession().Sentences;
+            var durationOfSelectedSession = processedSessionsData.GetSelectedSession().Duration;
             WpfPlot plot = (WpfPlot)FindName("CandleSentences");
+
+            string[] xLabels = new string[5];
+            TimeSpan fractionDuration = TimeSpan.FromTicks(durationOfSelectedSession.Ticks / 4);
+            // Display time in equal fractions
+            for (int i = 0; i <= 4; i++)
+            {
+                TimeSpan fraction = TimeSpan.FromTicks(fractionDuration.Ticks * i);
+                xLabels[i] = fraction.ToString("mm\\:ss");
+            }
 
             int index = 0;
             foreach (var value in sentences)
@@ -224,8 +243,7 @@ namespace PresentationTrainerVisualization.Pages
                 index++;
             }
             // var lolipop = plot.Plot.AddLollipop(values);
-            double[] xPositions = { 0, (int)sentences.Count * 1 / 4, (int)sentences.Count * 1 / 2, (int)sentences.Count * 3 / 4, sentences.Count };
-            string[] xLabels = { "0:00", "0:30", "1:00", "1:30", "2:00" };
+            double[] xPositions = { -0.5, (int)sentences.Count * 1 / 4, (int)sentences.Count * 1 / 2, (int)sentences.Count * 3 / 4, sentences.Count-0.5 };
             plot.Plot.XAxis.ManualTickPositions(xPositions, xLabels);
             plot.Plot.YAxis.Ticks(false);
             plot.Plot.Title("Distribution of Sentences");
@@ -311,6 +329,7 @@ namespace PresentationTrainerVisualization.Pages
             // Chart Configuration
             WpfPlot plot = (WpfPlot)FindName("RadarBadActions");
             var radar = plot.Plot.AddRadar(UtilityHelper.ConvertJaggedTo2D(resultArr));
+            radar.ShowAxisValues = false;
             radar.CategoryLabels = categoryLabelsArr;
             radar.GroupLabels = groupLabels;
             radar.LineColors = new Color[2]
@@ -434,16 +453,10 @@ namespace PresentationTrainerVisualization.Pages
         /// </summary>
         private void PlotPercentageOfIdentifiedSentencesInSelectedSession()
         {
+            double percentageOfRecongnisedSentences = processedSessionsData.GetPercentageOfIdentifiedFromSelectedSession();
 
-            List<AggregatedSession> dataAllSessions = processedSessionsData.GetPercentageOfRecongnisedSentenceBySession();
-            AggregatedSession result = dataAllSessions.Find(x => x.SessionDate == selectedSession.Start);
-
-            if (result == null)
-            {
+            if (double.IsNaN(percentageOfRecongnisedSentences))
                 return;
-            }
-
-            double percentageOfRecongnisedSentences = result.AggregatedObjects[0].Count;
 
             Color prograssColor;
             if (percentageOfRecongnisedSentences < 25)
@@ -676,10 +689,16 @@ namespace PresentationTrainerVisualization.Pages
             plot.Refresh();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ActionVideoButtonClicked(object sender, RoutedEventArgs e)
         {
-            VideoPlayerWindow win2 = new VideoPlayerWindow();
-            win2.Show();
+            VideoPlayerWindow window = new VideoPlayerWindow(true);
+            window.Show();
+        }
+
+        private void SentenceVideoButtonClicked(object sender, RoutedEventArgs e)
+        {
+            VideoPlayerWindow window = new VideoPlayerWindow(false);
+            window.Show();
         }
     }
 }
