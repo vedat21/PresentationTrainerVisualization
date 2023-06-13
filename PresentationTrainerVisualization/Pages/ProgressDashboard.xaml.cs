@@ -39,23 +39,59 @@ namespace PresentationTrainerVisualization.Pages
                 configurationRoot.Configurations = new List<Configuration>();
             }
 
-            PlotPercentageOfRecongnisedInTimeLine();
+            PlotAverageOfIdentifiedSentences();
+            PlotPercentageOfIfdentifiedSentencesInTimeLine();
             PlotNumberOfSessionsInTimeLine();
-            PlotAverageORecongnisedSentences();
+            PlotActionsInTimeLine();
+        }
+
+        private void PlotAverageOfIdentifiedSentences()
+        {
+            double percentageOfRecongnisedSentences = processedSessionsData.GetAverageNumberOfRecongnisedSentencesByTime();
+
+            if (Double.IsNaN(percentageOfRecongnisedSentences))
+                return;
+
+            Color prograssColor;
+            if (percentageOfRecongnisedSentences < 25)
+                prograssColor = Color.Red;
+            else if (percentageOfRecongnisedSentences < 50 && percentageOfRecongnisedSentences >= 25)
+                prograssColor = Color.Orange;
+            else if (percentageOfRecongnisedSentences < 75 && percentageOfRecongnisedSentences >= 50)
+                prograssColor = Color.FromArgb(255, 255, 244, 0); //yellow
+            else
+                prograssColor = Color.FromArgb(255, 44, 186, 0); //green
+
+
+
+            WpfPlot plot = (WpfPlot)FindName("AverageOfIdentifiedSentences");
+            var pie = plot.Plot.AddPie(new double[] { percentageOfRecongnisedSentences, 100 - percentageOfRecongnisedSentences });
+
+            // Chart Configuration
+            pie.DonutSize = .7;
+            pie.Size = 0.8;
+            pie.DonutLabel = percentageOfRecongnisedSentences.ToString() + "%";
+            pie.CenterFont.Size = 20f; // size of text inside donut
+            pie.CenterFont.Color = prograssColor;
+            pie.OutlineSize = 0.9f;
+            pie.SliceFillColors = new Color[] { prograssColor, Color.LightGray };
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
+            plot.Refresh();
+
         }
 
         /// <summary>
         /// Plot Line chart that shows the percentage of identified sentences by session in timeline.
         /// </summary>
-        private void PlotPercentageOfRecongnisedInTimeLine()
+        private void PlotPercentageOfIfdentifiedSentencesInTimeLine()
         {
-            List<AggregatedSession> data = processedSessionsData.GetPercentageOfRecongnisedSentenceBySession().ToList();
+            List<AggregatedSession> data = processedSessionsData.GetPercentageOfRecongnisedSentenceBySession();
             // Convert DateTime[] to double[] before plotting
             double[] xs = data.Select(x => x.SessionDate.ToOADate()).ToArray();
             double[] ys = data.Select(x => x.AggregatedObjects[0].Count).ToArray();
             Array.Sort(xs, ys);
 
-            WpfPlot plot = (WpfPlot)FindName("PlotPercentageOfRecongnisedSentences");
+            WpfPlot plot = (WpfPlot)FindName("PercentageOfRecongnisedSentences");
 
             if (data.Count == 0)
             {
@@ -100,7 +136,7 @@ namespace PresentationTrainerVisualization.Pages
             Array.Sort(xs, ys);
 
 
-            WpfPlot plot = (WpfPlot)FindName("PlotNumberOfSessionsInTimeline");
+            WpfPlot plot = (WpfPlot)FindName("NumberOfSessionsInTimeline");
             if (xs.Length == 0 || ys.Length == 0)
             {
                 plot.Plot.Title("No Data Available for chosen time");
@@ -120,39 +156,50 @@ namespace PresentationTrainerVisualization.Pages
             plot.Refresh();
         }
 
-        private void PlotAverageORecongnisedSentences()
+        /// <summary>
+        /// Plots the number of actions by session in stacked bar chart.
+        /// </summary>
+        private void PlotActionsInTimeLine()
         {
-            double percentageOfRecongnisedSentences = processedSessionsData.GetAverageNumberOfRecongnisedSentencesByTime();
+            List<AggregatedSession> resultGoodActions = processedSessionsData.GetNumberOfActionsBySession(false);
+            List<AggregatedSession> resultBadActions = processedSessionsData.GetNumberOfActionsBySession(true);
 
-            if (Double.IsNaN(percentageOfRecongnisedSentences))
-                return;
+            List<double> dataGood = new List<double>();
+            List<double> dataBad = new List<double>();
 
-            Color prograssColor;
-            if (percentageOfRecongnisedSentences < 25)
-                prograssColor = Color.Red;
-            else if (percentageOfRecongnisedSentences < 50 && percentageOfRecongnisedSentences >= 25)
-                prograssColor = Color.Orange;
-            else if (percentageOfRecongnisedSentences < 75 && percentageOfRecongnisedSentences >= 50)
-                prograssColor = Color.FromArgb(255, 255, 244, 0); //yellow
-            else
-                prograssColor = Color.FromArgb(255, 44, 186, 0); //green
+            for (int i = 0; i < resultGoodActions.Count; i++)
+            {
+                dataGood.Add(resultGoodActions[i].AggregatedObjects[0].Count);
+                dataBad.Add(resultBadActions[i].AggregatedObjects[0].Count);
+            }
 
-      
+            // Adjust data for stacked bar chart. 
+            double[] dataBadStacked = new double[dataBad.Count];
+            for (int i = 0; i < dataBad.Count; i++)
+                dataBadStacked[i] = dataGood[i] + dataBad[i];
 
-            WpfPlot plot = (WpfPlot)FindName("PlotTest");
-            var pie = plot.Plot.AddPie(new double[] { percentageOfRecongnisedSentences, 100 - percentageOfRecongnisedSentences });
+            // Add datalabels and positions of label in chart
+            List<string> DataLabels = new List<string>();
+            for (int i = 0; i < resultGoodActions.Count; i++)
+                DataLabels.Add(resultGoodActions[i].SessionDate.ToString("MM/dd/yyyy\nhh:mm tt"));
 
-            // Chart Configuration
-            pie.DonutSize = .7;
-            pie.Size = 0.8;
-            pie.DonutLabel = percentageOfRecongnisedSentences.ToString() + "%";
-            pie.CenterFont.Size = 20f; // size of text inside donut
-            pie.CenterFont.Color = prograssColor;
-            pie.OutlineSize = 0.9f;
-            pie.SliceFillColors = new Color[] { prograssColor, Color.LightGray };
+            double[] positions = Array.ConvertAll(Enumerable.Range(0, dataGood.Count).ToArray(), x => (double)x);
+
+            // Create plot
+            WpfPlot plot = (WpfPlot)FindName("ActionsInTimeLine");
+            var barBadActions = plot.Plot.AddBar(dataBadStacked.ToArray());
+            var barGoodActions = plot.Plot.AddBar(dataGood.ToArray());
+            barGoodActions.Label = "No Mistake";
+            barBadActions.Label = "Mistake";
+            barGoodActions.Color = Color.Green;
+            barBadActions.Color = Color.Red;
+
+            plot.Plot.XTicks(positions, DataLabels.ToArray());
+            plot.Plot.Legend(location: Alignment.UpperRight);
+            plot.Plot.SetAxisLimits(yMin: 0);
+            plot.Plot.Title("Actions by Session");
             plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
-
         }
 
     }

@@ -1,13 +1,13 @@
-﻿using FlyleafLib.MediaPlayer;
-using FlyleafLib;
+﻿using FlyleafLib;
+using FlyleafLib.MediaPlayer;
+using PresentationTrainerVisualization.helper;
+using PresentationTrainerVisualization.models.json;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Diagnostics;
-using PresentationTrainerVisualization.helper;
-using PresentationTrainerVisualization.models.json;
-using System.Collections.Generic;
 using System.Windows.Threading;
 using Action = PresentationTrainerVisualization.models.json.Action;
 
@@ -18,10 +18,10 @@ namespace PresentationTrainerVisualization
     /// </summary>
     public partial class VideoPlayerWindow : Window
     {
-        public Player Player { get; set; }
+        public Player VideoPlayer { get; set; }
         public Config Config { get; set; }
 
-        public ListBox istBox;
+        private ListBox listBox;
         private ProcessedSessionsData processedSessionsData;
         private List<Action> actions;
         private Action selectedAction; // only has property logAction and Log
@@ -29,12 +29,13 @@ namespace PresentationTrainerVisualization
         private Sentence selectedSentence;
         private bool isActionAnnotation;
         private DispatcherTimer loopTimer;
+        private DispatcherTimer videoTimer; // keep track of current time in video
+
 
         public string SampleVideo { get; set; } = "C:\\Users\\vedat\\OneDrive\\Desktop\\BachelorNeu\\testdata\\neueDaten\\Downloads\\5344641c.mp4";
         private bool isPlaying = false;
         private int selectedAnnotationIndex = 0;  // keeps track of which annotation is currently selected
         private bool doLoop = false;
-        private DispatcherTimer timer; // keep track of current time in video
 
 
         public VideoPlayerWindow(bool isActionAnnotation)
@@ -43,14 +44,14 @@ namespace PresentationTrainerVisualization
 
             Config = new Config();
             Config.Video.BackgroundColor = Colors.DarkGray;
-            Player = new Player(Config);
+            VideoPlayer = new Player(Config);
             InitializeComponent();
             DataContext = this;
             processedSessionsData = new ProcessedSessionsData();
             actions = processedSessionsData.GetActionsFromLastSession();
             sentences = processedSessionsData.GetSentencesFromLastSession();
-            timer = new DispatcherTimer();
-           
+            videoTimer = new DispatcherTimer();
+            loopTimer = new DispatcherTimer();
 
             Init();
         }
@@ -58,77 +59,105 @@ namespace PresentationTrainerVisualization
         private void Init()
         {
             // decide which listbox is loaded based on if it shows action or sentence annotations 
-            istBox = isActionAnnotation ? (ListBox)FindName("ListBoxActions") : (ListBox)FindName("ListBoxSentences");
-            istBox.ItemsSource = isActionAnnotation ? actions : sentences;
-            istBox.Visibility = Visibility.Visible;
+            listBox = isActionAnnotation ? (ListBox)FindName("ListBoxActions") : (ListBox)FindName("ListBoxSentences");
+            listBox.ItemsSource = isActionAnnotation ? actions : sentences;
+            listBox.Visibility = Visibility.Visible;
 
             // Open Video but dont play
-            Player.Open(SampleVideo);
+            VideoPlayer.Open(SampleVideo);
             Pause();
 
             // show current time and total length of video.
-            Duration.Text = TimeSpan.FromTicks(Player.Duration).ToString("mm\\:ss");
+            Duration.Text = TimeSpan.FromTicks(VideoPlayer.Duration).ToString("mm\\:ss");
+            videoTimer.Interval = TimeSpan.FromMilliseconds(500);
+            videoTimer.Tick += VideoTimeTick;
 
-            // init timer
-            timer.Interval = TimeSpan.FromSeconds(0.5);
-            timer.Tick += Timer_Tick;
+
+            if (!doLoop)
+            {
+                LoopButton.Background = Brushes.Gray;
+                LoopButton.BorderBrush = Brushes.Gray;
+            }
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            CurrentTime.Text = TimeSpan.FromTicks(Player.CurTime).ToString("mm\\:ss");
-        }
+
 
         private void SeekToSelectedPosition()
         {
-            TimeSpan position = isActionAnnotation ? TimeSpan.Parse(actions[selectedAnnotationIndex].Start) : sentences[selectedAnnotationIndex].Start;
-            int totalMilliSeconds = (int)position.TotalMilliseconds;
-            Player.SeekAccurate(totalMilliSeconds);
+            TimeSpan position = isActionAnnotation ? actions[selectedAnnotationIndex].Start : sentences[selectedAnnotationIndex].Start;
+            VideoPlayer.SeekAccurate((int)position.TotalMilliseconds);
+        }
+
+        private void SetCurrentIndex()
+        {
+            var currentTime = TimeSpan.FromTicks(VideoPlayer.CurTime);
+
+            if (isActionAnnotation)
+            {
+                for (int i = 0; i < actions.Count; i++)
+                {
+                    if (actions[i].Start <= currentTime && currentTime <= actions[i].End)
+                    {
+                        selectedAnnotationIndex = i;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < sentences.Count; i++)
+                {
+                    if (sentences[i].Start <= currentTime && currentTime <= sentences[i].End)
+                    {
+                        selectedAnnotationIndex = i;
+                    }
+                }
+            }
         }
 
         private void StartLoop()
         {
-            // Set the initial position to the loop start time
-            TimeSpan position = isActionAnnotation ? TimeSpan.Parse(actions[selectedAnnotationIndex].Start) : sentences[selectedAnnotationIndex].Start;
-            long totalMilliSeconds = (long)position.TotalMilliseconds;
-            Player.CurTime = totalMilliSeconds;
+            SetCurrentIndex();
 
+            TimeSpan startPosition = isActionAnnotation ? actions[selectedAnnotationIndex].Start : sentences[selectedAnnotationIndex].Start;
+            VideoPlayer.SeekAccurate((int)startPosition.TotalMilliseconds);
 
-            // Create and start the timer for checking the current position
             loopTimer = new DispatcherTimer();
-            loopTimer.Interval = TimeSpan.FromMilliseconds(1000); // Adjust the interval as needed
-            loopTimer.Tick += LoopTimer_Tick;
+            loopTimer.Interval = TimeSpan.FromMilliseconds(1500); // Adjust the interval as needed
+            loopTimer.Tick += LoopTimerTick;
             loopTimer.Start();
             doLoop = true;
         }
 
         private void StopLoop()
         {
-
-            // Stop and reset the timer
-            loopTimer?.Stop();
+            loopTimer.Stop();
             loopTimer = null;
             doLoop = false;
-
-
-            // Stop playing the video
-            Pause();
         }
-        private void LoopTimer_Tick(object sender, EventArgs e)
+
+        private void LoopTimerTick(object sender, EventArgs e)
         {
+            TimeSpan startPosition = isActionAnnotation ? actions[selectedAnnotationIndex].Start : sentences[selectedAnnotationIndex].Start;
+            TimeSpan endPosition = isActionAnnotation ? actions[selectedAnnotationIndex].End : sentences[selectedAnnotationIndex].End;
 
-            // Set the initial position to the loop start time
-            TimeSpan position = isActionAnnotation ? TimeSpan.Parse(actions[selectedAnnotationIndex].Start) : sentences[selectedAnnotationIndex].Start;
-            long totalMilliSeconds = (long)position.TotalMilliseconds;
+            // Check if the current position is past the loop endtime
+            if (VideoPlayer.CurTime >= (long)endPosition.TotalMilliseconds)
+                VideoPlayer.SeekAccurate((int)startPosition.TotalMilliseconds); // Set the position back to the loop starttime
+        }
 
+        private void VideoTimeTick(object sender, EventArgs e)
+        {
+            SetCurrentIndex();
 
-            // Check if the current position is past the loop end time
-            if (Player.CurTime >= totalMilliSeconds)
-            {
-                // Set the position back to the loop start time
-                Player.CurTime = totalMilliSeconds;
-                Trace.Write(Player.CurTime.ToString());
-            }
+            CurrentTime.Text = TimeSpan.FromTicks(VideoPlayer.CurTime).ToString("mm\\:ss");
+
+            string x = isActionAnnotation ? actions[selectedAnnotationIndex].LogActionDisplay : sentences[selectedAnnotationIndex].SentenceText;
+            VideoSubTitle.Text = x;
+
+            string start = isActionAnnotation ? actions[selectedAnnotationIndex].Start.ToString("mm\\:ss") : sentences[selectedAnnotationIndex].Start.ToString("mm\\:ss");
+            string end = isActionAnnotation ? actions[selectedAnnotationIndex].End.ToString("mm\\:ss") : sentences[selectedAnnotationIndex].End.ToString("mm\\:ss");
+
+            VideoSubTime.Text = start + "-" + end;
         }
 
         /// <summary>
@@ -146,68 +175,64 @@ namespace PresentationTrainerVisualization
 
         public void Play()
         {
-            Player.Play();
+            VideoPlayer.Play();
             isPlaying = true;
             playButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
-            timer.Start();
+            videoTimer.Start();
         }
 
         public void Pause()
         {
-            Player.Pause();
+            VideoPlayer.Pause();
             isPlaying = false;
             playButtonIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
-            timer.Stop();
+            videoTimer.Stop();
         }
 
         private void LeftArrowButtonClicked(object sender, RoutedEventArgs e)
         {
             selectedAnnotationIndex = Math.Max(selectedAnnotationIndex - 1, 0);
-            istBox.SelectedIndex = selectedAnnotationIndex;
+            listBox.SelectedIndex = selectedAnnotationIndex;
+
             SeekToSelectedPosition();
         }
 
         private void RightArrowButtonClicked(object sender, RoutedEventArgs e)
         {
             selectedAnnotationIndex = Math.Min(selectedAnnotationIndex + 1, actions.Count - 1);
-            istBox.SelectedIndex = selectedAnnotationIndex;
+            listBox.SelectedIndex = selectedAnnotationIndex;
+
             SeekToSelectedPosition();
         }
         private void LoopButtonClicked(object sender, RoutedEventArgs e)
         {
-
             if (doLoop)
             {
-                LoopButton.Background = System.Windows.Media.Brushes.Gray;
+                LoopButton.Background = Brushes.Gray;
+                LoopButton.BorderBrush = Brushes.Gray;
                 StopLoop();
             }
             else
             {
-                LoopButton.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(103, 58, 183));
+                LoopButton.Background = new SolidColorBrush(Color.FromRgb(103, 58, 183));
+                LoopButton.BorderBrush = new SolidColorBrush(Color.FromRgb(103, 58, 183));
                 StartLoop();
             }
-
         }
 
         public async void HandleListBox(object sender, RoutedEventArgs e)
         {
             if (isActionAnnotation)
-            {
-                selectedAction = (Action)istBox.SelectedItem;
-                selectedAnnotationIndex = actions.IndexOf(selectedAction);
-            }
+                selectedAnnotationIndex = actions.IndexOf((Action)listBox.SelectedItem);
             else
-            {
-                selectedSentence = (Sentence)istBox.SelectedItem;
-                selectedAnnotationIndex = sentences.IndexOf(selectedSentence);
-            }
+                selectedAnnotationIndex = sentences.IndexOf((Sentence)listBox.SelectedItem);
 
             SeekToSelectedPosition();
         }
 
         private void WindowClosed(object sender, EventArgs e)
         {
-            Player.Stop();
+            VideoPlayer.Stop();
         }
     }
 }

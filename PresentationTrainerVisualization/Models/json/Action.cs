@@ -14,10 +14,10 @@ namespace PresentationTrainerVisualization.models.json
     public class Action
     {
         [JsonProperty("start")]
-        public string? Start { get; set; }
+        public TimeSpan Start { get; set; }
 
         [JsonProperty("end")]
-        public string? End { get; set; }
+        public TimeSpan End { get; set; }
 
         [JsonProperty("id")]
         public double Id { get; set; }
@@ -35,11 +35,17 @@ namespace PresentationTrainerVisualization.models.json
         {
             LogActionDisplay = Constants.ACTION_FROM_VIDEO[LogAction];
 
-            // actions that are labeled as mistake have negative timestamp
-            if (Start.StartsWith("-"))
+            // Actions that are labeled as mistake have negative timestamp. 
+            Start = Start.Duration();
+            End = End.Duration();
+
+
+            /*
+            if (Start.ToString().StartsWith("-"))
                 Start = Start.Substring(1, Start.Length - 1);
-            if (End.StartsWith("-"))
-                End = End.Substring(1, End.Length - 1);
+            if (End.ToString().StartsWith("-"))
+                End = new TimeSpan(End.Substring(1, End.Length - 1));
+        */
         }
 
         // Only for ListBox items needed

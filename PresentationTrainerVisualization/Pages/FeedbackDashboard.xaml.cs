@@ -79,7 +79,6 @@ namespace PresentationTrainerVisualization.Pages
 
             List<Session> sessions = processedSessionsData.GetCopyOfAllSessions();
             TimeSpan result1 = sessions.Find(x => x.Start == selectedSession.Start).Duration;
-            List<Session> sessionsResult2;
 
             // If data is empty for chosen timespan
             if (result1 == null)
@@ -107,6 +106,7 @@ namespace PresentationTrainerVisualization.Pages
 
 
             // Decides what is shown
+            List<Session> sessionsResult2;
             if (configuration == null)
             {
                 sessionsResult2 = ProcessedSessionsDataHelper.GetLastSessions(sessions, DEFAULT_NUMBER_OF_SESSIONS);
@@ -139,7 +139,7 @@ namespace PresentationTrainerVisualization.Pages
             TimeSpan result2 = new TimeSpan(tempResult2.Ticks / index);
             timeLastXSession.Text = result2.ToString("mm\\:ss") + " min";
 
-            // same with result2
+            // Decides what is shown
             if (result2 > maxTime)
             {
                 TimeSpan difference = maxTime - result2;

@@ -15,6 +15,7 @@
             <RowDefinition Height="0.1*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
@@ -34,26 +35,26 @@
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
 
-            <DashboardComponents:CardNumberOfSessions  Grid.Column="0" />
-            <DashboardComponents:CardTotalTimeSpent  Grid.Column="1" />
-            <DashboardComponents:CardAverageNumberOfBadActions  Grid.Column="2" />
-            <DashboardComponents:CardAverageNumberOfGoodActions  Grid.Column="3" />
-            <materialDesign:Card Style="{StaticResource CardNormalComponent}"  Grid.Column="4" >
+            <materialDesign:Card Style="{StaticResource CardNormalComponent}"  Grid.Column="0" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="0.2*"/>
                     </Grid.RowDefinitions>
-                    <WpfPlot x:Name="PlotTest" VerticalAlignment="Top" />
+                    <WpfPlot x:Name="AverageOfIdentifiedSentences" VerticalAlignment="Top" />
                     <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Gray" Width="Auto" Height="Auto" TextWrapping="Wrap" FontSize="16">Average Recongnised Sentences</TextBlock>
                 </Grid>
             </materialDesign:Card>
+            <DashboardComponents:CardNumberOfSessions  Grid.Column="1" />
+            <DashboardComponents:CardTotalTimeSpent  Grid.Column="2" />
+            <DashboardComponents:CardAverageNumberOfBadActions  Grid.Column="3" />
+            <DashboardComponents:CardAverageNumberOfGoodActions  Grid.Column="4" />
             <DashboardComponents:GoalNumberOfSessions Grid.Column="5" />
         </Grid>
 
-        <WpfPlot x:Name="PlotNumberOfSessionsInTimeline" Margin="10" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2" />
-        <WpfPlot x:Name="PlotPercentageOfRecongnisedSentences" Margin="10" Grid.Row="2"  Grid.Column="2"  Grid.ColumnSpan="2"  />
-
+        <WpfPlot x:Name="NumberOfSessionsInTimeline" Margin="10" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2" />
+        <WpfPlot x:Name="PercentageOfRecongnisedSentences" Margin="10" Grid.Row="2"  Grid.Column="2"  Grid.ColumnSpan="2"  />
+        <WpfPlot x:Name="ActionsInTimeLine" Margin="10" Grid.Row="3"  Grid.Column="0"  Grid.ColumnSpan="2"  />
 
     </Grid>
 </Page>

@@ -168,6 +168,27 @@ namespace PresentationTrainerVisualization.helper
             return result;
         }
 
+        public List<AggregatedSession> GetNumberOfActionsBySession(bool mistake = true)
+        {
+            List<AggregatedSession> result = new List<AggregatedSession>();
+
+            foreach (var session in sessionsRoot.Sessions)
+            {
+                List<AggregatedObject> aggregatedObjects = new List<AggregatedObject>();
+                int numberOfAction = 0;
+
+                foreach (var action in session.Actions)
+                    if (mistake == action.Mistake)
+                        numberOfAction++;
+
+                aggregatedObjects.Add(new AggregatedObject("count", numberOfAction));
+                result.Add(new AggregatedSession(aggregatedObjects, session.Start));
+            }
+
+            return result;
+        }
+
+
         public double GetAverageNumberOfRecongnisedSentencesByTime()
         {
             double numberOfRecongnised = 0;
@@ -256,7 +277,6 @@ namespace PresentationTrainerVisualization.helper
         /// <returns></returns>
         public List<AggregatedSession> GetPercentageOfRecongnisedSentenceBySession()
         {
-
             List<AggregatedSession> result = new List<AggregatedSession>();
 
             foreach (var session in sessionsRoot.Sessions)
@@ -386,6 +406,7 @@ namespace PresentationTrainerVisualization.helper
         {
             Goal goal = mistake ? processedGoalsData.GetGoalWithLabel(GoalsLabel.BadActions.ToString()) : processedGoalsData.GetGoalWithLabel(GoalsLabel.GoodActions.ToString());
             var goalDesc = mistake ? goal.Description[GoalsDescription.list_of_bad_actions.ToString()] : goal.Description[GoalsDescription.list_of_good_actions.ToString()];
+
             List<string> selectedActions = new List<string>();
             foreach (var description in goalDesc)
                 selectedActions.Add(description.ToString());

@@ -78,13 +78,14 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                             <RowDefinition Height="0.2*"/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="1" Margin="-1 40 0 20">
-                            <Button ToolTip="Dashboard 1" Click="HandleDashboardClicked" Margin="10" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource Default}" >
+                            <Button ToolTip="Dashboard" Click="HandleDashboardClicked" Margin="10" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource Default}" >
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Foreground="WhiteSmoke" Height="30" Width="30" Kind="ViewDashboardOutline"></materialDesign:PackIcon>
-                                    <TextBlock x:Name="TextDashboard1" Style="{StaticResource SidebarText}" Visibility="Hidden" VerticalAlignment="Center">Dashboard 1</TextBlock>
+                                    <TextBlock x:Name="TextDashboard1" Style="{StaticResource SidebarText}" Visibility="Hidden" VerticalAlignment="Center">Dashboard</TextBlock>
                                 </StackPanel>
                             </Button>
                             <!--

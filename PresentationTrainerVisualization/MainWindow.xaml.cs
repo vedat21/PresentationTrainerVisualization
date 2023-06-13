@@ -220,13 +220,13 @@ namespace PresentationTrainerVisualization
 
         private void HandleDashboardClicked(object sender, RoutedEventArgs e)
         {
-            ((DockPanel)FindName("DashboardConfiguration")).Visibility = Visibility.Visible;
+            ((Grid)FindName("DashboardConfiguration")).Visibility = Visibility.Visible;
             LoadDashboard();
         }
 
         private void HandleGoalClicked(object sender, RoutedEventArgs e)
         {
-            ((DockPanel)FindName("DashboardConfiguration")).Visibility = Visibility.Hidden;
+            ((Grid)FindName("DashboardConfiguration")).Visibility = Visibility.Hidden;
             ((Frame)FindName("MainContainer")).Content = new GoalSettingPage();
         }
 

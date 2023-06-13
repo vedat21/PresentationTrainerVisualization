@@ -9,6 +9,7 @@
         mc:Ignorable="d"
         Title="NewVideoPlayerWindow" x:Name="VideoPlayerWindowElemennt" Height="450" Width="800"
         Closed="WindowClosed"
+        WindowState="Maximized"
         >
     <Grid Background="Black" >
         <Grid.RowDefinitions>
@@ -17,48 +18,58 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <fl:FlyleafHost Player="{Binding Player}" AttachedDragMove="Both" KeyBindings="Both" Width="Auto" Height="Auto" MaxWidth="1200">
-            <Grid HorizontalAlignment="Right" VerticalAlignment="Top">
-                <ListBox x:Name="ListBoxActions" SelectionChanged="HandleListBox" Width="200" Height="800" Background="LightGray" Visibility="Hidden">
-                    <ListBox.Resources>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Background" Value="LightBlue" />
-                        </Style>
-                    </ListBox.Resources>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Rectangle Fill="Red" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= Mistake, Converter={StaticResource BoolToVisibility}}" />
-                                <Rectangle Fill="Green" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= Mistake, Converter={StaticResource InverseBoolToVisConverter}}" />
-                                <TextBlock  FontWeight="Bold" Text="{Binding LogActionDisplay}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+        <fl:FlyleafHost Player="{Binding VideoPlayer}" AttachedDragMove="Both" KeyBindings="Both" Width="Auto" Height="Auto" MaxWidth="1200">
+            <Grid>
+                <Grid HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <ListBox x:Name="ListBoxActions" SelectionChanged="HandleListBox" Width="200" Height="800" Background="LightGray" Visibility="Hidden">
+                        <ListBox.Resources>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Background" Value="LightBlue" />
+                            </Style>
+                        </ListBox.Resources>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Fill="Red" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= Mistake, Converter={StaticResource BoolToVisibility}}" />
+                                    <Rectangle Fill="Green" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= Mistake, Converter={StaticResource InverseBoolToVisConverter}}" />
+                                    <TextBlock  FontWeight="Bold" Text="{Binding LogActionDisplay}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
-                <ListBox x:Name="ListBoxSentences" SelectionChanged="HandleListBox" Width="200" Height="800" Background="LightGray"  Visibility="Hidden">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Rectangle Fill="Red" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= WasIdentified, Converter={StaticResource InverseBoolToVisConverter}}" />
-                                <Rectangle Fill="Green" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= WasIdentified, Converter={StaticResource BoolToVisibility}}" />
-                                <TextBlock FontWeight="Bold" Text="{Binding SentenceText}"  ToolTipService.ToolTip="{Binding SentenceText}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    <ListBox x:Name="ListBoxSentences" SelectionChanged="HandleListBox" Width="200" Height="800" Background="LightGray"  Visibility="Hidden">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Fill="Red" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= WasIdentified, Converter={StaticResource InverseBoolToVisConverter}}" />
+                                    <Rectangle Fill="Green" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= WasIdentified, Converter={StaticResource BoolToVisibility}}" />
+                                    <TextBlock FontWeight="Bold" Text="{Binding SentenceText}"  ToolTipService.ToolTip="{Binding SentenceText}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+
+                <Border x:Name="subtitleContainer"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="#80000000" Padding="10">
+                    <StackPanel>
+                        <TextBlock x:Name="VideoSubTitle" FontSize="18" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Center"> Was Geht</TextBlock>
+                        <TextBlock x:Name="VideoSubTime" FontSize="18" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Center"> 01:01 - 01:02</TextBlock>
+                    </StackPanel>
+                </Border>
+
             </Grid>
         </fl:FlyleafHost>
 
         <StackPanel Grid.Row="1">
-            <Slider Margin="10" Width="Auto" Maximum="{Binding Player.Duration}" Value="{Binding Player.CurTime}" IsMoveToPointEnabled="True" SmallChange="{Binding Player.Config.Player.SeekOffset}" LargeChange="{Binding Player.Config.Player.SeekOffset2}"/>
+            <Slider Margin="10" Width="Auto" Maximum="{Binding VideoPlayer.Duration}" Value="{Binding VideoPlayer.CurTime}" IsMoveToPointEnabled="True" SmallChange="{Binding VideoPlayer.Config.VideoPlayer.SeekOffset}" LargeChange="{Binding VideoPlayer.Config.VideoPlayer.SeekOffset2}"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock x:Name="CurrentTime" Foreground="White" > 00:00</TextBlock>
                 <TextBlock Foreground="White" >/</TextBlock>
                 <TextBlock x:Name="Duration"  Foreground="White" />
             </StackPanel>
         </StackPanel>
-        
+
         <StackPanel HorizontalAlignment="Center" Width="Auto" Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="2">
             <Button  Click="PlayMediaButtonClicked" Margin="5">
                 <materialDesign:PackIcon x:Name="playButtonIcon" Kind="Pause"></materialDesign:PackIcon>

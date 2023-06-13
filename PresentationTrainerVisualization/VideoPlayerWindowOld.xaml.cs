@@ -85,8 +85,8 @@ namespace PresentationTrainerVisualization.windows
             TimeSpan videoPosition = mediaElement.Position;
             // Update the time TextBlock
 
-            selectedAction = actions.FirstOrDefault(x => videoPosition >= TimeSpan.Parse(x.Start) && videoPosition <= TimeSpan.Parse(x.End));
-            selectedAnnotationIndex = actions.FindIndex(x => videoPosition >= TimeSpan.Parse(x.Start) && videoPosition <= TimeSpan.Parse(x.End));
+            selectedAction = actions.FirstOrDefault(x => videoPosition >=x.Start && videoPosition <= x.End);
+            selectedAnnotationIndex = actions.FindIndex(x => videoPosition >= x.Start && videoPosition <= x.End);
 
         }
 
@@ -128,7 +128,7 @@ namespace PresentationTrainerVisualization.windows
 
         private async Task SmoothSeekToPosition()
         {
-            TimeSpan position = TimeSpan.Parse(actions[selectedAnnotationIndex].Start);
+            TimeSpan position = actions[selectedAnnotationIndex].Start;
 
 
             const int framesPerSecond = 30;
@@ -172,7 +172,7 @@ namespace PresentationTrainerVisualization.windows
             List<Action> actions = processedSessionsData.GetSelectedSession().Actions;
 
 
-            string x = actions[0].Start;
+            string x = actions[0].Start.ToString("mm\\:ss");
             TimeSpan timeSpan = TimeSpan.Parse("00:00:53.3053082");
             mediaElement.Position = timeSpan;
             mediaElement.Position += TimeSpan.FromMilliseconds(10);
@@ -249,7 +249,7 @@ namespace PresentationTrainerVisualization.windows
         private void StartLoop()
         {
             // Set the initial position to the loop start time
-            mediaElement.Position = TimeSpan.Parse(actions[selectedAnnotationIndex].Start);
+            mediaElement.Position = actions[selectedAnnotationIndex].Start;
 
             // Subscribe to the MediaEnded event
             mediaElement.MediaEnded += MediaElement_MediaEnded;
@@ -284,10 +284,10 @@ namespace PresentationTrainerVisualization.windows
         {
 
             // Check if the current position is past the loop end time
-            if (mediaElement.Position >= TimeSpan.Parse(actions[selectedAnnotationIndex].End))
+            if (mediaElement.Position >= actions[selectedAnnotationIndex].End)
             {
                 // Set the position back to the loop start time
-                mediaElement.Position = TimeSpan.Parse(actions[selectedAnnotationIndex].Start);
+                mediaElement.Position = actions[selectedAnnotationIndex].Start;
             }
         }
 

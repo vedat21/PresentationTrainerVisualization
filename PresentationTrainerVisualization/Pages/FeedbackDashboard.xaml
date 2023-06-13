@@ -46,8 +46,10 @@
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="14" Text="Selected Session" />
-                <TextBlock x:Name="LastXSession" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="14" />
+                <TextBlock  FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="16" HorizontalAlignment="Center" Grid.ColumnSpan="2" Text="Duration of Session"/> 
+
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="14" Grid.Row="1" Grid.Column="0" Text="Selected Session" />
+                <TextBlock x:Name="LastXSession" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="14" />
 
                 <TextBlock x:Name="TimeLastSession" Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Text="mm:ss" />
                 <TextBlock x:Name="TimeLastXSession" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Text="mm:ss" />
@@ -55,7 +57,7 @@
                 <TextBlock x:Name="TimeTipLastSession" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center"  FontSize="12" />
                 <TextBlock x:Name="TimeTipLastXSession" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center"  FontSize="12" />
 
-                <Border Grid.ColumnSpan="10" Grid.RowSpan="10" BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Center" Height="128" VerticalAlignment="Center"/>
+                <Border Grid.ColumnSpan="10" Grid.RowSpan="10" BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center"/>
 
             </Grid>
         </materialDesign:Card>
