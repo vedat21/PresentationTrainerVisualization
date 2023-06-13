@@ -56,8 +56,8 @@ namespace PresentationTrainerVisualization.windows
             listBox = IsActionVideo ? (ListBox)FindName("ListBoxActions") : (ListBox)FindName("ListBoxSentences");
 
             processedSessionsData = new ProcessedSessionsData();
-            actions = processedSessionsData.GetActionsFromLastSession();
-            sentences = processedSessionsData.GetSentencesFromLastSession();
+            actions = processedSessionsData.GetSelectedSession().Actions;
+            sentences = processedSessionsData.GetSelectedSession().Sentences;
 
 
             // Initialize the timer

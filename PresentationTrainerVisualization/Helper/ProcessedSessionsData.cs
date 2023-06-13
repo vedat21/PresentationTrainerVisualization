@@ -75,6 +75,31 @@ namespace PresentationTrainerVisualization.helper
             return instance;
         }
 
+        public int GetNumberOfTotalSessions()
+        {
+            return sessionsRoot.Sessions.Count;
+        }
+
+        public Session GetSelectedSession()
+        {
+            return selectedSession;
+        }
+
+        public int GetNumberOfSessions()
+        {
+            int numberOfSessions = 0;
+
+            foreach (var session in sessionsRoot.Sessions)
+            {
+                DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
+
+                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
+                    numberOfSessions++;
+            }
+
+            return numberOfSessions;
+        }
+
         public List<Session> GetCopyOfAllSessions()
         {
             var sessions = sessionsRoot.Sessions;
@@ -100,21 +125,12 @@ namespace PresentationTrainerVisualization.helper
 
             return copySessions;
         }
-
-        public int GetNumberOfSessions()
+        public int NumberOfDaysBetweenFirstSessionAndToday()
         {
-            return sessionsRoot.Sessions.Count;
-        }
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+            DateOnly firstSession = DateOnly.FromDateTime(sessionsRoot.Sessions.First().Start);
 
-        // Wird zum testen von VideoPlayer gebraucht. Danach kann weg
-        public List<Sentence> GetSentencesFromLastSession()
-        {
-            return sessionsRoot.Sessions[1].Sentences;
-        }
-
-        public Session GetSelectedSession()
-        {
-            return selectedSession;
+            return today.DayNumber - firstSession.DayNumber;
         }
 
         public double GetPercentageOfIdentifiedFromSelectedSession()
@@ -133,22 +149,8 @@ namespace PresentationTrainerVisualization.helper
             return percentageIdentified;
         }
 
-        // Wird zum testen von VideoPlayer gebraucht. Danach kann weg
-        public List<Action> GetActionsFromLastSession()
-        {
-            var actions = sessionsRoot.Sessions.Last().Actions;
-            return actions.OrderBy(x => x.Start).ToList();
-        }
 
-        public int NumberOfDaysBetweenFirstSessionAndToday()
-        {
-            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-            DateOnly firstSession = DateOnly.FromDateTime(sessionsRoot.Sessions.First().Start);
-
-            return today.DayNumber - firstSession.DayNumber;
-        }
-
-        public List<AggregatedSession> GetBadActionsBySession(bool mistake = true)
+        public List<AggregatedSession> GetActionsBySession(bool mistake = true)
         {
             List<AggregatedSession> result = new List<AggregatedSession>();
 
@@ -188,89 +190,6 @@ namespace PresentationTrainerVisualization.helper
             return result;
         }
 
-
-        public double GetAverageNumberOfRecongnisedSentencesByTime()
-        {
-            double numberOfRecongnised = 0;
-            double numberOfNotRecongnised = 0;
-
-            foreach (var session in sessionsRoot.Sessions)
-            {
-                DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
-
-                // get only the data that is in timespan of user selection
-                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
-                    foreach (var sentence in session.Sentences)
-                        if (sentence.WasIdentified)
-                            numberOfRecongnised++;
-                        else
-                            numberOfNotRecongnised++;
-            }
-
-            double result = (numberOfRecongnised / (numberOfRecongnised + numberOfNotRecongnised)) * 100;
-
-            return Math.Round(result, 2);
-        }
-
-        public double GetAverageNumberOfBadActionsByTime()
-        {
-            double numberOfBadActions = 0;
-            double numberOfGoodActions = 0;
-
-            foreach (var session in sessionsRoot.Sessions)
-            {
-                DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
-
-                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
-                    foreach (var action in session.Actions)
-                        if (action.Mistake)
-                            numberOfBadActions++;
-                        else
-                            numberOfGoodActions++;
-            }
-
-            double result = (numberOfBadActions / (numberOfBadActions + numberOfGoodActions)) * 100;
-
-            return Math.Round(result, 1);
-        }
-
-        public double GetAverageNumberOfGoodActionsByTime()
-        {
-            double numberOfBadActions = 0;
-            double numberOfGoodActions = 0;
-
-            foreach (var session in sessionsRoot.Sessions)
-            {
-                DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
-
-                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
-                    foreach (var action in session.Actions)
-                        if (action.Mistake)
-                            numberOfBadActions++;
-                        else
-                            numberOfGoodActions++;
-            }
-
-            double result = (numberOfGoodActions / (numberOfBadActions + numberOfGoodActions)) * 100;
-
-            return Math.Round(result, 1);
-        }
-
-        public int GetNumberOfSessionsByTime()
-        {
-            int numberOfSessions = 0;
-
-            foreach (var session in sessionsRoot.Sessions)
-            {
-                DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
-
-                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
-                    numberOfSessions++;
-            }
-
-            return numberOfSessions;
-        }
-
         /// <summary>
         /// Determines the percentage of identified sentences by each session. Every AggregatedSession represents a session.
         /// </summary>
@@ -305,33 +224,87 @@ namespace PresentationTrainerVisualization.helper
             return result;
         }
 
-        /// <summary>
-        /// Determines the number of identified and not identified sentences by each session. Every AggregatedSession represents a session.
-        /// </summary>
-        /// <returns></returns>
-        public List<AggregatedSession> GetIdentifiedAndNotIdentifiedSentenceBySession()
+        public List<AggregatedSession> GetDurationBySession()
         {
             List<AggregatedSession> result = new List<AggregatedSession>();
 
             foreach (var session in sessionsRoot.Sessions)
             {
                 List<AggregatedObject> aggregatedObjects = new List<AggregatedObject>();
-                int numberOfIdentified = 0;
-                int numberOfNotIdentified = 0;
-
-                foreach (var sentence in session.Sentences)
-                    if (sentence.WasIdentified)
-                        numberOfIdentified++;
-                    else
-                        numberOfNotIdentified++;
-
-
-                aggregatedObjects.Add(new AggregatedObject("identified", numberOfIdentified));
-                aggregatedObjects.Add(new AggregatedObject("notIdentified", numberOfNotIdentified));
+                aggregatedObjects.Add(new AggregatedObject("duration", session.Duration.TotalSeconds));
                 result.Add(new AggregatedSession(aggregatedObjects, session.Start));
             }
 
             return result;
+        }
+
+
+
+        public double GetAverageNumberOfIdentifiedentences()
+        {
+            double numberOfRecongnised = 0;
+            double numberOfNotRecongnised = 0;
+
+            foreach (var session in sessionsRoot.Sessions)
+            {
+                DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
+
+                // get only the data that is in timespan of user selection
+                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
+                    foreach (var sentence in session.Sentences)
+                        if (sentence.WasIdentified)
+                            numberOfRecongnised++;
+                        else
+                            numberOfNotRecongnised++;
+            }
+
+            double result = (numberOfRecongnised / (numberOfRecongnised + numberOfNotRecongnised)) * 100;
+
+            return Math.Round(result, 2);
+        }
+
+        public double GetAverageNumberOfBadActions()
+        {
+            double numberOfBadActions = 0;
+            double numberOfGoodActions = 0;
+
+            foreach (var session in sessionsRoot.Sessions)
+            {
+                DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
+
+                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
+                    foreach (var action in session.Actions)
+                        if (action.Mistake)
+                            numberOfBadActions++;
+                        else
+                            numberOfGoodActions++;
+            }
+
+            double result = (numberOfBadActions / (numberOfBadActions + numberOfGoodActions)) * 100;
+
+            return Math.Round(result, 1);
+        }
+
+        public double GetAverageNumberOfGoodActions()
+        {
+            double numberOfBadActions = 0;
+            double numberOfGoodActions = 0;
+
+            foreach (var session in sessionsRoot.Sessions)
+            {
+                DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
+
+                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
+                    foreach (var action in session.Actions)
+                        if (action.Mistake)
+                            numberOfBadActions++;
+                        else
+                            numberOfGoodActions++;
+            }
+
+            double result = (numberOfGoodActions / (numberOfBadActions + numberOfGoodActions)) * 100;
+
+            return Math.Round(result, 1);
         }
 
         public TimeSpan GetTotalTimeSpent()
@@ -347,7 +320,6 @@ namespace PresentationTrainerVisualization.helper
                     TimeSpan timeDifference = session.End - session.Start;
                     totalTime += timeDifference;
                 }
-
             }
 
             return totalTime;
@@ -457,9 +429,11 @@ namespace PresentationTrainerVisualization.helper
             return result;
         }
 
+        // Folgende nicht genutzt
 
         public Dictionary<DateOnly, int> GetDurationByDate()
         {
+
             // Count number of sessions by dateonly
             Dictionary<DateOnly, int> averageTimeSpent = new Dictionary<DateOnly, int>();
             foreach (var session in sessionsRoot.Sessions)
@@ -549,6 +523,35 @@ namespace PresentationTrainerVisualization.helper
 
             }
             return resultData;
+        }
+
+        /// <summary>
+        /// Determines the number of identified and not identified sentences by each session. Every AggregatedSession represents a session.
+        /// </summary>
+        /// <returns></returns>
+        public List<AggregatedSession> GetIdentifiedAndNotIdentifiedSentenceBySession()
+        {
+            List<AggregatedSession> result = new List<AggregatedSession>();
+
+            foreach (var session in sessionsRoot.Sessions)
+            {
+                List<AggregatedObject> aggregatedObjects = new List<AggregatedObject>();
+                int numberOfIdentified = 0;
+                int numberOfNotIdentified = 0;
+
+                foreach (var sentence in session.Sentences)
+                    if (sentence.WasIdentified)
+                        numberOfIdentified++;
+                    else
+                        numberOfNotIdentified++;
+
+
+                aggregatedObjects.Add(new AggregatedObject("identified", numberOfIdentified));
+                aggregatedObjects.Add(new AggregatedObject("notIdentified", numberOfNotIdentified));
+                result.Add(new AggregatedSession(aggregatedObjects, session.Start));
+            }
+
+            return result;
         }
     }
 }

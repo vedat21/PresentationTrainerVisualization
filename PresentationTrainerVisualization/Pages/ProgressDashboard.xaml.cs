@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Vortice;
 using static PresentationTrainerVisualization.helper.Constants;
 using Color = System.Drawing.Color;
 
@@ -43,11 +44,12 @@ namespace PresentationTrainerVisualization.Pages
             PlotPercentageOfIfdentifiedSentencesInTimeLine();
             PlotNumberOfSessionsInTimeLine();
             PlotActionsInTimeLine();
+            PlotDurationOfSessionInTimeLine();
         }
 
         private void PlotAverageOfIdentifiedSentences()
         {
-            double percentageOfRecongnisedSentences = processedSessionsData.GetAverageNumberOfRecongnisedSentencesByTime();
+            double percentageOfRecongnisedSentences = processedSessionsData.GetAverageNumberOfIdentifiedentences();
 
             if (Double.IsNaN(percentageOfRecongnisedSentences))
                 return;
@@ -152,6 +154,33 @@ namespace PresentationTrainerVisualization.Pages
             plot.Plot.Title("Number of Sessions");
             plot.Plot.SetAxisLimits(yMin: 0);
             plot.Plot.YAxis.ManualTickSpacing(1);
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
+            plot.Refresh();
+        }
+
+        private void PlotDurationOfSessionInTimeLine()
+        {
+            List<AggregatedSession> result = processedSessionsData.GetDurationBySession();
+
+            double[] data = new double[result.Count];
+            for (int i = 0; i < result.Count; i++)
+                data[i] = (result[i].AggregatedObjects[0].Count);
+
+            // Add datalabels and positions of label in chart
+            List<string> DataLabels = new List<string>();
+            for (int i = 0; i < result.Count; i++)
+                DataLabels.Add(result[i].SessionDate.ToString("MM/dd/yyyy\nhh:mm tt"));
+
+            double[] positions = Array.ConvertAll(Enumerable.Range(0, result.Count).ToArray(), x => (double)x);
+
+            // Create plot
+            WpfPlot plot = (WpfPlot)FindName("DurationInTimeLine");
+            var bar = plot.Plot.AddBar(data);
+
+            plot.Plot.XTicks(positions, DataLabels.ToArray());
+            plot.Plot.Legend(location: Alignment.UpperRight);
+            plot.Plot.SetAxisLimits(yMin: 0);
+            plot.Plot.Title("Duration of Session");
             plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
         }

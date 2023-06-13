@@ -42,7 +42,7 @@ namespace PresentationTrainerVisualization.DashboardComponents
             Goal goal = processedGoalsData.GetGoalWithLabel(GoalsLabel.MaxNumberOfBadActions.ToString());
             int max = int.Parse(goal.Description[GoalsDescription.max_number_of_bad_actions.ToString()]);
 
-            List<AggregatedSession> result = processedSessionsData.GetBadActionsBySession();
+            List<AggregatedSession> result = processedSessionsData.GetActionsBySession();
             List<double> result1 = new List<double>();
             List<double> result2 = new List<double>();
 

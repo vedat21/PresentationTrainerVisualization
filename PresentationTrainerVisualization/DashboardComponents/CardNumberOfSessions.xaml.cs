@@ -21,7 +21,7 @@ namespace PresentationTrainerVisualization.DashboardComponents
         private void PlotCard()
         {
             TextBlock text = (TextBlock)FindName("NumberOfSessions");
-            text.Text = processedSessionsData.GetNumberOfSessionsByTime().ToString();
+            text.Text = processedSessionsData.GetNumberOfSessions().ToString();
         }
     }
 }

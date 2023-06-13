@@ -55,6 +55,7 @@
         <WpfPlot x:Name="NumberOfSessionsInTimeline" Margin="10" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2" />
         <WpfPlot x:Name="PercentageOfRecongnisedSentences" Margin="10" Grid.Row="2"  Grid.Column="2"  Grid.ColumnSpan="2"  />
         <WpfPlot x:Name="ActionsInTimeLine" Margin="10" Grid.Row="3"  Grid.Column="0"  Grid.ColumnSpan="2"  />
+        <WpfPlot x:Name="DurationInTimeLine" Margin="10" Grid.Row="3"  Grid.Column="2"  Grid.ColumnSpan="2"  />
 
     </Grid>
 </Page>

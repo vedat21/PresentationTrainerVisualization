@@ -30,7 +30,7 @@ namespace PresentationTrainerVisualization.DashboardComponents
             Goal goal = processedGoalsData.GetGoalWithLabel(GoalsLabel.MaxNumberOfBadActions.ToString());
             int max = int.Parse(goal.Description[GoalsDescription.max_number_of_bad_actions.ToString()]);
 
-            List<AggregatedSession> result = processedSessionsData.GetBadActionsBySession(false);
+            List<AggregatedSession> result = processedSessionsData.GetActionsBySession(false);
             List<double> stack1 = new List<double>();
             List<double> stack2 = new List<double>();
 

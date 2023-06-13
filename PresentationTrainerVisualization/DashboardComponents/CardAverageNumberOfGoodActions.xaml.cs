@@ -21,7 +21,7 @@ namespace PresentationTrainerVisualization.DashboardComponents
         private void PlotCard()
         {
             TextBlock text = (TextBlock)FindName("NumberOfGoodActions");
-            text.Text = processedSessionsData.GetAverageNumberOfGoodActionsByTime().ToString();
+            text.Text = processedSessionsData.GetAverageNumberOfGoodActions().ToString();
         }
     }
 }

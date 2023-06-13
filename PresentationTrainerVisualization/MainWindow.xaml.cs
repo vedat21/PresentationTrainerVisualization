@@ -84,7 +84,7 @@ namespace PresentationTrainerVisualization
 
                 if (configurationLastDays.IsLastSessions)
                 {
-                    slider.Maximum = processedSessions.GetNumberOfSessions();
+                    slider.Maximum = processedSessions.GetNumberOfTotalSessions();
                 }
                 else
                 {
@@ -158,7 +158,7 @@ namespace PresentationTrainerVisualization
 
             if(toggleButton.IsChecked == true)
             {
-                slider.Maximum = processedSessions.GetNumberOfSessions();
+                slider.Maximum = processedSessions.GetNumberOfTotalSessions();
             }
             else
             {
