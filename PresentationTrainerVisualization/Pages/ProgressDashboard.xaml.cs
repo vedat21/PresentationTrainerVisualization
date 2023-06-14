@@ -145,9 +145,6 @@ namespace PresentationTrainerVisualization.Pages
                 return;
             }
 
-            //      double[] ys2 = timeSpentByDate.Values.Select(x => (double)x).ToArray();
-            //      Array.Sort(xs, ys2);
-
             plot.Plot.AddFill(xs, ys, color: Color.LightSkyBlue);
             plot.Plot.AddScatter(xs, ys, color: Color.DodgerBlue, label: "Number of Sessions");
             plot.Plot.XAxis.DateTimeFormat(true);
@@ -180,7 +177,7 @@ namespace PresentationTrainerVisualization.Pages
             plot.Plot.XTicks(positions, DataLabels.ToArray());
             plot.Plot.Legend(location: Alignment.UpperRight);
             plot.Plot.SetAxisLimits(yMin: 0);
-            plot.Plot.Title("Duration of Session");
+            plot.Plot.Title("Duration by Session");
             plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
         }

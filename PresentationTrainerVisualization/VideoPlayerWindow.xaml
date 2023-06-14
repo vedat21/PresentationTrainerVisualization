@@ -53,8 +53,8 @@
 
                 <Border x:Name="subtitleContainer"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="#80000000" Padding="10">
                     <StackPanel>
-                        <TextBlock x:Name="VideoSubTitle" FontSize="18" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Center"> Was Geht</TextBlock>
-                        <TextBlock x:Name="VideoSubTime" FontSize="18" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Center"> 01:01 - 01:02</TextBlock>
+                        <TextBlock x:Name="VideoSubTitle" FontSize="18" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="VideoSubTime" FontSize="18" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Border>
 

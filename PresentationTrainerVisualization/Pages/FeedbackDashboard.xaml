@@ -12,17 +12,21 @@
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*" />
+            <RowDefinition Height="2.5*" />
             <RowDefinition Height="2*" />
-            <RowDefinition Height="3*" />
-            <RowDefinition Height="3*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
+        <!-- First Row-->
         <materialDesign:Card Style="{StaticResource CardNormalComponent}" Grid.Column="0" Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>
@@ -33,7 +37,6 @@
                 <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Gray" Width="Auto" Height="Auto" TextWrapping="Wrap" FontSize="16"> Recongnised Sentences</TextBlock>
             </Grid>
         </materialDesign:Card>
-
         <materialDesign:Card x:Name="DurationOfSession" Style="{StaticResource CardNormalComponent}" MaxWidth="450" Grid.Column="1" Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>
@@ -61,10 +64,46 @@
 
             </Grid>
         </materialDesign:Card>
+        <materialDesign:Card Style="{StaticResource CardNormalComponent}" Grid.Column="2" Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="0.9*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-        <WpfPlot x:Name="RadarBadActions" Style="{StaticResource PlotStyle}"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <WpfPlot x:Name="RadarGoodActions" Style="{StaticResource PlotStyle}"  Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                <TextBlock Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="20" Text="Mistake Actions" />
+                <TextBlock x:Name="NumberOfBadActions" Grid.Row="0" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Text="20"/>
+                <materialDesign:PackIcon  Kind="TaskAuto" Height="40" Width="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1"></materialDesign:PackIcon>
+            </Grid>
+        </materialDesign:Card>
+        <materialDesign:Card Style="{StaticResource CardNormalComponent}" Grid.Row="1" Grid.Column="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="0.9*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="20" Text="Actions" />
+                <TextBlock x:Name="NumberOfGoodActions" Grid.Row="0" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" />
+                <materialDesign:PackIcon  Kind="TaskAuto" Height="40" Width="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1"></materialDesign:PackIcon>
+            </Grid>
+        </materialDesign:Card>
+
+        <!-- Chart Plots-->
+        <WpfPlot x:Name="RadarBadActions" Style="{StaticResource PlotStyle}"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <WpfPlot x:Name="RadarGoodActions" Style="{StaticResource PlotStyle}"  Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Visibility="Collapsed"/> 
+        
+        <WpfPlot x:Name="RadarActions" Style="{StaticResource PlotStyle}"  Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="3" /> 
+        
+        <Grid x:Name="CandleActionsGrid" Grid.Row="2" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
@@ -77,7 +116,7 @@
                 <materialDesign:PackIcon Foreground="Black"  MaxHeight="30" MaxWidth="30" Height="Auto" Width="Auto" Kind="VideoOutline"></materialDesign:PackIcon>
             </Button>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
+        <Grid x:Name="CandleSentencesGrid" Grid.Row="4" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>

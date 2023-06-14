@@ -56,14 +56,40 @@ namespace PresentationTrainerVisualization.Pages
                 }
             }
 
+            PlotNumberOfMistakeActions();
+            PlotNumberOfGoodActions(); ;
             PlotGoalDurationOfSession();
             PlotPercentageOfIdentifiedSentencesInSelectedSession();
-            PlotRadarWithBadLabelsFromVideo();
-            PlotRadarWithGoodLabelsFromVideo();
+            //  PlotRadarWithBadLabelsFromVideo();
+            //  PlotRadarWithGoodLabelsFromVideo();
+            PlotRadarWithActionsFromVideo();
             PlotCandleSentences();
             PlotCandleActions();
         }
 
+        /// <summary>
+        /// Plot Number of Actions that were labeled as mistake.
+        /// </summary>
+        private void PlotNumberOfMistakeActions()
+        {
+            NumberOfBadActions.Text = (from action in selectedSession.Actions
+                                      where action.Mistake == true
+                                      select action).Count().ToString();
+        }
+
+        /// <summary>
+        /// Plot Number of Actions that were not labeled as mistake.
+        /// </summary>
+        private void PlotNumberOfGoodActions()
+        {
+            NumberOfGoodActions.Text = (from action in selectedSession.Actions
+                                       where action.Mistake == false
+                                       select action).Count().ToString();
+        }
+
+        /// <summary>
+        /// Plots the goal card that shows the of duration of session for selcted session and for average of selected sessions.
+        /// </summary>
         private void PlotGoalDurationOfSession()
         {
             TextBlock timeSelectedSession = (TextBlock)FindName("TimeLastSession");
@@ -160,29 +186,34 @@ namespace PresentationTrainerVisualization.Pages
 
         }
 
+        /// <summary>
+        /// Plots actions in Candle chart with color depending on mistake or not.
+        /// </summary>
         private void PlotCandleActions()
         {
-            var actions = processedSessionsData.GetSelectedSession().Actions;
+            var actions = processedSessionsData.GetSelectedSessionActions();
             var durationOfSelectedSession = processedSessionsData.GetSelectedSession().Duration;
             WpfPlot plot = (WpfPlot)FindName("CandleActions");
 
+            // Display time in equal fractions
             string[] xLabels = new string[5];
             TimeSpan fractionDuration = TimeSpan.FromTicks(durationOfSelectedSession.Ticks / 4);
-            // Display time in equal fractions
             for (int i = 0; i <= 4; i++)
             {
                 TimeSpan fraction = TimeSpan.FromTicks(fractionDuration.Ticks * i);
                 xLabels[i] = fraction.ToString("mm\\:ss");
             }
 
+            List<string> labels = new List<string>();
+
             int index = 0;
-            foreach (var value in actions)
+            foreach (var action in actions)
             {
 
-                if (value.Mistake)
+                if (action.Mistake)
                 {
                     var lolipop = plot.Plot.AddLollipop(
-                                       values: new double[] { 10 },
+                                       values: new double[] { (action.End - action.Start).TotalSeconds },
                                        positions: new double[] { index },
                                        color: Color.Red);
 
@@ -190,22 +221,29 @@ namespace PresentationTrainerVisualization.Pages
                 else
                 {
                     var lolipop = plot.Plot.AddLollipop(
-                                       values: new double[] { 10 },
+                                       values: new double[] { (action.End - action.Start).TotalSeconds },
                                        positions: new double[] { index },
                                        color: Color.Gray);
                 }
+                labels.Add(action.LogActionDisplay);
                 index++;
             }
-            // var lolipop = plot.Plot.AddLollipop(values);
-            double[] xPositions = { -0.5 ,(int)actions.Count * 1 / 4, (int)actions.Count * 1 / 2, (int)actions.Count * 3 / 4, actions.Count }; // postion of x labels
-            plot.Plot.XAxis.ManualTickPositions(xPositions, xLabels);
-            plot.Plot.YAxis.Ticks(false);
-            plot.Plot.Title("Distribution of detected Actions");
+
+            //   double[] xPositions = { -0.5, (int)actions.Count * 1 / 4, (int)actions.Count * 1 / 2, (int)actions.Count * 3 / 4, actions.Count }; // postion of x labels
+            double[] positions = Array.ConvertAll(Enumerable.Range(0, labels.Count).ToArray(), x => (double)x);
+            plot.Plot.XAxis.ManualTickPositions(positions, labels.ToArray());
+            plot.Plot.XAxis.TickLabelStyle(rotation: 60);
+            //   plot.Plot.YAxis.Ticks(false);
+            plot.Plot.YAxis.Label("duration in sec");
+            plot.Plot.Title("Distribution of Actions");
             plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Plot.Legend();
             plot.Refresh();
         }
 
+        /// <summary>
+        /// Plots sentences in Candle chart with color depending on identified or not.
+        /// </summary>
         private void PlotCandleSentences()
         {
             var sentences = processedSessionsData.GetSelectedSession().Sentences;
@@ -222,13 +260,13 @@ namespace PresentationTrainerVisualization.Pages
             }
 
             int index = 0;
-            foreach (var value in sentences)
+            foreach (var sentence in sentences)
             {
 
-                if (value.WasIdentified)
+                if (sentence.WasIdentified)
                 {
                     var lolipop = plot.Plot.AddLollipop(
-                                       values: new double[] { 10 },
+                                       values: new double[] { (sentence.End - sentence.Start).TotalSeconds },
                                        positions: new double[] { index },
                                        color: Color.Green);
 
@@ -236,32 +274,32 @@ namespace PresentationTrainerVisualization.Pages
                 else
                 {
                     var lolipop = plot.Plot.AddLollipop(
-                                       values: new double[] { 10 },
+                                       values: new double[] { (sentence.End - sentence.Start).TotalSeconds },
                                        positions: new double[] { index },
                                        color: Color.Red);
                 }
                 index++;
             }
             // var lolipop = plot.Plot.AddLollipop(values);
-            double[] xPositions = { -0.5, (int)sentences.Count * 1 / 4, (int)sentences.Count * 1 / 2, (int)sentences.Count * 3 / 4, sentences.Count-0.5 };
+            double[] xPositions = { -0.5, (int)sentences.Count * 1 / 4, (int)sentences.Count * 1 / 2, (int)sentences.Count * 3 / 4, sentences.Count - 0.5 };
             plot.Plot.XAxis.ManualTickPositions(xPositions, xLabels);
-            plot.Plot.YAxis.Ticks(false);
+            //    plot.Plot.YAxis.Ticks(false);
+            plot.Plot.YAxis.Label("duration in sec");
             plot.Plot.Title("Distribution of Sentences");
             plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Plot.Legend();
             plot.Refresh();
         }
 
-
         /// <summary> 
-        /// Plots radarchart that shows mistake actions that were detected by video.
+        /// Plots radarchart that shows actions that were detected by video.
         /// Shows data of selected sessions and average of selected sessions.
         /// </summary>
-        private void PlotRadarWithBadLabelsFromVideo()
+        private void PlotRadarWithActionsFromVideo()
         {
             Configuration configuration = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_LAST_X.ToString());
 
-            List<AggregatedSession> resultData = processedSessionsData.GetAggregatedActionsBySession(true);
+            List<AggregatedSession> resultData = processedSessionsData.GetAggregatedActionsBySession();
             AggregatedSession result1 = resultData.Find(x => x.SessionDate == selectedSession.Start);
             AggregatedSession result2;
             string[] groupLabels;
@@ -291,7 +329,106 @@ namespace PresentationTrainerVisualization.Pages
             if (result1.AggregatedObjects.Count == 0 || result2.AggregatedObjects.Count == 0)
                 return;
 
-            // entferne Einträge kleiner gleich 1
+            // remove elements where count is 0
+            for (int i = 0; i < result1.AggregatedObjects.Count; i++)
+            {
+                if (result1.AggregatedObjects[i].Count == 0 && result2.AggregatedObjects[i].Count == 0)
+                {
+                    result1.AggregatedObjects.RemoveAt(i);
+                    result2.AggregatedObjects.RemoveAt(i);
+                }
+            }
+
+
+            List<List<double>> allValues = new List<List<double>>();
+            List<double> values1 = new List<double>();
+            List<double> values2 = new List<double>();
+            List<string> categoryLabels = new List<string>();
+
+            for (int i = 0; i < result1.AggregatedObjects.Count; ++i)
+            {
+                values1.Add(result1.AggregatedObjects[i].Count);
+                values2.Add(result2.AggregatedObjects[i].Count);
+                categoryLabels.Add(Constants.ACTION_FROM_VIDEO[result1.AggregatedObjects[i].Label]);
+            }
+
+            allValues.Add(values1);
+            allValues.Add(values2);
+            double[][] resultArr = allValues.Select(a => a.ToArray()).ToArray();
+            string[] categoryLabelsArr = categoryLabels.ToArray();
+
+            Array.Sort(categoryLabelsArr, resultArr[0]);
+            Array.Sort(resultArr[1], resultArr[0]);
+            Array.Sort(resultArr[0]);
+            Array.Reverse(resultArr[0]);
+            Array.Reverse(resultArr[1]);
+            Array.Reverse(categoryLabelsArr);
+
+            // Chart Configuration
+            WpfPlot plot = (WpfPlot)FindName("RadarActions");
+            var radar = plot.Plot.AddRadar(UtilityHelper.ConvertJaggedTo2D(resultArr));
+            radar.ShowAxisValues = false;
+            radar.CategoryLabels = categoryLabelsArr;
+            radar.GroupLabels = groupLabels;
+            radar.LineColors = new Color[2]
+            {
+                Color.FromArgb(255,171, 50, 50) ,Color.Gray
+            };
+            radar.FillColors = new Color[2] {
+               Color.FromArgb(50, 171, 50, 50), Color.FromArgb(50, Color.Gray),
+            };
+            radar.HatchOptions = new HatchOptions[]
+            {
+                new() { Pattern = HatchStyle.StripedUpwardDiagonal, Color = Color.FromArgb(100, Color.Gray) },
+                new() { Pattern = HatchStyle.StripedDownwardDiagonal, Color = Color.FromArgb(100, Color.Gray) },
+            };
+
+            plot.Plot.Title("Detected Actions");
+            plot.Plot.Legend();
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
+            plot.Refresh();
+        }
+
+
+        /// <summary> 
+        /// Plots radarchart that shows mistake actions that were detected by video.
+        /// Shows data of selected sessions and average of selected sessions.
+        /// </summary>
+        private void PlotRadarWithBadLabelsFromVideo()
+        {
+            Configuration configuration = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_LAST_X.ToString());
+
+            List<AggregatedSession> resultData = processedSessionsData.GetAggregatedActionsBySession(false, true);
+            AggregatedSession result1 = resultData.Find(x => x.SessionDate == selectedSession.Start);
+            AggregatedSession result2;
+            string[] groupLabels;
+
+            // Decides what is shown
+            if (configuration == null)
+            {
+                result2 = ProcessedSessionsDataHelper.GetAverageOfLastSessions(resultData, DEFAULT_NUMBER_OF_SESSIONS);
+                groupLabels = new[] { "Selected Session", "Average last " + DEFAULT_NUMBER_OF_SESSIONS + " Session" };
+            }
+            else
+            {
+                int lastDaysOrSessions = configuration.LastDaysOrSessions;
+                if (configuration.IsLastSessions)
+                {
+                    result2 = ProcessedSessionsDataHelper.GetAverageOfLastSessions(resultData, lastDaysOrSessions);
+                    groupLabels = new[] { "Selected Session", "Average last " + lastDaysOrSessions + " Session" };
+                }
+                else
+                {
+                    result2 = ProcessedSessionsDataHelper.GetAverageOfLastDays(resultData, lastDaysOrSessions);
+                    groupLabels = new[] { "Selected Session", "Average last " + lastDaysOrSessions + " Days" };
+                }
+            }
+
+            // Display Chart only when data is not empty
+            if (result1.AggregatedObjects.Count == 0 || result2.AggregatedObjects.Count == 0)
+                return;
+
+            // remove elements where count is 0
             for (int i = 0; i < result1.AggregatedObjects.Count; i++)
             {
                 if (result1.AggregatedObjects[i].Count == 0 && result2.AggregatedObjects[i].Count == 0)
@@ -359,7 +496,7 @@ namespace PresentationTrainerVisualization.Pages
         {
             Configuration configuration = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_LAST_X.ToString());
 
-            List<AggregatedSession> resultData = processedSessionsData.GetAggregatedActionsBySession(false);
+            List<AggregatedSession> resultData = processedSessionsData.GetAggregatedActionsBySession(false, false);
             AggregatedSession result1 = resultData.Find(x => x.SessionDate == selectedSession.Start);
             AggregatedSession result2;
             string[] groupLabels;
@@ -389,7 +526,7 @@ namespace PresentationTrainerVisualization.Pages
             if (result1.AggregatedObjects.Count == 0 || result2.AggregatedObjects.Count == 0)
                 return;
 
-            // remove elements with zero count
+            // remove elements where count is 0
             for (int i = 0; i < result1.AggregatedObjects.Count; i++)
             {
                 if (result1.AggregatedObjects[i].Count == 0 && result2.AggregatedObjects[i].Count == 0)
@@ -483,6 +620,22 @@ namespace PresentationTrainerVisualization.Pages
             plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
         }
+
+        private void ActionVideoButtonClicked(object sender, RoutedEventArgs e)
+        {
+            VideoPlayerWindow window = new VideoPlayerWindow(true);
+            window.Show();
+        }
+
+        private void SentenceVideoButtonClicked(object sender, RoutedEventArgs e)
+        {
+            VideoPlayerWindow window = new VideoPlayerWindow(false);
+            window.Show();
+        }
+
+
+
+        // Not used currently.
 
         private void PlotStackedBarChart()
         {
@@ -687,18 +840,6 @@ namespace PresentationTrainerVisualization.Pages
             plot.Plot.Legend();
 
             plot.Refresh();
-        }
-
-        private void ActionVideoButtonClicked(object sender, RoutedEventArgs e)
-        {
-            VideoPlayerWindow window = new VideoPlayerWindow(true);
-            window.Show();
-        }
-
-        private void SentenceVideoButtonClicked(object sender, RoutedEventArgs e)
-        {
-            VideoPlayerWindow window = new VideoPlayerWindow(false);
-            window.Show();
         }
     }
 }

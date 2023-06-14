@@ -19,12 +19,9 @@
                     <ColumnDefinition Width="0.3*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-
-
-                <TextBlock Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="20" Text="Average Detected Mistakes" />
+                <TextBlock Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="20" Text="Average Action Mistakes" />
                 <TextBlock x:Name="NumberOfBadActions" Grid.Row="0" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" />
                 <materialDesign:PackIcon  Kind="TaskAuto" Height="40" Width="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1"></materialDesign:PackIcon>
-
             </Grid>
         </materialDesign:Card>
             

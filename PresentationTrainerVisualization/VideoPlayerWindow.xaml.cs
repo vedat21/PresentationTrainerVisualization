@@ -48,7 +48,7 @@ namespace PresentationTrainerVisualization
             InitializeComponent();
             DataContext = this;
             processedSessionsData = new ProcessedSessionsData();
-            actions = processedSessionsData.GetSelectedSession().Actions;
+            actions = processedSessionsData.GetSelectedSessionActions();
             sentences = processedSessionsData.GetSelectedSession().Sentences;
             videoTimer = new DispatcherTimer();
             loopTimer = new DispatcherTimer();

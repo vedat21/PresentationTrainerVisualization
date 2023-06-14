@@ -56,7 +56,7 @@ namespace PresentationTrainerVisualization.helper
                 };
             }
 
-            // Get selectedSession from combobox
+            // Get selected session from combobox
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.GetType() == typeof(MainWindow))
@@ -67,6 +67,7 @@ namespace PresentationTrainerVisualization.helper
 
         }
 
+
         public static ProcessedSessionsData GetInstance()
         {
             if (instance == null)
@@ -75,31 +76,10 @@ namespace PresentationTrainerVisualization.helper
             return instance;
         }
 
-        public int GetNumberOfTotalSessions()
-        {
-            return sessionsRoot.Sessions.Count;
-        }
-
-        public Session GetSelectedSession()
-        {
-            return selectedSession;
-        }
-
-        public int GetNumberOfSessions()
-        {
-            int numberOfSessions = 0;
-
-            foreach (var session in sessionsRoot.Sessions)
-            {
-                DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
-
-                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
-                    numberOfSessions++;
-            }
-
-            return numberOfSessions;
-        }
-
+        /// <summary>
+        /// To not change the original object. 
+        /// </summary>
+        /// <returns></returns>
         public List<Session> GetCopyOfAllSessions()
         {
             var sessions = sessionsRoot.Sessions;
@@ -125,6 +105,62 @@ namespace PresentationTrainerVisualization.helper
 
             return copySessions;
         }
+
+        /// <summary>
+        /// Returns the total number of sessions.
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumberOfTotalSessions()
+        {
+            return sessionsRoot.Sessions.Count;
+        }
+
+        /// <summary>
+        /// Get selected session. User can select sessions in combobox
+        /// </summary>
+        /// <returns></returns>
+        public Session GetSelectedSession()
+        {
+            return selectedSession;
+        }
+
+        /// <summary>
+        /// Get actions from selected session. Only includes actions which were selected in GoalSetting page.
+        /// </summary>
+        /// <returns></returns>
+        public List<Action> GetSelectedSessionActions()
+        {
+            Goal goalBadActions = processedGoalsData.GetGoalWithLabel(GoalsLabel.BadActions.ToString());
+            Goal goalGoodActions = processedGoalsData.GetGoalWithLabel(GoalsLabel.GoodActions.ToString());
+            var goalDescBadActions = goalBadActions.Description[GoalsDescription.list_of_bad_actions.ToString()];
+            var goalDescGoodActions = goalGoodActions.Description[GoalsDescription.list_of_good_actions.ToString()];
+
+            List<string> selectedActions = new List<string>();
+            foreach (var description in goalDescBadActions)
+                selectedActions.Add(description.ToString());
+            foreach (var description in goalDescGoodActions)
+                selectedActions.Add(description.ToString());
+
+            List<Action> actions = (from action in selectedSession.Actions
+                                    where selectedActions.Contains(action.LogAction)
+                                    select action).ToList();
+
+            return actions;
+        }
+
+        /// <summary>
+        /// Get the number of sessions for selected datespan.
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumberOfSessions()
+        {
+            int numberOfSessions = (from session in sessionsRoot.Sessions
+                                    where configurationTimeSpan.StartDate <= DateOnly.FromDateTime(session.Start) && DateOnly.FromDateTime(session.Start) <= configurationTimeSpan.EndDate
+                                    select session).Count();
+
+            return numberOfSessions;
+        }
+
         public int NumberOfDaysBetweenFirstSessionAndToday()
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
@@ -133,6 +169,10 @@ namespace PresentationTrainerVisualization.helper
             return today.DayNumber - firstSession.DayNumber;
         }
 
+        /// <summary>
+        /// Returns the percentage of identified sentences from selected session.
+        /// </summary>
+        /// <returns></returns>
         public double GetPercentageOfIdentifiedFromSelectedSession()
         {
             int numberOfIdentified = 0;
@@ -149,27 +189,11 @@ namespace PresentationTrainerVisualization.helper
             return percentageIdentified;
         }
 
-
-        public List<AggregatedSession> GetActionsBySession(bool mistake = true)
-        {
-            List<AggregatedSession> result = new List<AggregatedSession>();
-
-            foreach (var session in sessionsRoot.Sessions)
-            {
-                List<AggregatedObject> aggregatedObjects = new List<AggregatedObject>();
-                int numberOfTargetActions = 0;
-
-                foreach (var action in session.Actions)
-                    if (mistake == action.Mistake)
-                        numberOfTargetActions++;
-
-                aggregatedObjects.Add(new AggregatedObject("count", numberOfTargetActions));
-                result.Add(new AggregatedSession(aggregatedObjects, session.Start));
-            }
-
-            return result;
-        }
-
+        /// <summary>
+        /// Determines the number of actions by each session.Every AggregatedSession represents a session.
+        /// </summary>
+        /// <param name="mistake"></param>
+        /// <returns></returns>
         public List<AggregatedSession> GetNumberOfActionsBySession(bool mistake = true)
         {
             List<AggregatedSession> result = new List<AggregatedSession>();
@@ -224,6 +248,10 @@ namespace PresentationTrainerVisualization.helper
             return result;
         }
 
+        /// <summary>
+        /// Determines the duration of each session.
+        /// </summary>
+        /// <returns></returns>
         public List<AggregatedSession> GetDurationBySession()
         {
             List<AggregatedSession> result = new List<AggregatedSession>();
@@ -238,8 +266,10 @@ namespace PresentationTrainerVisualization.helper
             return result;
         }
 
-
-
+        /// <summary>
+        /// Returns the average number of idetified sentences in selected datespan.
+        /// </summary>
+        /// <returns></returns>
         public double GetAverageNumberOfIdentifiedentences()
         {
             double numberOfRecongnised = 0;
@@ -263,6 +293,10 @@ namespace PresentationTrainerVisualization.helper
             return Math.Round(result, 2);
         }
 
+        /// <summary>
+        /// Returns the average number of mistake actions in selected datespan.
+        /// </summary>
+        /// <returns></returns>
         public double GetAverageNumberOfBadActions()
         {
             double numberOfBadActions = 0;
@@ -285,6 +319,10 @@ namespace PresentationTrainerVisualization.helper
             return Math.Round(result, 1);
         }
 
+        /// <summary>
+        /// Returns the average number of actions that are no mistake in selected datespan.
+        /// </summary>
+        /// <returns></returns>
         public double GetAverageNumberOfGoodActions()
         {
             double numberOfBadActions = 0;
@@ -307,6 +345,10 @@ namespace PresentationTrainerVisualization.helper
             return Math.Round(result, 1);
         }
 
+        /// <summary>
+        /// Returns the total time of all sessions in selected datespan.
+        /// </summary>
+        /// <returns></returns>
         public TimeSpan GetTotalTimeSpent()
         {
             TimeSpan totalTime = new TimeSpan();
@@ -348,6 +390,10 @@ namespace PresentationTrainerVisualization.helper
             return numberOfSesions;
         }
 
+        /// <summary>
+        /// Returns the number of sessions by dateonly.
+        /// </summary>
+        /// <returns></returns>
         public SortedDictionary<DateOnly, int> GetNumberOfSessionsByDateOnly()
         {
             // Count number of sessions by dateonly
@@ -369,19 +415,28 @@ namespace PresentationTrainerVisualization.helper
         }
 
         /// <summary>
-        /// Determines the number of identified actions recognized with video by each session. Every list of AggregatedObjects represents a session.
+        /// Determines the number of actions recognized with video by each session. Every list of AggregatedObjects represents a session.
+        /// Parameter all determines if all actions should be included.
         /// Parameter mistake determines if actions that are a mistake or actions that are not a mistake should be included.
         /// </summary>
         /// <param name="mistake"></param>
         /// <returns></returns>
-        public List<AggregatedSession> GetAggregatedActionsBySession(bool mistake = true)
+        public List<AggregatedSession> GetAggregatedActionsBySession(bool all = true, bool mistake = true)
         {
-            Goal goal = mistake ? processedGoalsData.GetGoalWithLabel(GoalsLabel.BadActions.ToString()) : processedGoalsData.GetGoalWithLabel(GoalsLabel.GoodActions.ToString());
-            var goalDesc = mistake ? goal.Description[GoalsDescription.list_of_bad_actions.ToString()] : goal.Description[GoalsDescription.list_of_good_actions.ToString()];
+            Goal goalBadActions = processedGoalsData.GetGoalWithLabel(GoalsLabel.BadActions.ToString());
+            Goal goalGoodActions = processedGoalsData.GetGoalWithLabel(GoalsLabel.GoodActions.ToString());
+            var goalDescBadActions = goalBadActions.Description[GoalsDescription.list_of_bad_actions.ToString()];
+            var goalDescGoodActions = goalGoodActions.Description[GoalsDescription.list_of_good_actions.ToString()];
 
             List<string> selectedActions = new List<string>();
-            foreach (var description in goalDesc)
-                selectedActions.Add(description.ToString());
+            List<string> selectedGoodActions = new List<string>();
+            List<string> selectedBadActions = new List<string>();
+            foreach (var description in goalDescBadActions)
+                selectedBadActions.Add(description.ToString());
+            foreach (var description in goalDescGoodActions)
+                selectedGoodActions.Add(description.ToString());
+
+            selectedActions = selectedBadActions.Concat(selectedGoodActions).ToList();
 
             List<AggregatedSession> result = new List<AggregatedSession>();
             List<string> allPossibleLabels = new List<string>();
@@ -394,7 +449,9 @@ namespace PresentationTrainerVisualization.helper
                 foreach (var action in session.Actions)
                 {
                     string logAction = action.LogAction.ToUpper();
-                    if (mistake == action.Mistake && selectedActions.Contains(logAction))
+
+                    // include all actions
+                    if (all && selectedActions.Contains(logAction))
                     {
                         if (countOfLabels.ContainsKey(logAction))
                             countOfLabels[logAction] = countOfLabels[logAction] + 1;
@@ -404,6 +461,32 @@ namespace PresentationTrainerVisualization.helper
                         // every list of aggregated objects should have the same number of labels.
                         if (!allPossibleLabels.Contains(logAction))
                             allPossibleLabels.Add(logAction);
+                    }
+                    // include only mistake or no mistake
+                    else
+                    {
+                        if (mistake == true && selectedBadActions.Contains(logAction))
+                        {
+                            if (countOfLabels.ContainsKey(logAction))
+                                countOfLabels[logAction] = countOfLabels[logAction] + 1;
+                            else
+                                countOfLabels[logAction] = 1;
+
+                            // every list of aggregated objects should have the same number of labels.
+                            if (!allPossibleLabels.Contains(logAction))
+                                allPossibleLabels.Add(logAction);
+                        }
+                        else if (mistake == false && selectedBadActions.Contains(logAction))
+                        {
+                            if (countOfLabels.ContainsKey(logAction))
+                                countOfLabels[logAction] = countOfLabels[logAction] + 1;
+                            else
+                                countOfLabels[logAction] = 1;
+
+                            // every list of aggregated objects should have the same number of labels.
+                            if (!allPossibleLabels.Contains(logAction))
+                                allPossibleLabels.Add(logAction);
+                        }
                     }
                 }
 
@@ -429,7 +512,9 @@ namespace PresentationTrainerVisualization.helper
             return result;
         }
 
-        // Folgende nicht genutzt
+
+
+        // Not used currently.
 
         public Dictionary<DateOnly, int> GetDurationByDate()
         {
@@ -454,6 +539,26 @@ namespace PresentationTrainerVisualization.helper
             }
 
             return averageTimeSpent;
+        }
+
+        public List<AggregatedSession> GetActionsBySession(bool mistake = true)
+        {
+            List<AggregatedSession> result = new List<AggregatedSession>();
+
+            foreach (var session in sessionsRoot.Sessions)
+            {
+                List<AggregatedObject> aggregatedObjects = new List<AggregatedObject>();
+                int numberOfTargetActions = 0;
+
+                foreach (var action in session.Actions)
+                    if (mistake == action.Mistake)
+                        numberOfTargetActions++;
+
+                aggregatedObjects.Add(new AggregatedObject("count", numberOfTargetActions));
+                result.Add(new AggregatedSession(aggregatedObjects, session.Start));
+            }
+
+            return result;
         }
 
         public List<Dictionary<String, double>> GetNumberOfRightAndWrongSentencesBySession()
