@@ -102,7 +102,7 @@ namespace PresentationTrainerVisualization
         {
             List<Session> sessions = processedSessions.GetCopyOfAllSessions();
             Session avgSession = new Session();
-            avgSession.TextForComboBox = "Average";
+            avgSession.TextForComboBox = "Progress";
             avgSession.StartForComboBox = null;
             sessions.Insert(0, avgSession);
 

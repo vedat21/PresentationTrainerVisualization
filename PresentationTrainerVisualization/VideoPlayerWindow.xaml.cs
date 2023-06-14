@@ -4,7 +4,6 @@ using PresentationTrainerVisualization.helper;
 using PresentationTrainerVisualization.models.json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -21,7 +20,7 @@ namespace PresentationTrainerVisualization
         public Player VideoPlayer { get; set; }
         public Config Config { get; set; }
 
-        private ListBox listBox;
+        private ListBox usedListBox;
         private ProcessedSessionsData processedSessionsData;
         private List<Action> actions;
         private Action selectedAction; // only has property logAction and Log
@@ -56,12 +55,20 @@ namespace PresentationTrainerVisualization
             Init();
         }
 
+        private void ListBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (usedListBox.SelectedItem != null)
+            {
+                var item = (ListBoxItem)usedListBox.ItemContainerGenerator.ContainerFromItem(usedListBox.SelectedItem);
+                item.Background = Brushes.LightBlue;
+            }
+        }
         private void Init()
         {
             // decide which listbox is loaded based on if it shows action or sentence annotations 
-            listBox = isActionAnnotation ? (ListBox)FindName("ListBoxActions") : (ListBox)FindName("ListBoxSentences");
-            listBox.ItemsSource = isActionAnnotation ? actions : sentences;
-            listBox.Visibility = Visibility.Visible;
+            usedListBox = isActionAnnotation ? (ListBox)FindName("ListBoxActions") : (ListBox)FindName("ListBoxSentences");
+            usedListBox.ItemsSource = isActionAnnotation ? actions : sentences;
+            usedListBox.Visibility = Visibility.Visible;
 
             // Open Video but dont play
             VideoPlayer.Open(SampleVideo);
@@ -192,7 +199,7 @@ namespace PresentationTrainerVisualization
         private void LeftArrowButtonClicked(object sender, RoutedEventArgs e)
         {
             selectedAnnotationIndex = Math.Max(selectedAnnotationIndex - 1, 0);
-            listBox.SelectedIndex = selectedAnnotationIndex;
+            usedListBox.SelectedIndex = selectedAnnotationIndex;
 
             SeekToSelectedPosition();
         }
@@ -200,7 +207,7 @@ namespace PresentationTrainerVisualization
         private void RightArrowButtonClicked(object sender, RoutedEventArgs e)
         {
             selectedAnnotationIndex = Math.Min(selectedAnnotationIndex + 1, actions.Count - 1);
-            listBox.SelectedIndex = selectedAnnotationIndex;
+            usedListBox.SelectedIndex = selectedAnnotationIndex;
 
             SeekToSelectedPosition();
         }
@@ -223,9 +230,9 @@ namespace PresentationTrainerVisualization
         public async void HandleListBox(object sender, RoutedEventArgs e)
         {
             if (isActionAnnotation)
-                selectedAnnotationIndex = actions.IndexOf((Action)listBox.SelectedItem);
+                selectedAnnotationIndex = actions.IndexOf((Action)usedListBox.SelectedItem);
             else
-                selectedAnnotationIndex = sentences.IndexOf((Sentence)listBox.SelectedItem);
+                selectedAnnotationIndex = sentences.IndexOf((Sentence)usedListBox.SelectedItem);
 
             SeekToSelectedPosition();
         }

@@ -106,7 +106,8 @@ namespace PresentationTrainerVisualization.Pages
 
             // Chart Configuration
             plot.Plot.XAxis.DateTimeFormat(true);
-            plot.Plot.Title("Percentage of identified Sentences by Session");
+            plot.Plot.YAxis.Label("Percentage");
+            plot.Plot.Title("Identified Sentences by Session");
             plot.Plot.SetAxisLimits(yMin: 0);
             plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
@@ -161,7 +162,7 @@ namespace PresentationTrainerVisualization.Pages
 
             double[] data = new double[result.Count];
             for (int i = 0; i < result.Count; i++)
-                data[i] = (result[i].AggregatedObjects[0].Count);
+                data[i] = (result[i].AggregatedObjects[0].Count) / 60;
 
             // Add datalabels and positions of label in chart
             List<string> DataLabels = new List<string>();
@@ -175,6 +176,7 @@ namespace PresentationTrainerVisualization.Pages
             var bar = plot.Plot.AddBar(data);
 
             plot.Plot.XTicks(positions, DataLabels.ToArray());
+            plot.Plot.YAxis.Label("duration (min)");
             plot.Plot.Legend(location: Alignment.UpperRight);
             plot.Plot.SetAxisLimits(yMin: 0);
             plot.Plot.Title("Duration by Session");

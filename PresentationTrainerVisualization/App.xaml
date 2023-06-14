@@ -7,7 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="LightBlue" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
@@ -75,7 +75,7 @@
                 <Setter Property="TextBlock.Foreground" Value="WhiteSmoke" />
                 <Setter Property="TextBlock.FontWeight" Value="Bold" />
             </Style>
-            
+
             <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
 
 

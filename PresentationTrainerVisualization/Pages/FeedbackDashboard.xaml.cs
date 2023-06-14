@@ -234,7 +234,7 @@ namespace PresentationTrainerVisualization.Pages
             plot.Plot.XAxis.ManualTickPositions(positions, labels.ToArray());
             plot.Plot.XAxis.TickLabelStyle(rotation: 60);
             //   plot.Plot.YAxis.Ticks(false);
-            plot.Plot.YAxis.Label("duration in sec");
+            plot.Plot.YAxis.Label("duration (sec)");
             plot.Plot.Title("Distribution of Actions");
             plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Plot.Legend();
@@ -284,7 +284,7 @@ namespace PresentationTrainerVisualization.Pages
             double[] xPositions = { -0.5, (int)sentences.Count * 1 / 4, (int)sentences.Count * 1 / 2, (int)sentences.Count * 3 / 4, sentences.Count - 0.5 };
             plot.Plot.XAxis.ManualTickPositions(xPositions, xLabels);
             //    plot.Plot.YAxis.Ticks(false);
-            plot.Plot.YAxis.Label("duration in sec");
+            plot.Plot.YAxis.Label("duration (sec)");
             plot.Plot.Title("Distribution of Sentences");
             plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Plot.Legend();

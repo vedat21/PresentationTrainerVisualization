@@ -84,7 +84,7 @@
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Style="{StaticResource GoalHeaderStyle}" Grid.ColumnSpan="4" Text="Detected Mistakes"/>
-                    <ListBox x:Name="ListBoxBadActions" SelectionChanged="HandleListBoxBadActions" Loaded="ListBoxBadActions_Loaded" SelectionMode="Multiple" Width="400" Margin="10" Grid.Row="1" Grid.RowSpan="3">
+                    <ListBox x:Name="ListBoxBadActions" Style="{StaticResource MaterialDesignNavigationSecondaryListBox}"  SelectionChanged="HandleListBoxBadActions" Loaded="ListBoxBadActions_Loaded" SelectionMode="Multiple" Width="400" Margin="10" Grid.Row="1" Grid.RowSpan="3">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -92,17 +92,6 @@
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="Margin" Value="5"/>
-                                <Setter Property="FontSize" Value="14"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="LightBlue"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
                     </ListBox>
                 </Grid>
             </materialDesign:Card>
@@ -117,7 +106,7 @@
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Style="{StaticResource GoalHeaderStyle}" Grid.ColumnSpan="4" Text="Detected Good Actions"/>
-                    <ListBox x:Name="ListBoxGoodActions" SelectionChanged="HandleListBoxGoodActions" Loaded="ListBoxGoodActions_Loaded" SelectionMode="Multiple" Width="400" Margin="10" Grid.Row="1" Grid.RowSpan="3">
+                    <ListBox x:Name="ListBoxGoodActions"  Style="{StaticResource MaterialDesignNavigationSecondaryListBox}" SelectionChanged="HandleListBoxGoodActions" Loaded="ListBoxGoodActions_Loaded" SelectionMode="Multiple" Width="400" Margin="10" Grid.Row="1" Grid.RowSpan="3">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -125,17 +114,6 @@
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="Margin" Value="5"/>
-                                <Setter Property="FontSize" Value="14"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="LightBlue"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
                     </ListBox>
                 </Grid>
             </materialDesign:Card>

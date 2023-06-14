@@ -28,9 +28,9 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontWeight="Bold" Text="Session: " />
-                            <TextBlock  FontWeight="Bold" Text="{Binding TextForComboBox}" />
+                            <TextBlock FontWeight="Bold" Text="{Binding TextForComboBox}" />
                             <TextBlock Text=" " />
-                            <TextBlock  FontWeight="Bold" Text="{Binding StartForComboBox}" />
+                            <TextBlock FontWeight="Bold" Text="{Binding StartForComboBox, StringFormat=F}" />
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>

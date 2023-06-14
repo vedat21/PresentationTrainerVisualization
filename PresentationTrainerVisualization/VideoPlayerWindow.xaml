@@ -21,12 +21,7 @@
         <fl:FlyleafHost Player="{Binding VideoPlayer}" AttachedDragMove="Both" KeyBindings="Both" Width="Auto" Height="Auto" MaxWidth="1200">
             <Grid>
                 <Grid HorizontalAlignment="Right" VerticalAlignment="Top">
-                    <ListBox x:Name="ListBoxActions" SelectionChanged="HandleListBox" Width="200" Height="800" Background="LightGray" Visibility="Hidden">
-                        <ListBox.Resources>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="Background" Value="LightBlue" />
-                            </Style>
-                        </ListBox.Resources>
+                    <ListBox x:Name="ListBoxActions" Style="{StaticResource MaterialDesignNavigationSecondaryListBox}" SelectionChanged="HandleListBox" Width="200" Height="800" Background="LightGray" Visibility="Hidden">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -38,7 +33,23 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <ListBox x:Name="ListBoxSentences" SelectionChanged="HandleListBox" Width="200" Height="800" Background="LightGray"  Visibility="Hidden">
+                    <ListBox x:Name="ListBoxSentences" Style="{StaticResource MaterialDesignNavigationSecondaryListBox}" SelectionChanged="HandleListBox" Width="200" Height="800" Background="LightGray"  Visibility="Hidden">
+                        <ListBox.Resources>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Background" Value="LightGray" />
+                                <!-- Default background color -->
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="LightBlue" />
+                                        <!-- Color for selected items -->
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" Value="LightBlue" />
+                                        <!-- Color for disabled items -->
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.Resources>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

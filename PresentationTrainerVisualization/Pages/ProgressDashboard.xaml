@@ -42,14 +42,14 @@
                         <RowDefinition Height="0.2*"/>
                     </Grid.RowDefinitions>
                     <WpfPlot x:Name="AverageOfIdentifiedSentences" VerticalAlignment="Top" />
-                    <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Gray" Width="Auto" Height="Auto" TextWrapping="Wrap" FontSize="16">Average Recongnised Sentences</TextBlock>
+                    <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Gray" Width="Auto" Height="Auto" TextWrapping="Wrap" FontSize="16">Average Identified Sentences</TextBlock>
                 </Grid>
             </materialDesign:Card>
-            <DashboardComponents:CardNumberOfSessions  Grid.Column="1" />
-            <DashboardComponents:CardTotalTimeSpent  Grid.Column="2" />
-            <DashboardComponents:CardAverageNumberOfBadActions  Grid.Column="3" />
-            <DashboardComponents:CardAverageNumberOfGoodActions  Grid.Column="4" />
-            <DashboardComponents:GoalNumberOfSessions Grid.Column="5" />
+            <DashboardComponents:GoalNumberOfSessions Grid.Column="1" />
+            <DashboardComponents:CardNumberOfSessions  Grid.Column="2" />
+            <DashboardComponents:CardTotalTimeSpent  Grid.Column="3" />
+            <DashboardComponents:CardAverageNumberOfBadActions  Grid.Column="4" />
+            <DashboardComponents:CardAverageNumberOfGoodActions  Grid.Column="5" />
         </Grid>
 
         <WpfPlot x:Name="NumberOfSessionsInTimeline" Margin="10" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2" />
