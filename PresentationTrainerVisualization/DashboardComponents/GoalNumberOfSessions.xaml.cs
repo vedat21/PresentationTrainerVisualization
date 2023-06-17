@@ -29,7 +29,13 @@ namespace PresentationTrainerVisualization.DashboardComponents
 
         public void PlotGoalNumberOfSessionsInDays()
         {
-            Goal goal = processedGoalsData.GetGoalWithLabel(GoalsLabel.NumberOfSessionsForDays.ToString());
+            Goal goal = processedGoalsData.GetGoal(GoalsLabel.NumberOfSessionsForDays.ToString());
+
+            if (goal == null)
+            {
+                GoalNumber.Text = "Set Goal to display";
+                return;
+            }
 
 
             double numberOfDaysLeft = (goal.StartDate.AddDays(int.Parse(goal.Description[GoalsDescription.number_of_days.ToString()])) - DateTime.Today).TotalDays;
@@ -67,6 +73,7 @@ namespace PresentationTrainerVisualization.DashboardComponents
                 GoalDays.Text = "Goal finished";
 
             double result = Math.Min((double)numberOfSessionsToday / (double)numberOfSessionsGoals * 100, 100);
+            result = Math.Round(result, 1);
             Color prograssColor;
 
             if (result < 25)

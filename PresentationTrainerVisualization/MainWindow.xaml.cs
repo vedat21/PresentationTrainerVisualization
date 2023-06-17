@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using PresentationTrainerVisualization.helper;
+using PresentationTrainerVisualization.Helper;
 using PresentationTrainerVisualization.models.json;
 using PresentationTrainerVisualization.Pages;
 using System;
@@ -20,7 +21,8 @@ namespace PresentationTrainerVisualization
     public partial class MainWindow : Window
     {
         private ProcessedSessionsData processedSessions;
-        private ConfigurationRoot configurationRoot;
+        private ProcessedConfigurationData processedConfiguration;
+
         private ComboBox comboBoxSelectedSession;
 
         private bool isLastSession;
@@ -31,21 +33,11 @@ namespace PresentationTrainerVisualization
         {
             InitializeComponent();
             WindowState = WindowState.Maximized;
+
             processedSessions = new ProcessedSessionsData();
+            processedConfiguration = new ProcessedConfigurationData();
+
             comboBoxSelectedSession = (ComboBox)FindName("ComboSessions");
-
-
-            // json file only exists if user has set goals in the past.
-            if (File.Exists(Constants.PATH_TO_CONFIG_DATA))
-            {
-                string json = File.ReadAllText(Constants.PATH_TO_CONFIG_DATA);
-                configurationRoot = JsonConvert.DeserializeObject<ConfigurationRoot>(json);
-            }
-            else
-            {
-                configurationRoot = new ConfigurationRoot();
-                configurationRoot.Configurations = new List<Configuration>();
-            }
 
             InitComboBox();
             InitUserSelection();
@@ -54,19 +46,16 @@ namespace PresentationTrainerVisualization
 
         private void InitUserSelection()
         {
-            Configuration configurationTimeSpan = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_DATES.ToString());
-            Configuration configurationLastDays = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_LAST_X.ToString());
-
             DatePicker startDate = (DatePicker)FindName("StartDate");
             DatePicker endDate = (DatePicker)FindName("EndDate");
             Slider slider = (Slider)FindName("NumberOfX");
             ToggleButton toggleButton = (ToggleButton)FindName("DaysOrSessions");
 
 
-            if (configurationTimeSpan != null)
+            if (processedConfiguration.ConfigurationTimeSpan != null)
             {
-                startDate.Text = configurationTimeSpan.StartDate.ToString();
-                endDate.Text = configurationTimeSpan.EndDate.ToString();
+                startDate.Text = processedConfiguration.ConfigurationTimeSpan.StartDate.ToString();
+                endDate.Text = processedConfiguration.ConfigurationTimeSpan.EndDate.ToString();
 
                 startDate.DisplayDateEnd = endDate.SelectedDate;
                 endDate.DisplayDateStart = startDate.SelectedDate;
@@ -77,12 +66,12 @@ namespace PresentationTrainerVisualization
                 endDate.Text = DateTime.Today.ToString("dd/MM/yyyy");
             }
 
-            if (configurationLastDays != null)
+            if (processedConfiguration.ConfigurationLastDays != null)
             {
-                slider.Value = configurationLastDays.LastDaysOrSessions;
-                toggleButton.IsChecked = configurationLastDays.IsLastSessions;
+                slider.Value = processedConfiguration.ConfigurationLastDays.NumberOfSessions;
+                toggleButton.IsChecked = processedConfiguration.ConfigurationLastDays.CompareWithLastSessions;
 
-                if (configurationLastDays.IsLastSessions)
+                if (processedConfiguration.ConfigurationLastDays.CompareWithLastSessions)
                 {
                     slider.Maximum = processedSessions.GetNumberOfTotalSessions();
                 }
@@ -118,8 +107,6 @@ namespace PresentationTrainerVisualization
 
         private void HandleDatePickerChanged(object sender, SelectionChangedEventArgs e)
         {
-            Configuration configurationTimeSpan = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_DATES.ToString());
-
             DatePicker startDate = (DatePicker)StartDate;
             DatePicker endDate = (DatePicker)EndDate;
 
@@ -132,19 +119,14 @@ namespace PresentationTrainerVisualization
             startDate.DisplayDateEnd = endDate.SelectedDate;
             endDate.DisplayDateStart = startDate.SelectedDate;
 
-
-            if (configurationTimeSpan != null)
-                configurationRoot.Configurations.Remove(configurationTimeSpan);
-
-            Configuration newConfiguration = new Configuration
+            Configuration configuration = new Configuration
             {
                 StartDate = DateOnly.FromDateTime(selectedStartDate),
                 EndDate = DateOnly.FromDateTime(selectedEndDate),
                 Label = Constants.ConfigurationLabel.CONFIGURATION_DATES.ToString(),
             };
-            configurationRoot.Configurations.Add(newConfiguration);
+            processedConfiguration.UpdateConfiguration(configuration);
 
-            File.WriteAllText(Constants.PATH_TO_CONFIG_DATA, JsonConvert.SerializeObject(configurationRoot));
             LoadDashboard();
         }
 
@@ -175,24 +157,17 @@ namespace PresentationTrainerVisualization
 
         private void UpdateLastDaysConfiguration()
         {
-            Configuration configurationLastDays = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_LAST_X.ToString());
-
             Slider slider = (Slider)FindName("NumberOfX");
             ToggleButton toggleButton = (ToggleButton)FindName("DaysOrSessions");
 
-            if (configurationLastDays != null)
-                configurationRoot.Configurations.Remove(configurationLastDays);
-
-
-            Configuration newConfiguration = new Configuration
+            Configuration configuration = new Configuration
             {
-                LastDaysOrSessions = (int)slider.Value,
-                IsLastSessions = (bool)toggleButton.IsChecked,
+                NumberOfSessions = (int)slider.Value,
+                CompareWithLastSessions = (bool)toggleButton.IsChecked,
                 Label = Constants.ConfigurationLabel.CONFIGURATION_LAST_X.ToString(),
             };
-            configurationRoot.Configurations.Add(newConfiguration);
+            processedConfiguration.UpdateConfiguration(configuration);
 
-            File.WriteAllText(Constants.PATH_TO_CONFIG_DATA, JsonConvert.SerializeObject(configurationRoot));
             LoadDashboard();
         }
 

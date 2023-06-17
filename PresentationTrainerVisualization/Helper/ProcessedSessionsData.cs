@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
+using PresentationTrainerVisualization.Helper;
 using PresentationTrainerVisualization.models;
 using PresentationTrainerVisualization.models.json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using static PresentationTrainerVisualization.helper.Constants;
 using Action = PresentationTrainerVisualization.models.json.Action;
@@ -21,40 +20,18 @@ namespace PresentationTrainerVisualization.helper
         private SessionsRoot sessionsRoot;
         private Session selectedSession; // selected session by user in dashboard 
 
-        private ConfigurationRoot configurationRoot;
-        private Configuration configurationLastDays;
-        private Configuration configurationTimeSpan;
+        private ProcessedGoalsData processedGoals;
+        private List<string> selectedGoalsActions;
 
-        private ProcessedGoalsData processedGoalsData;
+        private ProcessedConfigurationData processedConfiguration;
+
 
         public ProcessedSessionsData()
         {
             sessionsRoot = JsonConvert.DeserializeObject<SessionsRoot>(File.ReadAllText(Constants.PATH_TO_SESSION_DATA));
-            processedGoalsData = new ProcessedGoalsData();
-
-            if (File.Exists(Constants.PATH_TO_CONFIG_DATA))
-            {
-                string json = File.ReadAllText(Constants.PATH_TO_CONFIG_DATA);
-                configurationRoot = JsonConvert.DeserializeObject<ConfigurationRoot>(json);
-                configurationLastDays = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_LAST_X.ToString());
-                configurationTimeSpan = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_DATES.ToString());
-            }
-            else
-            {
-                configurationRoot = new ConfigurationRoot();
-                configurationRoot.Configurations = new List<Configuration>();
-
-                configurationTimeSpan = new Configuration
-                {
-                    StartDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-7)),
-                    EndDate = DateOnly.FromDateTime(DateTime.Today),
-                };
-                configurationLastDays = new Configuration
-                {
-                    IsLastSessions = true,
-                    LastDaysOrSessions = 7,
-                };
-            }
+            processedGoals = new ProcessedGoalsData();
+            processedConfiguration = new ProcessedConfigurationData();
+            selectedGoalsActions = processedGoals.GetSelectedActionsLog();
 
             // Get selected session from combobox
             foreach (Window window in Application.Current.Windows)
@@ -66,7 +43,6 @@ namespace PresentationTrainerVisualization.helper
             }
 
         }
-
 
         public static ProcessedSessionsData GetInstance()
         {
@@ -130,19 +106,8 @@ namespace PresentationTrainerVisualization.helper
         /// <returns></returns>
         public List<Action> GetSelectedSessionActions()
         {
-            Goal goalBadActions = processedGoalsData.GetGoalWithLabel(GoalsLabel.BadActions.ToString());
-            Goal goalGoodActions = processedGoalsData.GetGoalWithLabel(GoalsLabel.GoodActions.ToString());
-            var goalDescBadActions = goalBadActions.Description[GoalsDescription.list_of_bad_actions.ToString()];
-            var goalDescGoodActions = goalGoodActions.Description[GoalsDescription.list_of_good_actions.ToString()];
-
-            List<string> selectedActions = new List<string>();
-            foreach (var description in goalDescBadActions)
-                selectedActions.Add(description.ToString());
-            foreach (var description in goalDescGoodActions)
-                selectedActions.Add(description.ToString());
-
             List<Action> actions = (from action in selectedSession.Actions
-                                    where selectedActions.Contains(action.LogAction)
+                                    where selectedGoalsActions.Contains(action.LogAction)
                                     select action).ToList();
 
             return actions;
@@ -155,7 +120,7 @@ namespace PresentationTrainerVisualization.helper
         public int GetNumberOfSessions()
         {
             int numberOfSessions = (from session in sessionsRoot.Sessions
-                                    where configurationTimeSpan.StartDate <= DateOnly.FromDateTime(session.Start) && DateOnly.FromDateTime(session.Start) <= configurationTimeSpan.EndDate
+                                    where processedConfiguration.ConfigurationTimeSpan.StartDate <= DateOnly.FromDateTime(session.Start) && DateOnly.FromDateTime(session.Start) <= processedConfiguration.ConfigurationTimeSpan.EndDate
                                     select session).Count();
 
             return numberOfSessions;
@@ -200,15 +165,21 @@ namespace PresentationTrainerVisualization.helper
 
             foreach (var session in sessionsRoot.Sessions)
             {
-                List<AggregatedObject> aggregatedObjects = new List<AggregatedObject>();
-                int numberOfAction = 0;
+                DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
 
-                foreach (var action in session.Actions)
-                    if (mistake == action.Mistake)
-                        numberOfAction++;
+                // get only the data that is in timespan of user selection
+                if (processedConfiguration.ConfigurationTimeSpan.StartDate <= sessionDate && processedConfiguration.ConfigurationTimeSpan.EndDate >= sessionDate)
+                {
+                    List<AggregatedObject> aggregatedObjects = new List<AggregatedObject>();
+                    int numberOfAction = 0;
 
-                aggregatedObjects.Add(new AggregatedObject("count", numberOfAction));
-                result.Add(new AggregatedSession(aggregatedObjects, session.Start));
+                    foreach (var action in session.Actions)
+                        if (mistake == action.Mistake)
+                            numberOfAction++;
+
+                    aggregatedObjects.Add(new AggregatedObject("count", numberOfAction));
+                    result.Add(new AggregatedSession(aggregatedObjects, session.Start));
+                }
             }
 
             return result;
@@ -227,7 +198,7 @@ namespace PresentationTrainerVisualization.helper
                 DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
 
                 // get only the data that is in timespan of user selection
-                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
+                if (processedConfiguration.ConfigurationTimeSpan.StartDate <= sessionDate && processedConfiguration.ConfigurationTimeSpan.EndDate >= sessionDate)
                 {
                     List<AggregatedObject> aggregatedObjects = new List<AggregatedObject>();
                     int numberOfIdentified = 0;
@@ -258,9 +229,15 @@ namespace PresentationTrainerVisualization.helper
 
             foreach (var session in sessionsRoot.Sessions)
             {
-                List<AggregatedObject> aggregatedObjects = new List<AggregatedObject>();
-                aggregatedObjects.Add(new AggregatedObject("duration", session.Duration.TotalSeconds));
-                result.Add(new AggregatedSession(aggregatedObjects, session.Start));
+                DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
+
+                // get only the data that is in timespan of user selection
+                if (processedConfiguration.ConfigurationTimeSpan.StartDate <= sessionDate && processedConfiguration.ConfigurationTimeSpan.EndDate >= sessionDate)
+                {
+                    List<AggregatedObject> aggregatedObjects = new List<AggregatedObject>();
+                    aggregatedObjects.Add(new AggregatedObject("duration", session.Duration.TotalSeconds));
+                    result.Add(new AggregatedSession(aggregatedObjects, session.Start));
+                }
             }
 
             return result;
@@ -280,7 +257,7 @@ namespace PresentationTrainerVisualization.helper
                 DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
 
                 // get only the data that is in timespan of user selection
-                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
+                if (processedConfiguration.ConfigurationTimeSpan.StartDate <= sessionDate && processedConfiguration.ConfigurationTimeSpan.EndDate >= sessionDate)
                     foreach (var sentence in session.Sentences)
                         if (sentence.WasIdentified)
                             numberOfRecongnised++;
@@ -299,6 +276,8 @@ namespace PresentationTrainerVisualization.helper
         /// <returns></returns>
         public double GetAverageNumberOfBadActions()
         {
+            List<string> selectedActions = processedGoals.GetSelectedActionsLog();
+        
             double numberOfBadActions = 0;
             double numberOfGoodActions = 0;
 
@@ -306,12 +285,13 @@ namespace PresentationTrainerVisualization.helper
             {
                 DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
 
-                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
+                if (processedConfiguration.ConfigurationTimeSpan.StartDate <= sessionDate && processedConfiguration.ConfigurationTimeSpan.EndDate >= sessionDate)
                     foreach (var action in session.Actions)
-                        if (action.Mistake)
-                            numberOfBadActions++;
-                        else
-                            numberOfGoodActions++;
+                        if (selectedActions.Contains(action.LogAction))
+                            if (action.Mistake)
+                                numberOfBadActions++;
+                            else
+                                numberOfGoodActions++;
             }
 
             double result = (numberOfBadActions / (numberOfBadActions + numberOfGoodActions)) * 100;
@@ -325,6 +305,8 @@ namespace PresentationTrainerVisualization.helper
         /// <returns></returns>
         public double GetAverageNumberOfGoodActions()
         {
+            List<string> selectedActions = processedGoals.GetSelectedActionsLog();
+
             double numberOfBadActions = 0;
             double numberOfGoodActions = 0;
 
@@ -332,12 +314,13 @@ namespace PresentationTrainerVisualization.helper
             {
                 DateOnly sessionDate = DateOnly.FromDateTime(session.Start);
 
-                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
+                if (processedConfiguration.ConfigurationTimeSpan.StartDate <= sessionDate && processedConfiguration.ConfigurationTimeSpan.EndDate >= sessionDate)
                     foreach (var action in session.Actions)
-                        if (action.Mistake)
-                            numberOfBadActions++;
-                        else
-                            numberOfGoodActions++;
+                        if (selectedActions.Contains(action.LogAction))
+                            if (action.Mistake)
+                                numberOfBadActions++;
+                            else
+                                numberOfGoodActions++;
             }
 
             double result = (numberOfGoodActions / (numberOfBadActions + numberOfGoodActions)) * 100;
@@ -357,7 +340,7 @@ namespace PresentationTrainerVisualization.helper
                 var sessionDate = session.Start;
 
                 // get only the data that is in timespan of user selection
-                if (configurationTimeSpan.StartDate <= DateOnly.FromDateTime(sessionDate) && configurationTimeSpan.EndDate >= DateOnly.FromDateTime(sessionDate))
+                if (processedConfiguration.ConfigurationTimeSpan.StartDate <= DateOnly.FromDateTime(sessionDate) && processedConfiguration.ConfigurationTimeSpan.EndDate >= DateOnly.FromDateTime(sessionDate))
                 {
                     TimeSpan timeDifference = session.End - session.Start;
                     totalTime += timeDifference;
@@ -380,7 +363,7 @@ namespace PresentationTrainerVisualization.helper
                 var sessionDate = session.Start;
 
                 // get only the data that is in timespan of user selection
-                if (configurationTimeSpan.StartDate <= DateOnly.FromDateTime(sessionDate) && configurationTimeSpan.EndDate >= DateOnly.FromDateTime(sessionDate))
+                if (processedConfiguration.ConfigurationTimeSpan.StartDate <= DateOnly.FromDateTime(sessionDate) && processedConfiguration.ConfigurationTimeSpan.EndDate >= DateOnly.FromDateTime(sessionDate))
                     if (numberOfSesions.ContainsKey(sessionDate))
                         numberOfSesions[sessionDate] = numberOfSesions[sessionDate] + 1;
                     else
@@ -404,7 +387,7 @@ namespace PresentationTrainerVisualization.helper
                 var sessionDate = DateOnly.FromDateTime(session.Start);
 
                 // get only the data that is in timespan of user selection
-                if (configurationTimeSpan.StartDate <= sessionDate && configurationTimeSpan.EndDate >= sessionDate)
+                if (processedConfiguration.ConfigurationTimeSpan.StartDate <= sessionDate && processedConfiguration.ConfigurationTimeSpan.EndDate >= sessionDate)
                     if (numberOfSesions.ContainsKey(sessionDate))
                         numberOfSesions[sessionDate] = numberOfSesions[sessionDate] + 1;
                     else
@@ -423,20 +406,7 @@ namespace PresentationTrainerVisualization.helper
         /// <returns></returns>
         public List<AggregatedSession> GetAggregatedActionsBySession(bool all = true, bool mistake = true)
         {
-            Goal goalBadActions = processedGoalsData.GetGoalWithLabel(GoalsLabel.BadActions.ToString());
-            Goal goalGoodActions = processedGoalsData.GetGoalWithLabel(GoalsLabel.GoodActions.ToString());
-            var goalDescBadActions = goalBadActions.Description[GoalsDescription.list_of_bad_actions.ToString()];
-            var goalDescGoodActions = goalGoodActions.Description[GoalsDescription.list_of_good_actions.ToString()];
-
-            List<string> selectedActions = new List<string>();
-            List<string> selectedGoodActions = new List<string>();
-            List<string> selectedBadActions = new List<string>();
-            foreach (var description in goalDescBadActions)
-                selectedBadActions.Add(description.ToString());
-            foreach (var description in goalDescGoodActions)
-                selectedGoodActions.Add(description.ToString());
-
-            selectedActions = selectedBadActions.Concat(selectedGoodActions).ToList();
+            List<string> selectedActions = processedGoals.GetSelectedActionsLog();
 
             List<AggregatedSession> result = new List<AggregatedSession>();
             List<string> allPossibleLabels = new List<string>();
@@ -465,7 +435,7 @@ namespace PresentationTrainerVisualization.helper
                     // include only mistake or no mistake
                     else
                     {
-                        if (mistake == true && selectedBadActions.Contains(logAction))
+                        if (mistake == true && selectedActions.Contains(logAction))
                         {
                             if (countOfLabels.ContainsKey(logAction))
                                 countOfLabels[logAction] = countOfLabels[logAction] + 1;
@@ -476,7 +446,7 @@ namespace PresentationTrainerVisualization.helper
                             if (!allPossibleLabels.Contains(logAction))
                                 allPossibleLabels.Add(logAction);
                         }
-                        else if (mistake == false && selectedBadActions.Contains(logAction))
+                        else if (mistake == false && selectedActions.Contains(logAction))
                         {
                             if (countOfLabels.ContainsKey(logAction))
                                 countOfLabels[logAction] = countOfLabels[logAction] + 1;

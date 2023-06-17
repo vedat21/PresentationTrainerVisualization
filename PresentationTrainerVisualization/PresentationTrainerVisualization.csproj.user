@@ -19,15 +19,6 @@
     <Compile Update="DashboardComponents\CardTotalTimeSpent.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="DashboardComponents\GoalDurationOfSession.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="DashboardComponents\GoalMaxNumberOfBadActions.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="DashboardComponents\GoalMinNumberOfActions.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="DashboardComponents\GoalNumberOfSessions.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -58,15 +49,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="DashboardComponents\CardTotalTimeSpent.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="DashboardComponents\GoalDurationOfSession.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="DashboardComponents\GoalMaxNumberOfBadActions.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="DashboardComponents\GoalMinNumberOfActions.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="DashboardComponents\GoalNumberOfSessions.xaml">

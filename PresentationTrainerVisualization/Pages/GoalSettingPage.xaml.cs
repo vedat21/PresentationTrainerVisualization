@@ -1,31 +1,25 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using PresentationTrainerVisualization.helper;
 using PresentationTrainerVisualization.models.json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using static PresentationTrainerVisualization.helper.Constants;
 using Action = PresentationTrainerVisualization.models.json.Action;
 
 namespace PresentationTrainerVisualization.Pages
 {
-    /// <summary>
-    /// Interaktionslogik für GoalSettingPage.xaml
-    /// </summary>
+
     public partial class GoalSettingPage : Page
     {
-        private GoalsRoot goalsRoot;
-        private ProcessedSessionsData processedSessionsData;
+        private ProcessedSessionsData processedSessions;
+        private ProcessedGoalsData processedGoals;
 
         private List<Action> badActions;
         private List<Action> goodActions;
@@ -35,23 +29,14 @@ namespace PresentationTrainerVisualization.Pages
         public GoalSettingPage()
         {
             InitializeComponent();
-            processedSessionsData = ProcessedSessionsData.GetInstance();
+
+            processedSessions = ProcessedSessionsData.GetInstance();
+            processedGoals = new ProcessedGoalsData();
+
             badActions = new List<Action>();
             goodActions = new List<Action>();
             badActionsListBox = (ListBox)FindName("ListBoxBadActions");
             goodActionsListBox = (ListBox)FindName("ListBoxGoodActions");
-
-            // json file only exists if user has set goals in the past.
-            if (File.Exists(PATH_TO_GOALSCONFIG_DATA))
-            {
-                string json = File.ReadAllText(PATH_TO_GOALSCONFIG_DATA);
-                goalsRoot = JsonConvert.DeserializeObject<GoalsRoot>(json);
-            }
-            else
-            {
-                goalsRoot = new GoalsRoot();
-                goalsRoot.Goals = new List<Goal>();
-            }
 
             InitButtonsText();
             InitListBoxesAction();
@@ -71,7 +56,7 @@ namespace PresentationTrainerVisualization.Pages
                     break;
                 }
 
-                if (goalsRoot.Goals.Find(x => x.Label == goalLabel.ToString()) != null)
+                if (processedGoals.GetGoal(goalLabel.ToString()) != null)
                     button.Content = "Update Goal";
                 else
                     button.Content = "Set Goal";
@@ -98,19 +83,13 @@ namespace PresentationTrainerVisualization.Pages
             if (!isValid)
                 return;
 
-            Goal currentGoal = goalsRoot.Goals.Find(x => x.Label == GOAL_LABEL);
-            if (currentGoal != null)
-                goalsRoot.Goals.Remove(currentGoal);
-
             Goal goal = new Goal
             {
                 StartDate = DateTime.Today,
                 Label = GOAL_LABEL,
                 Description = description
             };
-            goalsRoot.Goals.Add(goal);
-
-            File.WriteAllText(PATH_TO_GOALSCONFIG_DATA, JsonConvert.SerializeObject(goalsRoot));
+            processedGoals.UpdateGoal(goal);
         }
 
         public async void ButtonDurationOfSessionClicked(object sender, RoutedEventArgs e)
@@ -129,24 +108,18 @@ namespace PresentationTrainerVisualization.Pages
             Dictionary<string, dynamic> description = new Dictionary<string, dynamic>() { { GOAL_MIN_MINUTES, inputMinMinutes.Text }, { GOAL_MIN_SECONDS, inputMinSeconds.Text }, { GOAL_MAX_MINUTES, inputMaxMinutes.Text }, { GOAL_MAX_SECONDS, inputMaxSeconds.Text } };
 
             bool isValid1 = ValidateInputEmptyAndShowMessage(new string[] { inputMinMinutes.Text, inputMinSeconds.Text, inputMaxMinutes.Text, inputMaxSeconds.Text }, showSucessMessage: false);
-            bool isValid2 = ValidateInputMinMaxAndShowMessage(Int32.Parse(inputMinMinutes.Text), Int32.Parse(inputMinSeconds.Text), Int32.Parse(inputMaxMinutes.Text), Int32.Parse(inputMaxSeconds.Text));
+            bool isValid2 = ValidateInputMinMaxAndShowMessage(inputMinMinutes.Text, inputMinSeconds.Text, inputMaxMinutes.Text, inputMaxSeconds.Text);
             if (!isValid1 || !isValid2)
                 return;
 
-            Goal currentGoal = goalsRoot.Goals.Find(x => x.Label == GOAL_LABEL);
-            if (currentGoal != null)
-                goalsRoot.Goals.Remove(currentGoal);
-
+           
             Goal goal = new Goal
             {
                 StartDate = DateTime.Today,
                 Label = GOAL_LABEL,
                 Description = description
             };
-            goalsRoot.Goals.Add(goal);
-
-
-            File.WriteAllText(PATH_TO_GOALSCONFIG_DATA, JsonConvert.SerializeObject(goalsRoot));
+            processedGoals.UpdateGoal(goal);
         }
 
         public async void ButtonBadActionsClicked(object sender, RoutedEventArgs e)
@@ -162,20 +135,13 @@ namespace PresentationTrainerVisualization.Pages
             if (!isValid)
                 return;
 
-            Goal currentGoal = goalsRoot.Goals.Find(x => x.Label == GOAL_LABEL);
-            if (currentGoal != null)
-                goalsRoot.Goals.Remove(currentGoal);
-
             Goal goal = new Goal
             {
                 StartDate = DateTime.Today,
                 Label = GOAL_LABEL,
                 Description = description
             };
-            goalsRoot.Goals.Add(goal);
-
-
-            File.WriteAllText(PATH_TO_GOALSCONFIG_DATA, JsonConvert.SerializeObject(goalsRoot));
+            processedGoals.UpdateGoal(goal);
         }
 
         /// <summary>
@@ -184,11 +150,11 @@ namespace PresentationTrainerVisualization.Pages
         private void InitListBoxesAction()
         {
             foreach (var entry in Constants.BAD_ACTION_FROM_VIDEO)
-                badActions.Add(new Action(entry.Key, entry.Value, true));
+                badActions.Add(new Action(entry.Key, entry.Value));
             badActionsListBox.ItemsSource = badActions;
 
             foreach (var entry in Constants.GOOD_ACTION_FROM_VIDEO)
-                goodActions.Add(new Action(entry.Key, entry.Value, true));
+                goodActions.Add(new Action(entry.Key, entry.Value));
             goodActionsListBox.ItemsSource = goodActions;
 
         }
@@ -202,7 +168,7 @@ namespace PresentationTrainerVisualization.Pages
         {
             string GOAL_LABEL = GoalsLabel.GoodActions.ToString();
             string GOAL_DESC = GoalsDescription.list_of_good_actions.ToString();
-            Goal currentGoal = goalsRoot.Goals.Find(x => x.Label == GOAL_LABEL);
+            Goal currentGoal = processedGoals.GetGoal(GOAL_LABEL);
 
             if(currentGoal ==  null)
                 return;
@@ -240,7 +206,7 @@ namespace PresentationTrainerVisualization.Pages
         {
             string GOAL_LABEL = GoalsLabel.BadActions.ToString();
             string GOAL_DESC = GoalsDescription.list_of_bad_actions.ToString();
-            Goal currentGoal = goalsRoot.Goals.Find(x => x.Label == GOAL_LABEL);
+            Goal currentGoal = processedGoals.GetGoal(GOAL_LABEL);
 
             if (currentGoal == null)
                 return;
@@ -280,19 +246,13 @@ namespace PresentationTrainerVisualization.Pages
 
             Dictionary<string, dynamic> description = new Dictionary<string, dynamic> { { GOAL_DESC, selectedActionsLabel } };
 
-            Goal currentGoal = goalsRoot.Goals.Find(x => x.Label == GOAL_LABEL);
-            if (currentGoal != null)
-                goalsRoot.Goals.Remove(currentGoal);
-
             Goal goal = new Goal
             {
                 StartDate = DateTime.Today,
                 Label = GOAL_LABEL,
                 Description = description
             };
-            goalsRoot.Goals.Add(goal);
-
-            File.WriteAllText(PATH_TO_GOALSCONFIG_DATA, JsonConvert.SerializeObject(goalsRoot));
+            processedGoals.UpdateGoal(goal);
         }
 
         public async void HandleListBoxBadActions(object sender, RoutedEventArgs e)
@@ -306,19 +266,13 @@ namespace PresentationTrainerVisualization.Pages
 
             Dictionary<string, dynamic> description = new Dictionary<string, dynamic> { { GOAL_DESC, selectedActionsLabel } };
 
-            Goal currentGoal = goalsRoot.Goals.Find(x => x.Label == GOAL_LABEL);
-            if (currentGoal != null)
-                goalsRoot.Goals.Remove(currentGoal);
-
             Goal goal = new Goal
             {
                 StartDate = DateTime.Today,
                 Label = GOAL_LABEL,
                 Description = description
             };
-            goalsRoot.Goals.Add(goal);
-
-            File.WriteAllText(PATH_TO_GOALSCONFIG_DATA, JsonConvert.SerializeObject(goalsRoot));
+            processedGoals.UpdateGoal(goal);
         }
 
 
@@ -335,20 +289,13 @@ namespace PresentationTrainerVisualization.Pages
             if (!isValid)
                 return;
 
-            Goal currentGoal = goalsRoot.Goals.Find(x => x.Label == GOAL_LABEL);
-            if (currentGoal != null)
-                goalsRoot.Goals.Remove(currentGoal);
-
             Goal goal = new Goal
             {
                 StartDate = DateTime.Today,
                 Label = GOAL_LABEL,
                 Description = description
             };
-            goalsRoot.Goals.Add(goal);
-
-
-            File.WriteAllText(PATH_TO_GOALSCONFIG_DATA, JsonConvert.SerializeObject(goalsRoot));
+            processedGoals.UpdateGoal(goal);
         }
 
         private bool ValidateInputEmptyAndShowMessage(string[] inputs, bool showSucessMessage = true)
@@ -366,19 +313,28 @@ namespace PresentationTrainerVisualization.Pages
             return true;
         }
 
-        private bool ValidateInputMinMaxAndShowMessage(int inputMinMinutes, int inputMinSeconds, int inputMaxMinutes, int inputMaxSeconds)
+        private bool ValidateInputMinMaxAndShowMessage(string inputMinMinutes, string inputMinSeconds, string inputMaxMinutes, string inputMaxSeconds)
         {
-            if (inputMaxMinutes < inputMinMinutes)
+            try
             {
-                MessageBox.Show("Goal could not be saved.\n Minimum time duration must be bigger than maximum time duration", "Failure");
-                return false;
+                if (int.Parse(inputMaxMinutes) < int.Parse(inputMinMinutes))
+                {
+                    MessageBox.Show("Goal could not be saved.\n Minimum time duration must be bigger than maximum time duration", "Failure");
+                    return false;
+                }
+                else if (int.Parse(inputMinMinutes) == int.Parse(inputMaxMinutes) && int.Parse(inputMaxSeconds) <= int.Parse(inputMinSeconds))
+                {
+                    MessageBox.Show("Goal could not be saved.\n Minimum time duration must be bigger than maximum time duration", "Failure");
+                    return false;
+                }
             }
-            else if (inputMinMinutes == inputMaxMinutes && inputMaxSeconds <= inputMinSeconds)
+            catch
             {
-                MessageBox.Show("Goal could not be saved.\n Minimum time duration must be bigger than maximum time duration", "Failure");
+                MessageBox.Show("Goal could not be saved.", "Failure");
                 return false;
             }
 
+           
             MessageBox.Show("Goal was saved succesfully.", "Success");
             return true;
         }

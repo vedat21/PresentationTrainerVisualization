@@ -1,17 +1,11 @@
-﻿using Newtonsoft.Json;
-using PresentationTrainerVisualization.helper;
+﻿using PresentationTrainerVisualization.helper;
+using PresentationTrainerVisualization.Helper;
 using PresentationTrainerVisualization.models;
-using PresentationTrainerVisualization.models.json;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Media;
-using Vortice;
-using static PresentationTrainerVisualization.helper.Constants;
 using Color = System.Drawing.Color;
 
 namespace PresentationTrainerVisualization.Pages
@@ -20,25 +14,14 @@ namespace PresentationTrainerVisualization.Pages
     {
         private ProcessedSessionsData processedSessionsData { get; }
         private ProcessedGoalsData processedGoalsData;
-        private ConfigurationRoot configurationRoot;
+        private ProcessedConfigurationData processedConfiguration;
 
         public ProgressDashboard()
         {
             InitializeComponent();
             processedSessionsData = new ProcessedSessionsData();
             processedGoalsData = new ProcessedGoalsData();
-
-            // json file only exists if user has set goals in the past.
-            if (File.Exists(Constants.PATH_TO_CONFIG_DATA))
-            {
-                string json = File.ReadAllText(Constants.PATH_TO_CONFIG_DATA);
-                configurationRoot = JsonConvert.DeserializeObject<ConfigurationRoot>(json);
-            }
-            else
-            {
-                configurationRoot = new ConfigurationRoot();
-                configurationRoot.Configurations = new List<Configuration>();
-            }
+            processedConfiguration = new ProcessedConfigurationData();
 
             PlotAverageOfIdentifiedSentences();
             PlotPercentageOfIfdentifiedSentencesInTimeLine();
@@ -94,10 +77,9 @@ namespace PresentationTrainerVisualization.Pages
             Array.Sort(xs, ys);
 
             WpfPlot plot = (WpfPlot)FindName("PercentageOfRecongnisedSentences");
-
             if (data.Count == 0)
             {
-                plot.Plot.Title("No Data Available for chosen time");
+                plot.Plot.Title("No data available for selected period");
                 return;
             }
 
@@ -118,13 +100,11 @@ namespace PresentationTrainerVisualization.Pages
         /// </summary>
         private void PlotNumberOfSessionsInTimeLine()
         {
-            Configuration configurationTimeSpan = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_DATES.ToString());
-
             double[] xs;
             double[] ys;
 
             // When user selection of timespan includes only one day than show number of sessions for datetime. Else show number of sessions for dateonly.
-            if (configurationTimeSpan.StartDate == configurationTimeSpan.EndDate)
+            if (processedConfiguration.ConfigurationTimeSpan.StartDate == processedConfiguration.ConfigurationTimeSpan.EndDate)
             {
                 var numberOfSessions = processedSessionsData.GetNumberOfSessionsByDateTime();
                 xs = numberOfSessions.Keys.Select(x => x.ToOADate()).ToArray();
@@ -142,7 +122,7 @@ namespace PresentationTrainerVisualization.Pages
             WpfPlot plot = (WpfPlot)FindName("NumberOfSessionsInTimeline");
             if (xs.Length == 0 || ys.Length == 0)
             {
-                plot.Plot.Title("No Data Available for chosen time");
+                plot.Plot.Title("No data available for selected period");
                 return;
             }
 
@@ -173,8 +153,14 @@ namespace PresentationTrainerVisualization.Pages
 
             // Create plot
             WpfPlot plot = (WpfPlot)FindName("DurationInTimeLine");
-            var bar = plot.Plot.AddBar(data);
+            // if data is empty
+            if (data.Length == 0)
+            {
+                plot.Plot.Title("No data available for selected period");
+                return;
+            }
 
+            var bar = plot.Plot.AddBar(data);
             plot.Plot.XTicks(positions, DataLabels.ToArray());
             plot.Plot.YAxis.Label("duration (min)");
             plot.Plot.Legend(location: Alignment.UpperRight);
@@ -213,13 +199,21 @@ namespace PresentationTrainerVisualization.Pages
 
             double[] positions = Array.ConvertAll(Enumerable.Range(0, dataGood.Count).ToArray(), x => (double)x);
 
+
             // Create plot
             WpfPlot plot = (WpfPlot)FindName("ActionsInTimeLine");
+            // if data is empty
+            if (dataBad.Count == 0 && dataGood.Count == 0)
+            {
+                plot.Plot.Title("No data available for selected period");
+                return;
+            }
+           
             var barBadActions = plot.Plot.AddBar(dataBadStacked.ToArray());
             var barGoodActions = plot.Plot.AddBar(dataGood.ToArray());
             barGoodActions.Label = "No Mistake";
             barBadActions.Label = "Mistake";
-            barGoodActions.Color = Color.Green;
+            barGoodActions.Color = Color.FromArgb(255, 44, 186, 0);
             barBadActions.Color = Color.Red;
 
             plot.Plot.XTicks(positions, DataLabels.ToArray());

@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\vedat\source\repos\PresentationTrainerVisualization\PresentationTrainerVisualization\App.xaml
-14-2093565834
+11-1085315732
 
-30-2050034800
+28-1827921714
 225-685835777
-DashboardComponents\CardAverageNumberOfBadActions.xaml;DashboardComponents\CardAverageNumberOfGoodActions.xaml;DashboardComponents\CardNumberOfSessions.xaml;DashboardComponents\CardTotalTimeSpent.xaml;DashboardComponents\GoalDurationOfSession.xaml;DashboardComponents\GoalMaxNumberOfBadActions.xaml;DashboardComponents\GoalMinNumberOfActions.xaml;DashboardComponents\GoalNumberOfSessions.xaml;MainWindow.xaml;Pages\FeedbackDashboard.xaml;Pages\GoalSettingPage.xaml;Pages\ProgressDashboard.xaml;VideoPlayerWindow.xaml;VideoPlayerWindowOld.xaml;
+DashboardComponents\CardAverageNumberOfBadActions.xaml;DashboardComponents\CardAverageNumberOfGoodActions.xaml;DashboardComponents\CardNumberOfSessions.xaml;DashboardComponents\CardTotalTimeSpent.xaml;DashboardComponents\GoalNumberOfSessions.xaml;MainWindow.xaml;Pages\FeedbackDashboard.xaml;Pages\GoalSettingPage.xaml;Pages\ProgressDashboard.xaml;VideoPlayerWindow.xaml;VideoPlayerWindowOld.xaml;
 
-True
+False
 

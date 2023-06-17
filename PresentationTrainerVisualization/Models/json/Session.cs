@@ -19,18 +19,18 @@ namespace PresentationTrainerVisualization.models.json
         [JsonProperty("sentences")]
         public List<Sentence>? Sentences { get; set; }
 
-        [JsonProperty("start")]
-        public DateTime Start { get; set; }
-
         [JsonProperty("scriptVisible")]
         public bool ScriptVisible { get; set; }
+
+        [JsonProperty("start")]
+        public DateTime Start { get; set; }
 
         [JsonProperty("videoId")]
         public string? VideoId { get; set; }
 
         public TimeSpan Duration { get; set; }
-        public string TextForComboBox { get; set; }
-        public DateTime? StartForComboBox { get; set; }
+        public string TextForComboBox { get; set; } // to display for session selection in combobox
+        public DateTime? StartForComboBox { get; set; } // to display for session selection in combobox
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
@@ -39,8 +39,6 @@ namespace PresentationTrainerVisualization.models.json
             Duration = new TimeSpan(0, 0, (int)Duration.Minutes, (int)Duration.Seconds);
             StartForComboBox = Start; 
         }
-
-       
 
     }
 
