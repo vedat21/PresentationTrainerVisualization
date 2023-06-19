@@ -18,12 +18,11 @@ namespace PresentationTrainerVisualization.Pages
 {
     public partial class FeedbackDashboard : Page
     {
-        private ProcessedSessionsData processedSessions { get; }
-        private ProcessedGoalsData processedGoals;
-        private ProcessedConfigurationData processedConfiguration;
+        private ProcessedSessions processedSessions { get; }
+        private ProcessedGoals processedGoals;
+        private ProcessedConfigurations processedConfiguration;
 
         private List<string> selectedGoalsActions;
-        private Session selectedSession;
 
         private int DEFAULT_NUMBER_OF_SESSIONS = 7;
 
@@ -32,20 +31,11 @@ namespace PresentationTrainerVisualization.Pages
         {
             InitializeComponent();
 
-            processedSessions = new ProcessedSessionsData();
-            processedGoals = new ProcessedGoalsData();
-            processedConfiguration = new ProcessedConfigurationData();
+            processedSessions = new ProcessedSessions();
+            processedGoals = new ProcessedGoals();
+            processedConfiguration = new ProcessedConfigurations();
 
             selectedGoalsActions = processedGoals.GetSelectedActionsLog();
-
-            // Get value of selected Session in combobox
-            foreach (Window window in Application.Current.Windows)
-            {
-                if (window.GetType() == typeof(MainWindow))
-                {
-                    selectedSession = (Session)(window as MainWindow).ComboSessions.SelectedItem;
-                }
-            }
 
             PlotNumberOfMistakeActions();
             PlotNumberOfGoodActions(); ;
@@ -63,7 +53,7 @@ namespace PresentationTrainerVisualization.Pages
         /// </summary>
         private void PlotNumberOfMistakeActions()
         {
-            NumberOfBadActions.Text = (from action in selectedSession.Actions
+            NumberOfBadActions.Text = (from action in processedSessions.SelectedSession.Actions
                                        where action.Mistake == true && selectedGoalsActions.Contains(action.LogAction)
                                        select action).Count().ToString();
         }
@@ -73,7 +63,7 @@ namespace PresentationTrainerVisualization.Pages
         /// </summary>
         private void PlotNumberOfGoodActions()
         {
-            NumberOfGoodActions.Text = (from action in selectedSession.Actions
+            NumberOfGoodActions.Text = (from action in processedSessions.SelectedSession.Actions
                                         where action.Mistake == false == true && selectedGoalsActions.Contains(action.LogAction)
                                         select action).Count().ToString();
         }
@@ -100,7 +90,7 @@ namespace PresentationTrainerVisualization.Pages
             TimeSpan maxTime = new TimeSpan(0, 0, int.Parse(goal.Description[GoalsDescription.session_duration_max_minutes.ToString()]), int.Parse(goal.Description[GoalsDescription.session_duration_max_seconds.ToString()]));
 
             List<Session> sessions = processedSessions.GetCopyOfAllSessions();
-            TimeSpan result1 = sessions.Find(x => x.Start == selectedSession.Start).Duration;
+            TimeSpan result1 = sessions.Find(x => x.Start == processedSessions.SelectedSession.Start).Duration;
 
             // If data is empty for chosen timespan
             if (result1 == null)
@@ -110,18 +100,18 @@ namespace PresentationTrainerVisualization.Pages
             if (result1 > maxTime)
             {
                 TimeSpan difference = maxTime - result1;
-                timeSelectedSession.Foreground = new SolidColorBrush(Colors.Red);
+                timeSelectedSession.Foreground = new SolidColorBrush(Colors.Maroon);
                 tipTimeSelectedSession.Text = Math.Abs(difference.TotalSeconds).ToString() + "sec overdrawn";
             }
             else if (result1 < minTime)
             {
                 TimeSpan difference = result1 - minTime;
-                timeSelectedSession.Foreground = new SolidColorBrush(Colors.Red);
+                timeSelectedSession.Foreground = new SolidColorBrush(Colors.Maroon);
                 tipTimeSelectedSession.Text = Math.Abs(difference.TotalSeconds).ToString() + "sec short";
             }
             else
             {
-                timeSelectedSession.Foreground = new SolidColorBrush(Colors.LimeGreen);
+                timeSelectedSession.Foreground = new SolidColorBrush(Colors.Green);
                 tipTimeSelectedSession.Text = "Goal achieved";
             }
 
@@ -133,19 +123,19 @@ namespace PresentationTrainerVisualization.Pages
             List<Session> sessionsResult2;
             if (processedConfiguration.ConfigurationLastDays == null)
             {
-                sessionsResult2 = ProcessedSessionsDataHelper.GetLastSessions(sessions, DEFAULT_NUMBER_OF_SESSIONS);
+                sessionsResult2 = ProcessedSessionsHelper.GetLastSessions(sessions, DEFAULT_NUMBER_OF_SESSIONS);
                 LastXSession.Text = "Last 7 Sessions";
             }
             else
             {
                 if (processedConfiguration.ConfigurationLastDays.CompareWithLastSessions)
                 {
-                    sessionsResult2 = ProcessedSessionsDataHelper.GetLastSessions(sessions, processedConfiguration.ConfigurationLastDays.NumberOfSessions);
+                    sessionsResult2 = ProcessedSessionsHelper.GetLastSessions(sessions, processedConfiguration.ConfigurationLastDays.NumberOfSessions);
                     LastXSession.Text = "Last " + processedConfiguration.ConfigurationLastDays.NumberOfSessions + " Sessions";
                 }
                 else
                 {
-                    sessionsResult2 = ProcessedSessionsDataHelper.GetSessionsOfLastDays(sessions, processedConfiguration.ConfigurationLastDays.NumberOfSessions);
+                    sessionsResult2 = ProcessedSessionsHelper.GetSessionsOfLastDays(sessions, processedConfiguration.ConfigurationLastDays.NumberOfSessions);
                     LastXSession.Text = "Last " + processedConfiguration.ConfigurationLastDays.NumberOfSessions + " Days";
                 }
             }
@@ -169,18 +159,18 @@ namespace PresentationTrainerVisualization.Pages
             if (result2 > maxTime)
             {
                 TimeSpan difference = maxTime - result2;
-                timeLastXSession.Foreground = new SolidColorBrush(Colors.Red);
+                timeLastXSession.Foreground = new SolidColorBrush(Colors.Maroon);
                 tipTimeLastXSession.Text = Math.Abs(difference.TotalSeconds).ToString() + "sec overdrawn";
             }
             else if (result2 < minTime)
             {
                 TimeSpan difference = result2 - minTime;
-                timeLastXSession.Foreground = new SolidColorBrush(Colors.Red);
+                timeLastXSession.Foreground = new SolidColorBrush(Colors.Maroon);
                 tipTimeLastXSession.Text = Math.Abs(difference.TotalSeconds).ToString() + "sec short";
             }
             else
             {
-                timeLastXSession.Foreground = new SolidColorBrush(Colors.LimeGreen);
+                timeLastXSession.Foreground = new SolidColorBrush(Colors.Green);
                 tipTimeLastXSession.Text = "Goal achieved";
             }
 
@@ -192,7 +182,7 @@ namespace PresentationTrainerVisualization.Pages
         private void PlotCandleActions()
         {
             var actions = processedSessions.GetSelectedSessionActions();
-            var durationOfSelectedSession = processedSessions.GetSelectedSession().Duration;
+            var durationOfSelectedSession = processedSessions.SelectedSession.Duration;
             WpfPlot plot = (WpfPlot)FindName("CandleActions");
 
             // Display time in equal fractions
@@ -215,7 +205,7 @@ namespace PresentationTrainerVisualization.Pages
                     var lolipop = plot.Plot.AddLollipop(
                                        values: new double[] { (action.End - action.Start).TotalSeconds },
                                        positions: new double[] { index },
-                                       color: Color.Red);
+                                       color: BAD_INDICATOR_COLOR);
 
                 }
                 else
@@ -223,7 +213,7 @@ namespace PresentationTrainerVisualization.Pages
                     var lolipop = plot.Plot.AddLollipop(
                                        values: new double[] { (action.End - action.Start).TotalSeconds },
                                        positions: new double[] { index },
-                                       color: Color.Gray);
+                                       color: GOOD_INDICATOR_COLOR);
                 }
                 labels.Add(action.LogActionDisplay);
                 index++;
@@ -246,8 +236,8 @@ namespace PresentationTrainerVisualization.Pages
         /// </summary>
         private void PlotCandleSentences()
         {
-            var sentences = processedSessions.GetSelectedSession().Sentences;
-            var durationOfSelectedSession = processedSessions.GetSelectedSession().Duration;
+            var sentences = processedSessions.SelectedSession.Sentences;
+            var durationOfSelectedSession = processedSessions.SelectedSession.Duration;
             WpfPlot plot = (WpfPlot)FindName("CandleSentences");
 
             string[] xLabels = new string[5];
@@ -268,7 +258,7 @@ namespace PresentationTrainerVisualization.Pages
                     var lolipop = plot.Plot.AddLollipop(
                                        values: new double[] { (sentence.End - sentence.Start).TotalSeconds },
                                        positions: new double[] { index },
-                                       color: Color.Green);
+                                       color: Constants.GOOD_INDICATOR_COLOR);
 
                 }
                 else
@@ -276,7 +266,7 @@ namespace PresentationTrainerVisualization.Pages
                     var lolipop = plot.Plot.AddLollipop(
                                        values: new double[] { (sentence.End - sentence.Start).TotalSeconds },
                                        positions: new double[] { index },
-                                       color: Color.Red);
+                                       color: Constants.BAD_INDICATOR_COLOR);
                 }
                 index++;
             }
@@ -298,14 +288,14 @@ namespace PresentationTrainerVisualization.Pages
         private void PlotRadarWithActionsFromVideo()
         {
             List<AggregatedSession> resultData = processedSessions.GetAggregatedActionsBySession();
-            AggregatedSession result1 = resultData.Find(x => x.SessionDate == selectedSession.Start);
+            AggregatedSession result1 = resultData.Find(x => x.SessionDate == processedSessions.SelectedSession.Start);
             AggregatedSession result2;
             string[] groupLabels;
 
             // Decides what is shown
             if (processedConfiguration.ConfigurationLastDays == null)
             {
-                result2 = ProcessedSessionsDataHelper.GetAverageOfLastSessions(resultData, DEFAULT_NUMBER_OF_SESSIONS);
+                result2 = ProcessedSessionsHelper.GetAverageOfLastSessions(resultData, DEFAULT_NUMBER_OF_SESSIONS);
                 groupLabels = new[] { "Selected Session", "Average last " + DEFAULT_NUMBER_OF_SESSIONS + " Session" };
             }
             else
@@ -313,12 +303,12 @@ namespace PresentationTrainerVisualization.Pages
                 int lastDaysOrSessions = processedConfiguration.ConfigurationLastDays.NumberOfSessions;
                 if (processedConfiguration.ConfigurationLastDays.CompareWithLastSessions)
                 {
-                    result2 = ProcessedSessionsDataHelper.GetAverageOfLastSessions(resultData, lastDaysOrSessions);
+                    result2 = ProcessedSessionsHelper.GetAverageOfLastSessions(resultData, lastDaysOrSessions);
                     groupLabels = new[] { "Selected Session", "Average last " + lastDaysOrSessions + " Session" };
                 }
                 else
                 {
-                    result2 = ProcessedSessionsDataHelper.GetAverageOfLastDays(resultData, lastDaysOrSessions);
+                    result2 = ProcessedSessionsHelper.GetAverageOfLastDays(resultData, lastDaysOrSessions);
                     groupLabels = new[] { "Selected Session", "Average last " + lastDaysOrSessions + " Days" };
                 }
             }
@@ -400,14 +390,14 @@ namespace PresentationTrainerVisualization.Pages
         private void PlotRadarWithBadLabelsFromVideo()
         {
             List<AggregatedSession> resultData = processedSessions.GetAggregatedActionsBySession(false, true);
-            AggregatedSession result1 = resultData.Find(x => x.SessionDate == selectedSession.Start);
+            AggregatedSession result1 = resultData.Find(x => x.SessionDate == processedSessions.SelectedSession.Start);
             AggregatedSession result2;
             string[] groupLabels;
 
             // Decides what is shown
             if (processedConfiguration.ConfigurationLastDays == null)
             {
-                result2 = ProcessedSessionsDataHelper.GetAverageOfLastSessions(resultData, DEFAULT_NUMBER_OF_SESSIONS);
+                result2 = ProcessedSessionsHelper.GetAverageOfLastSessions(resultData, DEFAULT_NUMBER_OF_SESSIONS);
                 groupLabels = new[] { "Selected Session", "Average last " + DEFAULT_NUMBER_OF_SESSIONS + " Session" };
             }
             else
@@ -415,12 +405,12 @@ namespace PresentationTrainerVisualization.Pages
                 int lastDaysOrSessions = processedConfiguration.ConfigurationLastDays.NumberOfSessions;
                 if (processedConfiguration.ConfigurationLastDays.CompareWithLastSessions)
                 {
-                    result2 = ProcessedSessionsDataHelper.GetAverageOfLastSessions(resultData, lastDaysOrSessions);
+                    result2 = ProcessedSessionsHelper.GetAverageOfLastSessions(resultData, lastDaysOrSessions);
                     groupLabels = new[] { "Selected Session", "Average last " + lastDaysOrSessions + " Session" };
                 }
                 else
                 {
-                    result2 = ProcessedSessionsDataHelper.GetAverageOfLastDays(resultData, lastDaysOrSessions);
+                    result2 = ProcessedSessionsHelper.GetAverageOfLastDays(resultData, lastDaysOrSessions);
                     groupLabels = new[] { "Selected Session", "Average last " + lastDaysOrSessions + " Days" };
                 }
             }
@@ -496,14 +486,14 @@ namespace PresentationTrainerVisualization.Pages
         private void PlotRadarWithGoodLabelsFromVideo()
         {
             List<AggregatedSession> resultData = processedSessions.GetAggregatedActionsBySession(false, false);
-            AggregatedSession result1 = resultData.Find(x => x.SessionDate == selectedSession.Start);
+            AggregatedSession result1 = resultData.Find(x => x.SessionDate == processedSessions.SelectedSession.Start);
             AggregatedSession result2;
             string[] groupLabels;
 
             // Decides what is shown
             if (processedConfiguration.ConfigurationLastDays == null)
             {
-                result2 = ProcessedSessionsDataHelper.GetAverageOfLastSessions(resultData, DEFAULT_NUMBER_OF_SESSIONS);
+                result2 = ProcessedSessionsHelper.GetAverageOfLastSessions(resultData, DEFAULT_NUMBER_OF_SESSIONS);
                 groupLabels = new[] { "Selected Session", "Average last " + DEFAULT_NUMBER_OF_SESSIONS + " Session" };
             }
             else
@@ -511,12 +501,12 @@ namespace PresentationTrainerVisualization.Pages
                 int lastDaysOrSessions = processedConfiguration.ConfigurationLastDays.NumberOfSessions;
                 if (processedConfiguration.ConfigurationLastDays.CompareWithLastSessions)
                 {
-                    result2 = ProcessedSessionsDataHelper.GetAverageOfLastSessions(resultData, lastDaysOrSessions);
+                    result2 = ProcessedSessionsHelper.GetAverageOfLastSessions(resultData, lastDaysOrSessions);
                     groupLabels = new[] { "Selected Session", "Average last " + lastDaysOrSessions + " Session" };
                 }
                 else
                 {
-                    result2 = ProcessedSessionsDataHelper.GetAverageOfLastDays(resultData, lastDaysOrSessions);
+                    result2 = ProcessedSessionsHelper.GetAverageOfLastDays(resultData, lastDaysOrSessions);
                     groupLabels = new[] { "Selected Session", "Average last " + lastDaysOrSessions + " Days" };
                 }
             }
@@ -596,13 +586,11 @@ namespace PresentationTrainerVisualization.Pages
 
             Color prograssColor;
             if (percentageOfRecongnisedSentences < 25)
-                prograssColor = Color.Red;
-            else if (percentageOfRecongnisedSentences < 50 && percentageOfRecongnisedSentences >= 25)
+                prograssColor = BAD_INDICATOR_COLOR;
+            else if (percentageOfRecongnisedSentences < 75 && percentageOfRecongnisedSentences >= 25)
                 prograssColor = Color.Orange;
-            else if (percentageOfRecongnisedSentences < 75 && percentageOfRecongnisedSentences >= 50)
-                prograssColor = Color.FromArgb(255, 255, 244, 0); //yellow
             else
-                prograssColor = Color.FromArgb(255, 44, 186, 0); //green
+                prograssColor = GOOD_INDICATOR_COLOR;
 
 
             WpfPlot plot = (WpfPlot)FindName("DonutForCard");

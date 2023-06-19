@@ -6,12 +6,12 @@ namespace PresentationTrainerVisualization.DashboardComponents
    
     public partial class CardTotalTimeSpent : UserControl
     {
-        private ProcessedSessionsData processedSessionsData;
+        private ProcessedSessions processedSessionsData;
 
         public CardTotalTimeSpent()
         {
             InitializeComponent();
-            processedSessionsData = new ProcessedSessionsData();
+            processedSessionsData = new ProcessedSessions();
 
             PlotCard();
         }

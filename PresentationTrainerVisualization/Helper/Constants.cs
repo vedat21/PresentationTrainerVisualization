@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 
 namespace PresentationTrainerVisualization.helper
@@ -10,6 +11,10 @@ namespace PresentationTrainerVisualization.helper
         public static string PATH_TO_SESSION_DATA = "C:\\Users\\vedat\\OneDrive\\Desktop\\BachelorNeu\\testdata\\neueDaten\\Downloads\\PracticeSession.json"; // PATH TO SESSION DATA 
         public static string PATH_TO_CONFIG_DATA = PATH_TO_DIRECTORY + @"..\\..\\..\\UserConfig\\configurations.json";
         public static string PATH_TO_GOALSCONFIG_DATA = PATH_TO_DIRECTORY + @"..\\..\\..\\UserConfig\\goals.json";
+
+        // Color used in dashboards
+        public static Color GOOD_INDICATOR_COLOR = Color.Green;
+        public static Color BAD_INDICATOR_COLOR = Color.Maroon;
 
 
         // The Buttons in GoalSettingWindow should habe same name

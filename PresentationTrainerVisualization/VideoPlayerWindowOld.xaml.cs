@@ -26,7 +26,7 @@ namespace PresentationTrainerVisualization.windows
 
         private ListBox listBox;
         private MediaElement mediaElement;
-        private ProcessedSessionsData processedSessionsData;
+        private ProcessedSessions processedSessionsData;
 
         private DispatcherTimer videoCurrentTime;
         private DispatcherTimer loopTimer;
@@ -55,9 +55,9 @@ namespace PresentationTrainerVisualization.windows
             mediaElement = (MediaElement)FindName("VideoPlayer");
             listBox = IsActionVideo ? (ListBox)FindName("ListBoxActions") : (ListBox)FindName("ListBoxSentences");
 
-            processedSessionsData = new ProcessedSessionsData();
-            actions = processedSessionsData.GetSelectedSession().Actions;
-            sentences = processedSessionsData.GetSelectedSession().Sentences;
+            processedSessionsData = new ProcessedSessions();
+            actions = processedSessionsData.SelectedSession.Actions;
+            sentences = processedSessionsData.SelectedSession.Sentences;
 
 
             // Initialize the timer
@@ -169,7 +169,7 @@ namespace PresentationTrainerVisualization.windows
 
         public void TestIwas(object sender, RoutedEventArgs e)
         {
-            List<Action> actions = processedSessionsData.GetSelectedSession().Actions;
+            List<Action> actions = processedSessionsData.SelectedSession.Actions;
 
 
             string x = actions[0].Start.ToString("mm\\:ss");

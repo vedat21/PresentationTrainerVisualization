@@ -4,31 +4,30 @@ using PresentationTrainerVisualization.models.json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.RightsManagement;
+
 
 namespace PresentationTrainerVisualization.Helper
 {
-    public class ProcessedConfigurationData
+    public class ProcessedConfigurations
     {
         public Configuration ConfigurationLastDays { get; set; }
         public Configuration ConfigurationTimeSpan { get; set; }
 
-        private ConfigurationsRoot configurationRoot;
+        private ConfigurationsRoot configurationsRoot;
 
-        public ProcessedConfigurationData()
+        public ProcessedConfigurations()
         {
             if (File.Exists(Constants.PATH_TO_CONFIG_DATA))
             {
                 string json = File.ReadAllText(Constants.PATH_TO_CONFIG_DATA);
-                configurationRoot = JsonConvert.DeserializeObject<ConfigurationsRoot>(json);
-                ConfigurationLastDays = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_LAST_X.ToString());
-                ConfigurationTimeSpan = configurationRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_DATES.ToString());
+                configurationsRoot = JsonConvert.DeserializeObject<ConfigurationsRoot>(json);
+                ConfigurationLastDays = configurationsRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_LAST_X.ToString());
+                ConfigurationTimeSpan = configurationsRoot.Configurations.Find(x => x.Label == Constants.ConfigurationLabel.CONFIGURATION_DATES.ToString());
             }
             else
             {
-                configurationRoot = new ConfigurationsRoot();
-                configurationRoot.Configurations = new List<Configuration>();
+                configurationsRoot = new ConfigurationsRoot();
+                configurationsRoot.Configurations = new List<Configuration>();
 
                 ConfigurationTimeSpan = new Configuration
                 {
@@ -47,11 +46,11 @@ namespace PresentationTrainerVisualization.Helper
         public void UpdateConfiguration(Configuration configuration)
         {
             // remove configuration if it already exists
-            configurationRoot.Configurations.RemoveAll(x => x.Label == configuration.Label);
+            configurationsRoot.Configurations.RemoveAll(x => x.Label == configuration.Label);
             // add new configuration
-            configurationRoot.Configurations.Add(configuration);
+            configurationsRoot.Configurations.Add(configuration);
 
-            File.WriteAllText(Constants.PATH_TO_CONFIG_DATA, JsonConvert.SerializeObject(configurationRoot));
+            File.WriteAllText(Constants.PATH_TO_CONFIG_DATA, JsonConvert.SerializeObject(configurationsRoot));
         }
 
     }

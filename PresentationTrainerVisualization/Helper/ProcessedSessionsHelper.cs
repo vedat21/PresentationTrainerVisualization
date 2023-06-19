@@ -8,8 +8,38 @@ using System.Linq;
 
 namespace PresentationTrainerVisualization.helper
 {
-    public static class ProcessedSessionsDataHelper
+    public static class ProcessedSessionsHelper
     {
+        public static AggregatedSession GetAverageOfLastDays(List<AggregatedSession> aggregatedSessions, int numberOfLastDays)
+        {
+
+            DateTime lastIncludedDay = DateTime.Today.AddDays(-numberOfLastDays);
+            Trace.WriteLine(lastIncludedDay.ToString());
+
+            List<AggregatedObject> result = new List<AggregatedObject>();
+            Dictionary<String, double> resultSum = new Dictionary<String, double>();
+
+            int numberOfSessions = 0;
+
+            foreach (var aggregatedSession in aggregatedSessions)
+
+                if (DateTime.Compare(lastIncludedDay, aggregatedSession.SessionDate) <= 0)
+                {
+                    Trace.WriteLine(aggregatedSession.SessionDate.ToString());
+                    foreach (var aggregatedObject in aggregatedSession.AggregatedObjects)
+                        if (resultSum.ContainsKey(aggregatedObject.Label))
+                            resultSum[aggregatedObject.Label] = (resultSum[aggregatedObject.Label] + aggregatedObject.Count);
+                        else
+                            resultSum[aggregatedObject.Label] = aggregatedObject.Count;
+
+                    numberOfSessions++;
+                }
+
+            foreach (KeyValuePair<String, double> kvp in resultSum)
+                result.Add(new AggregatedObject(kvp.Key, kvp.Value / numberOfSessions));
+
+            return new AggregatedSession(result);
+        }
 
         /// <summary>
         /// Returns a list with the average of all lists combined.
@@ -39,37 +69,6 @@ namespace PresentationTrainerVisualization.helper
             foreach (KeyValuePair<String, double> kvp in resultSum)
                 result.Add(new AggregatedObject(kvp.Key, kvp.Value / numberOfLastSessions));
        
-
-            return new AggregatedSession(result);
-        }
-
-        public static AggregatedSession GetAverageOfLastDays(List<AggregatedSession> aggregatedSessions, int numberOfLastDays)
-        {
-
-            DateTime lastIncludedDay = DateTime.Today.AddDays(-numberOfLastDays);
-            Trace.WriteLine(lastIncludedDay.ToString());
-
-            List<AggregatedObject> result = new List<AggregatedObject>();
-            Dictionary<String, double> resultSum = new Dictionary<String, double>();
-
-            int numberOfSessions = 0;
-
-            foreach (var aggregatedSession in aggregatedSessions)
-
-                if (DateTime.Compare(lastIncludedDay, aggregatedSession.SessionDate) <= 0)
-                {
-                    Trace.WriteLine(aggregatedSession.SessionDate.ToString());
-                    foreach (var aggregatedObject in aggregatedSession.AggregatedObjects)
-                        if (resultSum.ContainsKey(aggregatedObject.Label))
-                            resultSum[aggregatedObject.Label] = (resultSum[aggregatedObject.Label] + aggregatedObject.Count);
-                        else
-                            resultSum[aggregatedObject.Label] = aggregatedObject.Count;
-
-                    numberOfSessions++;
-                }
-
-            foreach (KeyValuePair<String, double> kvp in resultSum)
-                result.Add(new AggregatedObject(kvp.Key, kvp.Value / numberOfSessions));
 
             return new AggregatedSession(result);
         }

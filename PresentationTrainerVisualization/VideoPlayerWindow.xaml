@@ -25,7 +25,7 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Rectangle Fill="Red" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= Mistake, Converter={StaticResource BoolToVisibility}}" />
+                                    <Rectangle Fill="Maroon" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= Mistake, Converter={StaticResource BoolToVisibility}}" />
                                     <Rectangle Fill="Green" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= Mistake, Converter={StaticResource InverseBoolToVisConverter}}" />
                                     <TextBlock  FontWeight="Bold" Text="{Binding LogActionDisplay}" />
                                 </StackPanel>
@@ -53,7 +53,7 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Rectangle Fill="Red" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= WasIdentified, Converter={StaticResource InverseBoolToVisConverter}}" />
+                                    <Rectangle Fill="Maroon" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= WasIdentified, Converter={StaticResource InverseBoolToVisConverter}}" />
                                     <Rectangle Fill="Green" Width="16" Height="16" Margin="0,2,5,2"  Visibility="{Binding Path= WasIdentified, Converter={StaticResource BoolToVisibility}}" />
                                     <TextBlock FontWeight="Bold" Text="{Binding SentenceText}"  ToolTipService.ToolTip="{Binding SentenceText}" />
                                 </StackPanel>

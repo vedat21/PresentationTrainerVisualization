@@ -5,12 +5,12 @@ namespace PresentationTrainerVisualization.DashboardComponents
 {
     public partial class CardAverageNumberOfBadActions : UserControl
     {
-        private ProcessedSessionsData processedSessionsData;
+        private ProcessedSessions processedSessionsData;
 
         public CardAverageNumberOfBadActions()
         {
             InitializeComponent();
-            processedSessionsData = new ProcessedSessionsData();
+            processedSessionsData = new ProcessedSessions();
 
             PlotCard();
         }

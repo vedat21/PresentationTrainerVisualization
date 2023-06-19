@@ -6,8 +6,6 @@ using PresentationTrainerVisualization.Pages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -15,17 +13,13 @@ using System.Windows.Media;
 
 namespace PresentationTrainerVisualization
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+   
     public partial class MainWindow : Window
     {
-        private ProcessedSessionsData processedSessions;
-        private ProcessedConfigurationData processedConfiguration;
+        private ProcessedSessions processedSessions;
+        private ProcessedConfigurations processedConfiguration;
 
         private ComboBox comboBoxSelectedSession;
-
-        private bool isLastSession;
 
         private int DEFAULT_NUMBER_OF_SESSIONS = 7;
 
@@ -34,8 +28,8 @@ namespace PresentationTrainerVisualization
             InitializeComponent();
             WindowState = WindowState.Maximized;
 
-            processedSessions = new ProcessedSessionsData();
-            processedConfiguration = new ProcessedConfigurationData();
+            processedSessions = new ProcessedSessions();
+            processedConfiguration = new ProcessedConfigurations();
 
             comboBoxSelectedSession = (ComboBox)FindName("ComboSessions");
 
@@ -77,7 +71,7 @@ namespace PresentationTrainerVisualization
                 }
                 else
                 {
-                    slider.Maximum = processedSessions.NumberOfDaysBetweenFirstSessionAndToday();
+                    slider.Maximum = processedSessions.GetNumberOfDaysBetweenFirstSessionAndToday();
                 }
             }
             else
@@ -144,7 +138,7 @@ namespace PresentationTrainerVisualization
             }
             else
             {
-                slider.Maximum = processedSessions.NumberOfDaysBetweenFirstSessionAndToday();
+                slider.Maximum = processedSessions.GetNumberOfDaysBetweenFirstSessionAndToday();
             }
 
             UpdateLastDaysConfiguration();

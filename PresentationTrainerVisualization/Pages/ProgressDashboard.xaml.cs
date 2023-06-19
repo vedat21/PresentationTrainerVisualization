@@ -12,16 +12,16 @@ namespace PresentationTrainerVisualization.Pages
 {
     public partial class ProgressDashboard : Page
     {
-        private ProcessedSessionsData processedSessionsData { get; }
-        private ProcessedGoalsData processedGoalsData;
-        private ProcessedConfigurationData processedConfiguration;
+        private ProcessedSessions processedSessionsData { get; }
+        private ProcessedGoals processedGoalsData;
+        private ProcessedConfigurations processedConfiguration;
 
         public ProgressDashboard()
         {
             InitializeComponent();
-            processedSessionsData = new ProcessedSessionsData();
-            processedGoalsData = new ProcessedGoalsData();
-            processedConfiguration = new ProcessedConfigurationData();
+            processedSessionsData = new ProcessedSessions();
+            processedGoalsData = new ProcessedGoals();
+            processedConfiguration = new ProcessedConfigurations();
 
             PlotAverageOfIdentifiedSentences();
             PlotPercentageOfIfdentifiedSentencesInTimeLine();
@@ -39,13 +39,11 @@ namespace PresentationTrainerVisualization.Pages
 
             Color prograssColor;
             if (percentageOfRecongnisedSentences < 25)
-                prograssColor = Color.Red;
-            else if (percentageOfRecongnisedSentences < 50 && percentageOfRecongnisedSentences >= 25)
+                prograssColor = Constants.BAD_INDICATOR_COLOR;
+            else if (percentageOfRecongnisedSentences < 75 && percentageOfRecongnisedSentences >= 25)
                 prograssColor = Color.Orange;
-            else if (percentageOfRecongnisedSentences < 75 && percentageOfRecongnisedSentences >= 50)
-                prograssColor = Color.FromArgb(255, 255, 244, 0); //yellow
             else
-                prograssColor = Color.FromArgb(255, 44, 186, 0); //green
+                prograssColor = Constants.GOOD_INDICATOR_COLOR;
 
 
 
@@ -213,8 +211,8 @@ namespace PresentationTrainerVisualization.Pages
             var barGoodActions = plot.Plot.AddBar(dataGood.ToArray());
             barGoodActions.Label = "No Mistake";
             barBadActions.Label = "Mistake";
-            barGoodActions.Color = Color.FromArgb(255, 44, 186, 0);
-            barBadActions.Color = Color.Red;
+            barGoodActions.Color = Constants.GOOD_INDICATOR_COLOR;
+            barBadActions.Color = Constants.BAD_INDICATOR_COLOR;
 
             plot.Plot.XTicks(positions, DataLabels.ToArray());
             plot.Plot.Legend(location: Alignment.UpperRight);

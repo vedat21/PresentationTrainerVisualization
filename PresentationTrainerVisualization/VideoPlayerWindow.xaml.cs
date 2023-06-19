@@ -20,8 +20,7 @@ namespace PresentationTrainerVisualization
         public Player VideoPlayer { get; set; }
         public Config Config { get; set; }
 
-        private ListBox usedListBox;
-        private ProcessedSessionsData processedSessionsData;
+        private ProcessedSessions processedSessionsData;
         private List<Action> actions;
         private List<Sentence> sentences;
         private bool isActionAnnotation;
@@ -31,6 +30,8 @@ namespace PresentationTrainerVisualization
         private int selectedAnnotationIndex = 0;  // keeps track of which annotation is currently selected
         private bool doLoop = false;
         private bool isPlaying = false;
+
+        private ListBox usedListBox;
 
 
         public VideoPlayerWindow(bool isActionAnnotation)
@@ -42,9 +43,9 @@ namespace PresentationTrainerVisualization
             VideoPlayer = new Player(Config);
             InitializeComponent();
             DataContext = this;
-            processedSessionsData = new ProcessedSessionsData();
+            processedSessionsData = new ProcessedSessions();
             actions = processedSessionsData.GetSelectedSessionActions();
-            sentences = processedSessionsData.GetSelectedSession().Sentences;
+            sentences = processedSessionsData.SelectedSession.Sentences;
             videoTimer = new DispatcherTimer();
             loopTimer = new DispatcherTimer();
 

@@ -18,8 +18,8 @@ namespace PresentationTrainerVisualization.Pages
 
     public partial class GoalSettingPage : Page
     {
-        private ProcessedSessionsData processedSessions;
-        private ProcessedGoalsData processedGoals;
+        private ProcessedSessions processedSessions;
+        private ProcessedGoals processedGoals;
 
         private List<Action> badActions;
         private List<Action> goodActions;
@@ -30,8 +30,8 @@ namespace PresentationTrainerVisualization.Pages
         {
             InitializeComponent();
 
-            processedSessions = ProcessedSessionsData.GetInstance();
-            processedGoals = new ProcessedGoalsData();
+            processedSessions = ProcessedSessions.GetInstance();
+            processedGoals = new ProcessedGoals();
 
             badActions = new List<Action>();
             goodActions = new List<Action>();

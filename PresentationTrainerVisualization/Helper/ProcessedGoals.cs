@@ -8,25 +8,22 @@ using static PresentationTrainerVisualization.helper.Constants;
 
 namespace PresentationTrainerVisualization.helper
 {
-    class ProcessedGoalsData
+    class ProcessedGoals
     {
         private GoalsRoot goalsRoot;
 
-        public ProcessedGoalsData()
+        public ProcessedGoals()
         {
-
             if (File.Exists(Constants.PATH_TO_GOALSCONFIG_DATA))
             {
                 string json = File.ReadAllText(Constants.PATH_TO_GOALSCONFIG_DATA);
                 goalsRoot = JsonConvert.DeserializeObject<GoalsRoot>(json);
-               
             }
             else
             {
                 goalsRoot = new GoalsRoot();
                 goalsRoot.Goals = new List<Goal>();
             }
-
         }
 
         public Goal GetGoal(string label)

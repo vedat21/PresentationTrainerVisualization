@@ -2,11 +2,8 @@
 using PresentationTrainerVisualization.models.json;
 using ScottPlot;
 using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
-using static PresentationTrainerVisualization.helper.Constants;
 using Color = System.Drawing.Color;
 
 
@@ -15,21 +12,21 @@ namespace PresentationTrainerVisualization.DashboardComponents
     public partial class GoalNumberOfSessions : UserControl
     {
 
-        private ProcessedSessionsData processedSessionsData;
-        private ProcessedGoalsData processedGoalsData;
+        private ProcessedSessions processedSessionsData;
+        private ProcessedGoals processedGoalsData;
 
         public GoalNumberOfSessions()
         {
             InitializeComponent();
-            processedSessionsData = new ProcessedSessionsData();
-            processedGoalsData = new ProcessedGoalsData();
+            processedSessionsData = new ProcessedSessions();
+            processedGoalsData = new ProcessedGoals();
 
             PlotGoalNumberOfSessionsInDays();
         }
 
         public void PlotGoalNumberOfSessionsInDays()
         {
-            Goal goal = processedGoalsData.GetGoal(GoalsLabel.NumberOfSessionsForDays.ToString());
+            Goal goal = processedGoalsData.GetGoal(Constants.GoalsLabel.NumberOfSessionsForDays.ToString());
 
             if (goal == null)
             {
@@ -38,8 +35,8 @@ namespace PresentationTrainerVisualization.DashboardComponents
             }
 
 
-            double numberOfDaysLeft = (goal.StartDate.AddDays(int.Parse(goal.Description[GoalsDescription.number_of_days.ToString()])) - DateTime.Today).TotalDays;
-            int numberOfSessionsGoals = int.Parse(goal.Description[GoalsDescription.number_of_sessions.ToString()]);
+            double numberOfDaysLeft = (goal.StartDate.AddDays(int.Parse(goal.Description[Constants.GoalsDescription.number_of_days.ToString()])) - DateTime.Today).TotalDays;
+            int numberOfSessionsGoals = int.Parse(goal.Description[Constants.GoalsDescription.number_of_sessions.ToString()]);
             var numberOfSessionsToday = 3; //    var numberOfSessionsToday = processedSessionsData.GetNumberOfSessionsToday();
             int numberOfSessionsMissingToday = numberOfSessionsGoals - numberOfSessionsToday;
 
@@ -77,13 +74,11 @@ namespace PresentationTrainerVisualization.DashboardComponents
             Color prograssColor;
 
             if (result < 25)
-                prograssColor = Color.Red;
-            else if (result < 50 && result >= 25)
+                prograssColor = Constants.BAD_INDICATOR_COLOR;
+            else if (result < 70 && result >= 25)
                 prograssColor = Color.Orange;
-            else if (result < 75 && result >= 50)
-                prograssColor = Color.FromArgb(255, 255, 244, 0); //yellow
             else
-                prograssColor = Color.FromArgb(255, 44, 186, 0); //green
+                prograssColor = Constants.GOOD_INDICATOR_COLOR;
 
             WpfPlot plot = (WpfPlot)FindName("GoalPlot");
             var pie = plot.Plot.AddPie(new double[] { result, 100 - result });

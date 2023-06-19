@@ -8,12 +8,12 @@ namespace PresentationTrainerVisualization.DashboardComponents
     /// </summary>
     public partial class CardNumberOfSessions : UserControl
     {
-        private ProcessedSessionsData processedSessionsData;
+        private ProcessedSessions processedSessionsData;
 
         public CardNumberOfSessions()
         {
             InitializeComponent();
-            processedSessionsData = new ProcessedSessionsData();
+            processedSessionsData = new ProcessedSessions();
 
             PlotCard();
         }
