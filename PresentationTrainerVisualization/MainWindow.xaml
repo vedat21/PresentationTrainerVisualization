@@ -73,7 +73,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Column="0" Background="#673AB7" CornerRadius="8 0 0 8">
+                <Border Grid.Column="0" Background="#1c4e80" CornerRadius="8 0 0 8">
                     <Grid x:Name="Navigation" Width="60">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using PresentationTrainerVisualization.helper;
 using PresentationTrainerVisualization.models.json;
 using System;
 using System.Collections.Generic;

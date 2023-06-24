@@ -6,7 +6,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 
-namespace PresentationTrainerVisualization.helper
+namespace PresentationTrainerVisualization.Helper
 {
     public static class ProcessedSessionsHelper
     {

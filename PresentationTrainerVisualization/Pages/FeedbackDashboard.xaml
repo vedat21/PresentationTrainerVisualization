@@ -4,8 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PresentationTrainerVisualization.Pages"
-      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      xmlns:CardComponents="clr-namespace:PresentationTrainerVisualization.DashboardComponents"
+      xmlns:Feedback="clr-namespace:PresentationTrainerVisualization.DashboardComponents.Feedback"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1200"
       Title="Dashboard1">
@@ -27,108 +26,15 @@
         </Grid.ColumnDefinitions>
 
         <!-- First Row-->
-        <materialDesign:Card Style="{StaticResource CardNormalComponent}" Grid.Column="0" Grid.Row="1">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="0.2*"/>
-                </Grid.RowDefinitions>
-                <WpfPlot x:Name="DonutForCard"/>
-                <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Gray" Width="Auto" Height="Auto" TextWrapping="Wrap" FontSize="16">Identified Sentences</TextBlock>
-            </Grid>
-        </materialDesign:Card>
-        <materialDesign:Card x:Name="DurationOfSession" Style="{StaticResource CardNormalComponent}" MaxWidth="450" Grid.Column="1" Grid.Row="1">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.4*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock x:Name="TitleDurationOfSession"  FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="16" HorizontalAlignment="Center" Grid.ColumnSpan="2" Text="Duration of Session"/> 
-
-                <TextBlock x:Name="SelectedSessionText" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="14" Grid.Row="1" Grid.Column="0" />
-                <TextBlock x:Name="LastXSession" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="14" />
-
-                <TextBlock x:Name="TimeLastSession" Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Text="mm:ss" />
-                <TextBlock x:Name="TimeLastXSession" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Text="mm:ss" />
-
-                <TextBlock x:Name="TimeTipLastSession" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center"  FontSize="12" />
-                <TextBlock x:Name="TimeTipLastXSession" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center"  FontSize="12" />
-
-                <Border Grid.ColumnSpan="10" Grid.RowSpan="10" BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center"/>
-
-            </Grid>
-        </materialDesign:Card>
-        <materialDesign:Card Style="{StaticResource CardNormalComponent}" Grid.Column="2" Grid.Row="1">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="0.9*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="20" Text="Mistake Actions" />
-                <TextBlock x:Name="NumberOfBadActions" Grid.Row="0" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Text="20"/>
-                <materialDesign:PackIcon  Kind="TaskAuto" Height="40" Width="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1"></materialDesign:PackIcon>
-            </Grid>
-        </materialDesign:Card>
-        <materialDesign:Card Style="{StaticResource CardNormalComponent}" Grid.Row="1" Grid.Column="3">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="0.9*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="20" Text="Actions" />
-                <TextBlock x:Name="NumberOfGoodActions" Grid.Row="0" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" />
-                <materialDesign:PackIcon  Kind="TaskAuto" Height="40" Width="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1"></materialDesign:PackIcon>
-            </Grid>
-        </materialDesign:Card>
+        <Feedback:CardIdentifiedSentences Grid.Column="0" Grid.Row="1" />
+        <Feedback:GoalDurationOfSession Grid.Column="1" Grid.Row="1" />
+        <Feedback:CardNumberMistakeActions Grid.Column="2" Grid.Row="1" />
+        <Feedback:CardNumberActions Grid.Row="1" Grid.Column="3"/>
 
         <!-- Chart Plots-->
-        <WpfPlot x:Name="RadarBadActions" Style="{StaticResource PlotStyle}"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
-        <WpfPlot x:Name="RadarGoodActions" Style="{StaticResource PlotStyle}"  Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Visibility="Collapsed"/> 
-        
-        <WpfPlot x:Name="RadarActions" Style="{StaticResource PlotStyle}"  Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="3" /> 
-        
-        <Grid x:Name="CandleActionsGrid" Grid.Row="2" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.16*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <WpfPlot x:Name="CandleActions" Style="{StaticResource PlotStyle}"  Grid.ColumnSpan="2"  Grid.RowSpan="2" />
-            <Button ToolTip="Show in Video" Click="ActionVideoButtonClicked" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Right" Width="Auto" Height="Auto">
-                <materialDesign:PackIcon Foreground="Black"  MaxHeight="30" MaxWidth="30" Height="Auto" Width="Auto" Kind="VideoOutline"></materialDesign:PackIcon>
-            </Button>
-        </Grid>
-        <Grid x:Name="CandleSentencesGrid" Grid.Row="4" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.16*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <WpfPlot x:Name="CandleSentences" Style="{StaticResource PlotStyle}"  Grid.RowSpan="2" Grid.Column="2" Grid.ColumnSpan="2"/>
-            <Button ToolTip="Show in Video" Click="SentenceVideoButtonClicked" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Right" Width="Auto" Height="Auto">
-                <materialDesign:PackIcon Foreground="Black" MaxHeight="30" MaxWidth="30" Height="Auto" Width="Auto" Kind="VideoOutline"></materialDesign:PackIcon>
-            </Button>
-        </Grid>
-
+        <Feedback:ActionsDistribution Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="3" />
+        <Feedback:ActionsVideoTimeLine Grid.Row="2" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" />
+        <Feedback:SentencesVideoTimeLine  Grid.Row="4" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" />
+      
     </Grid>
 </Page>

@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
 using PresentationTrainerVisualization.models.json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using static PresentationTrainerVisualization.helper.Constants;
+using static PresentationTrainerVisualization.Helper.Constants;
 
-namespace PresentationTrainerVisualization.helper
+namespace PresentationTrainerVisualization.Helper
 {
     class ProcessedGoals
     {
@@ -37,10 +36,14 @@ namespace PresentationTrainerVisualization.helper
             goalsRoot.Goals.RemoveAll(x => x.Label == goal.Label);
             // add new goal
             goalsRoot.Goals.Add(goal);
-
+            // save in json file
             File.WriteAllText(Constants.PATH_TO_GOALSCONFIG_DATA, JsonConvert.SerializeObject(goalsRoot));
         }
 
+        /// <summary>
+        /// Gets list of all actions selected in GoalSetting page
+        /// </summary>
+        /// <returns></returns>
         public List<string> GetSelectedActionsLog()
         {
             List<string> selectedActions = new List<string>();

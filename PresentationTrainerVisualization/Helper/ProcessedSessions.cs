@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using PresentationTrainerVisualization.Helper;
 using PresentationTrainerVisualization.models;
 using PresentationTrainerVisualization.models.json;
 using System;
@@ -7,11 +6,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using static PresentationTrainerVisualization.helper.Constants;
 using Action = PresentationTrainerVisualization.models.json.Action;
 
 
-namespace PresentationTrainerVisualization.helper
+namespace PresentationTrainerVisualization.Helper
 {
     public class ProcessedSessions
     {
@@ -23,9 +21,10 @@ namespace PresentationTrainerVisualization.helper
         private ProcessedGoals processedGoals;
         private ProcessedConfigurations processedConfigurations;
 
-
         public ProcessedSessions()
         {
+            instance = this; 
+
             sessionsRoot = JsonConvert.DeserializeObject<SessionsRoot>(File.ReadAllText(Constants.PATH_TO_SESSION_DATA));
             processedGoals = new ProcessedGoals();
             processedConfigurations = new ProcessedConfigurations();

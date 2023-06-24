@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using PresentationTrainerVisualization.helper;
+﻿using PresentationTrainerVisualization.Helper;
 using PresentationTrainerVisualization.Helper;
 using PresentationTrainerVisualization.models.json;
 using PresentationTrainerVisualization.Pages;

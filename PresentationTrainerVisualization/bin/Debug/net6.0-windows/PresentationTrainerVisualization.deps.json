@@ -9,21 +9,12 @@
       "PresentationTrainerVisualization/1.0.0": {
         "dependencies": {
           "FlyleafLib": "3.7.20",
-          "FlyleafLib.Controls.WPF": "1.2.23",
           "MaterialDesignThemes": "4.8.0",
           "Newtonsoft.Json": "13.0.3",
           "ScottPlot.WPF": "4.1.61"
         },
         "runtime": {
           "PresentationTrainerVisualization.dll": {}
-        }
-      },
-      "Dragablz/0.0.3.234": {
-        "runtime": {
-          "lib/netcoreapp3.0/Dragablz.dll": {
-            "assemblyVersion": "0.0.3.234",
-            "fileVersion": "0.0.3.234"
-          }
         }
       },
       "FFmpeg.AutoGen/5.1.2.1": {
@@ -48,20 +39,6 @@
           "lib/net6.0-windows7.0/FlyleafLib.dll": {
             "assemblyVersion": "3.7.20.0",
             "fileVersion": "3.7.20.0"
-          }
-        }
-      },
-      "FlyleafLib.Controls.WPF/1.2.23": {
-        "dependencies": {
-          "Dragablz": "0.0.3.234",
-          "FlyleafLib": "3.7.20",
-          "MaterialDesignThemes": "4.8.0",
-          "WpfColorFontDialog": "1.0.8"
-        },
-        "runtime": {
-          "lib/net6.0-windows7.0/FlyleafLib.Controls.WPF.dll": {
-            "assemblyVersion": "1.2.23.0",
-            "fileVersion": "1.2.23.0"
           }
         }
       },
@@ -281,14 +258,6 @@
             "fileVersion": "2.4.2.0"
           }
         }
-      },
-      "WpfColorFontDialog/1.0.8": {
-        "runtime": {
-          "lib/netcoreapp3.1/WpfColorFontDialog.dll": {
-            "assemblyVersion": "1.0.8.0",
-            "fileVersion": "1.0.8.0"
-          }
-        }
       }
     }
   },
@@ -297,13 +266,6 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
-    },
-    "Dragablz/0.0.3.234": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-soq8laPTrPWSA3vC3fnfU/gye2VejTbRXTuXzmVoHIySHWe5MhSIqR9KvFRmwk8xglsjVnnaa+su/10cFieuTw==",
-      "path": "dragablz/0.0.3.234",
-      "hashPath": "dragablz.0.0.3.234.nupkg.sha512"
     },
     "FFmpeg.AutoGen/5.1.2.1": {
       "type": "package",
@@ -318,13 +280,6 @@
       "sha512": "sha512-6C+jjdG6yno7XbJp9lp0LD1RCr7yHQlRlefMhrajICyC2o2Ix6iXD9rRseCFPBiJzVRJuT31rVDmVd02x7zbJw==",
       "path": "flyleaflib/3.7.20",
       "hashPath": "flyleaflib.3.7.20.nupkg.sha512"
-    },
-    "FlyleafLib.Controls.WPF/1.2.23": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-oVB1ODXFd3iOUsj2j503VOnQ415F0MBgltRTcIz95SoRC2yEpH/6ZeTm4sc3ZT2w2L1E2zO/gtf/NkjNckJ2XQ==",
-      "path": "flyleaflib.controls.wpf/1.2.23",
-      "hashPath": "flyleaflib.controls.wpf.1.2.23.nupkg.sha512"
     },
     "MaterialDesignColors/2.1.2": {
       "type": "package",
@@ -479,13 +434,6 @@
       "sha512": "sha512-yzYDJbTU14/ZnKRaj9F8REgIATkTKsNw76Gbe2NH9Q+XOqTG66E6aIbI9pM9bCUkCZ3bTnIO5vmBx0xhvpFasQ==",
       "path": "vortice.xaudio2/2.4.2",
       "hashPath": "vortice.xaudio2.2.4.2.nupkg.sha512"
-    },
-    "WpfColorFontDialog/1.0.8": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-XkClT52TgzGO4kvYULaHCxfw95qoSJLQVsKT9NGx7ZnFoKIkwAsuDpS8b9e9HVi6rQC2cblznEE+ZqjVecLVYg==",
-      "path": "wpfcolorfontdialog/1.0.8",
-      "hashPath": "wpfcolorfontdialog.1.0.8.nupkg.sha512"
     }
   }
 }

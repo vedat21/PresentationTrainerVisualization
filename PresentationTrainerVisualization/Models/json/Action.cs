@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using PresentationTrainerVisualization.helper;
+using PresentationTrainerVisualization.Helper;
 using System;
 using System.Runtime.Serialization;
 

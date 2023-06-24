@@ -7,19 +7,55 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="DashboardComponents\CardAverageNumberOfBadActions.xaml.cs">
+    <Compile Update="DashboardComponents\Feedback\ActionsDistribution.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="DashboardComponents\CardAverageNumberOfGoodActions.xaml.cs">
+    <Compile Update="DashboardComponents\Feedback\ActionsVideoTimeLine.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="DashboardComponents\CardNumberOfSessions.xaml.cs">
+    <Compile Update="DashboardComponents\Feedback\CardIdentifiedSentences.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="DashboardComponents\CardTotalTimeSpent.xaml.cs">
+    <Compile Update="DashboardComponents\Feedback\CardNumberActions.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="DashboardComponents\GoalNumberOfSessions.xaml.cs">
+    <Compile Update="DashboardComponents\Feedback\CardNumberMistakeActions.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\Feedback\GoalDurationOfSession.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\Feedback\SentencesVideoTimeLine.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\Progress\ActionsInTimeLine.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\Progress\CardAverageNumberOfBadActions.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\Progress\CardAverageNumberOfGoodActions.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\Progress\CardAverageOfIdentifiedSentences.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\Progress\CardNumberOfSessions.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\Progress\CardTotalTimeSpent.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\Progress\GoalNumberOfSessions.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\Progress\DurationInTimeLine.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\Progress\NumberOfSessionsInTimeLine.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardComponents\Progress\PercentageOfIdentifiedInTimeLine.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="VideoPlayerWindow.xaml.cs">
@@ -39,19 +75,55 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="DashboardComponents\CardAverageNumberOfBadActions.xaml">
+    <Page Update="DashboardComponents\Feedback\ActionsDistribution.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DashboardComponents\CardAverageNumberOfGoodActions.xaml">
+    <Page Update="DashboardComponents\Feedback\ActionsVideoTimeLine.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DashboardComponents\CardNumberOfSessions.xaml">
+    <Page Update="DashboardComponents\Feedback\CardIdentifiedSentences.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DashboardComponents\CardTotalTimeSpent.xaml">
+    <Page Update="DashboardComponents\Feedback\CardNumberActions.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DashboardComponents\GoalNumberOfSessions.xaml">
+    <Page Update="DashboardComponents\Feedback\CardNumberMistakeActions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\Feedback\GoalDurationOfSession.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\Feedback\SentencesVideoTimeLine.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\Progress\ActionsInTimeLine.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\Progress\CardAverageNumberOfBadActions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\Progress\CardAverageNumberOfGoodActions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\Progress\CardAverageOfIdentifiedSentences.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\Progress\CardNumberOfSessions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\Progress\CardTotalTimeSpent.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\Progress\GoalNumberOfSessions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\Progress\DurationInTimeLine.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\Progress\NumberOfSessionsInTimeLine.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardComponents\Progress\PercentageOfIdentifiedInTimeLine.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="VideoPlayerWindow.xaml">

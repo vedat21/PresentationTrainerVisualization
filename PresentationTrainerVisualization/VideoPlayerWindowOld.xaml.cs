@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using PresentationTrainerVisualization.helper;
+using PresentationTrainerVisualization.Helper;
 using PresentationTrainerVisualization.models.json;
 using System;
 using System.Collections;
@@ -13,7 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using static PresentationTrainerVisualization.helper.Constants;
+using static PresentationTrainerVisualization.Helper.Constants;
 using Action = PresentationTrainerVisualization.models.json.Action;
 
 namespace PresentationTrainerVisualization.windows

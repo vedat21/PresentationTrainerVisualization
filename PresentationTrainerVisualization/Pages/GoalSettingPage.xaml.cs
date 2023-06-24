@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using PresentationTrainerVisualization.helper;
+using PresentationTrainerVisualization.Helper;
 using PresentationTrainerVisualization.models.json;
 using System;
 using System.Collections;
@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using static PresentationTrainerVisualization.helper.Constants;
+using static PresentationTrainerVisualization.Helper.Constants;
 using Action = PresentationTrainerVisualization.models.json.Action;
 
 namespace PresentationTrainerVisualization.Pages

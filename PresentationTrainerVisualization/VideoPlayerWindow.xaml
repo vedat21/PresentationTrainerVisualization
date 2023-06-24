@@ -85,14 +85,20 @@
             <Button  Click="PlayMediaButtonClicked" Margin="5">
                 <materialDesign:PackIcon x:Name="playButtonIcon" Kind="Pause"></materialDesign:PackIcon>
             </Button>
-            <Button Click="LeftArrowButtonClicked" Margin="5">
+            <Button ToolTip="Jump to previous Action" Click="LeftArrowButtonClicked" Margin="5">
                 <materialDesign:PackIcon Kind="ArrowLeftBold"></materialDesign:PackIcon>
             </Button>
-            <Button  Click="RightArrowButtonClicked" Margin="5">
+            <Button ToolTip="Jump to next Action"  Click="RightArrowButtonClicked" Margin="5">
                 <materialDesign:PackIcon Kind="ArrowRightBold"></materialDesign:PackIcon>
             </Button>
-            <Button x:Name="LoopButton" Click="LoopButtonClicked" Margin="5">
+            <Button ToolTip="Loop selected Action" x:Name="LoopButton" Click="LoopButtonClicked" Margin="5">
                 <materialDesign:PackIcon Kind="Loop"></materialDesign:PackIcon>
+            </Button>
+            <Button ToolTip="Speed Down"  Command="{Binding VideoPlayer.Commands.SpeedDown}" Margin="100,5,5,5">
+                <materialDesign:PackIcon Kind="FastRewind"></materialDesign:PackIcon>
+            </Button>
+            <Button ToolTip="Speed Up"  Command="{Binding VideoPlayer.Commands.SpeedUp}" Margin="5">
+                <materialDesign:PackIcon Kind="FastForward"></materialDesign:PackIcon>
             </Button>
         </StackPanel>
     </Grid>

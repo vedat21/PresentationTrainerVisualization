@@ -1,6 +1,6 @@
 ﻿using FlyleafLib;
 using FlyleafLib.MediaPlayer;
-using PresentationTrainerVisualization.helper;
+using PresentationTrainerVisualization.Helper;
 using PresentationTrainerVisualization.models.json;
 using System;
 using System.Collections.Generic;
@@ -77,6 +77,7 @@ namespace PresentationTrainerVisualization
                 LoopButton.Background = Brushes.Gray;
                 LoopButton.BorderBrush = Brushes.Gray;
             }
+
         }
 
         /// <summary>
@@ -148,7 +149,7 @@ namespace PresentationTrainerVisualization
         }
 
         /// <summary>
-        /// Starts loop of frequence from start to end of object with selected index
+        /// Starts < of frequence from start to end of object with selected index
         /// </summary>
         private void StartLoop()
         {
@@ -252,8 +253,8 @@ namespace PresentationTrainerVisualization
             }
             else
             {
-                LoopButton.Background = new SolidColorBrush(Color.FromRgb(103, 58, 183));
-                LoopButton.BorderBrush = new SolidColorBrush(Color.FromRgb(103, 58, 183));
+                LoopButton.Background = new SolidColorBrush(Colors.Blue);
+                LoopButton.BorderBrush = new SolidColorBrush(Colors.Blue);
                 StartLoop();
             }
         }

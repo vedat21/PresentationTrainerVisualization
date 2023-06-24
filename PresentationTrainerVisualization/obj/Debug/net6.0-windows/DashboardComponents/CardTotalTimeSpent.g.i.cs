@@ -66,8 +66,8 @@ namespace PresentationTrainerVisualization.DashboardComponents {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PresentationTrainerVisualization;component/dashboardcomponents/cardtotaltimespen" +
-                    "t.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PresentationTrainerVisualization;V1.0.0.0;component/dashboardcomponents/cardtota" +
+                    "ltimespent.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\DashboardComponents\CardTotalTimeSpent.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

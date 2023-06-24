@@ -1,13 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Fi29A2o+Sc3kcDRfSG0WXTbEIhObY8M/XB3sDnRMkvzkJzGdsjBRww+67MrNfoyNTf++4P0Q7g3JZiUBMMt79g==",
+  "dgSpecHash": "vIaoaqhaWPshDeb3hfVf0MScD41Vl2xeD+XzaPpIYsta3ngK97JekF9eTAdY40R6LNllB+QINZ4uoAAJ2XyBBg==",
   "success": true,
   "projectFilePath": "C:\\Users\\vedat\\source\\repos\\PresentationTrainerVisualization\\PresentationTrainerVisualization\\PresentationTrainerVisualization.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\vedat\\.nuget\\packages\\dragablz\\0.0.3.234\\dragablz.0.0.3.234.nupkg.sha512",
     "C:\\Users\\vedat\\.nuget\\packages\\ffmpeg.autogen\\5.1.2.1\\ffmpeg.autogen.5.1.2.1.nupkg.sha512",
     "C:\\Users\\vedat\\.nuget\\packages\\flyleaflib\\3.7.20\\flyleaflib.3.7.20.nupkg.sha512",
-    "C:\\Users\\vedat\\.nuget\\packages\\flyleaflib.controls.wpf\\1.2.23\\flyleaflib.controls.wpf.1.2.23.nupkg.sha512",
     "C:\\Users\\vedat\\.nuget\\packages\\materialdesigncolors\\2.1.2\\materialdesigncolors.2.1.2.nupkg.sha512",
     "C:\\Users\\vedat\\.nuget\\packages\\materialdesignthemes\\4.8.0\\materialdesignthemes.4.8.0.nupkg.sha512",
     "C:\\Users\\vedat\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.4\\microsoft.netcore.platforms.3.1.4.nupkg.sha512",
@@ -29,8 +27,7 @@
     "C:\\Users\\vedat\\.nuget\\packages\\vortice.dxgi\\2.4.2\\vortice.dxgi.2.4.2.nupkg.sha512",
     "C:\\Users\\vedat\\.nuget\\packages\\vortice.mathematics\\1.4.26\\vortice.mathematics.1.4.26.nupkg.sha512",
     "C:\\Users\\vedat\\.nuget\\packages\\vortice.mediafoundation\\2.4.2\\vortice.mediafoundation.2.4.2.nupkg.sha512",
-    "C:\\Users\\vedat\\.nuget\\packages\\vortice.xaudio2\\2.4.2\\vortice.xaudio2.2.4.2.nupkg.sha512",
-    "C:\\Users\\vedat\\.nuget\\packages\\wpfcolorfontdialog\\1.0.8\\wpfcolorfontdialog.1.0.8.nupkg.sha512"
+    "C:\\Users\\vedat\\.nuget\\packages\\vortice.xaudio2\\2.4.2\\vortice.xaudio2.2.4.2.nupkg.sha512"
   ],
   "logs": []
 }

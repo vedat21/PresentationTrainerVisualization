@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
-namespace PresentationTrainerVisualization.helper
+namespace PresentationTrainerVisualization.Helper
 {
     internal static class Constants
     {
+        // paths
         public static string PATH_TO_DIRECTORY = AppDomain.CurrentDomain.BaseDirectory;
         public static string PATH_TO_SESSION_DATA = "C:\\Users\\vedat\\OneDrive\\Desktop\\BachelorNeu\\testdata\\neueDaten\\Downloads\\PracticeSession.json"; // PATH TO SESSION DATA 
         public static string PATH_TO_CONFIG_DATA = PATH_TO_DIRECTORY + @"..\\..\\..\\UserConfig\\configurations.json";
@@ -15,7 +16,10 @@ namespace PresentationTrainerVisualization.helper
         // Color used in dashboards
         public static Color GOOD_INDICATOR_COLOR = Color.Green;
         public static Color BAD_INDICATOR_COLOR = Color.Maroon;
+        public static Color TIMELINE_COLOR = Color.LightSkyBlue;
 
+        // When user does not set configuration
+        public static int CONFIG_DEFAULT_NUMBER_OF_SESSIONS = 7;
 
         // The Buttons in GoalSettingWindow should habe same name
         public enum GoalsLabel

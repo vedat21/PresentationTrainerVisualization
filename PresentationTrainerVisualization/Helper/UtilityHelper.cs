@@ -1,5 +1,5 @@
 ﻿
-namespace PresentationTrainerVisualization.helper
+namespace PresentationTrainerVisualization.Helper
 {
     public static class UtilityHelper
     {

@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PresentationTrainerVisualization.Pages"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:Progress="clr-namespace:PresentationTrainerVisualization.DashboardComponents.Progress"
       xmlns:DashboardComponents="clr-namespace:PresentationTrainerVisualization.DashboardComponents"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1400"
@@ -24,7 +25,6 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
-
         <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
@@ -35,27 +35,18 @@
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
 
-            <materialDesign:Card Style="{StaticResource CardNormalComponent}"  Grid.Column="0" >
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="0.2*"/>
-                    </Grid.RowDefinitions>
-                    <WpfPlot x:Name="AverageOfIdentifiedSentences" VerticalAlignment="Top" />
-                    <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Gray" Width="Auto" Height="Auto" TextWrapping="Wrap" FontSize="16">Average Identified Sentences</TextBlock>
-                </Grid>
-            </materialDesign:Card>
-            <DashboardComponents:GoalNumberOfSessions Grid.Column="1" />
-            <DashboardComponents:CardNumberOfSessions  Grid.Column="2" />
-            <DashboardComponents:CardTotalTimeSpent  Grid.Column="3" />
-            <DashboardComponents:CardAverageNumberOfBadActions  Grid.Column="4" />
-            <DashboardComponents:CardAverageNumberOfGoodActions  Grid.Column="5" />
+            <Progress:CardAverageOfIdentifiedSentences Grid.Column="0" />
+            <Progress:GoalNumberOfSessions Grid.Column="1" />
+            <Progress:CardNumberOfSessions  Grid.Column="2" />
+            <Progress:CardTotalTimeSpent  Grid.Column="3" />
+            <Progress:CardAverageNumberOfBadActions  Grid.Column="4" />
+            <Progress:CardAverageNumberOfGoodActions  Grid.Column="5" />
         </Grid>
 
-        <WpfPlot x:Name="NumberOfSessionsInTimeline" Margin="10" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2" />
-        <WpfPlot x:Name="PercentageOfRecongnisedSentences" Margin="10" Grid.Row="2"  Grid.Column="2"  Grid.ColumnSpan="2"  />
-        <WpfPlot x:Name="ActionsInTimeLine" Margin="10" Grid.Row="3"  Grid.Column="0"  Grid.ColumnSpan="2"  />
-        <WpfPlot x:Name="DurationInTimeLine" Margin="10" Grid.Row="3"  Grid.Column="2"  Grid.ColumnSpan="2"  />
+        <Progress:NumberOfSessionsInTimeLine Margin="10" Grid.Row="2"  Grid.Column="0"  Grid.ColumnSpan="2"/>
+        <Progress:PercentageOfIdentifiedInTimeLine Margin="10" Grid.Row="2"  Grid.Column="2"  Grid.ColumnSpan="2"/>
+        <Progress:ActionsInTimeLine Margin="10" Grid.Row="3"  Grid.Column="0"  Grid.ColumnSpan="2"  />
+        <Progress:DurationInTimeLine Margin="10" Grid.Row="3"  Grid.Column="2"  Grid.ColumnSpan="2"  />
 
     </Grid>
 </Page>

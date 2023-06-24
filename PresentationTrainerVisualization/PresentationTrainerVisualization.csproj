@@ -9,7 +9,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="FlyleafLib" Version="3.7.20" />
-		<PackageReference Include="FlyleafLib.Controls.WPF" Version="1.2.23" />
 		<PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Scottplot.Wpf" Version="4.1.61" />
