@@ -1,5 +1,4 @@
 ﻿using PresentationTrainerVisualization.Helper;
-using PresentationTrainerVisualization.Helper;
 using PresentationTrainerVisualization.models.json;
 using PresentationTrainerVisualization.Pages;
 using System;

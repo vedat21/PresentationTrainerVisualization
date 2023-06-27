@@ -11,15 +11,12 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
 {
     public partial class DurationInTimeLine : UserControl
     {
-
         private ProcessedSessions processedSessions;
-        private ProcessedConfigurations processedConfigurations;
 
         public DurationInTimeLine()
         {
             InitializeComponent();
             processedSessions = ProcessedSessions.GetInstance();
-            processedConfigurations = new ProcessedConfigurations();
 
             PlotDurationOfSessionInTimeLine();
         }

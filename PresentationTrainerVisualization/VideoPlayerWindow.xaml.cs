@@ -20,11 +20,11 @@ namespace PresentationTrainerVisualization
         public Player VideoPlayer { get; set; }
         public Config Config { get; set; }
 
-        private ProcessedSessions processedSessionsData;
+        private ProcessedSessions processedSessions;
         private List<Action> actions;
         private List<Sentence> sentences;
-        private bool isActionAnnotation;
-        private DispatcherTimer loopTimer;
+        private bool isActionAnnotation; // to differnce between video with sentences and actions
+        private DispatcherTimer loopTimer; // to keep track of loop
         private DispatcherTimer videoTimer; // keep track of current time in video
 
         private int selectedAnnotationIndex = 0;  // keeps track of which annotation is currently selected
@@ -43,9 +43,9 @@ namespace PresentationTrainerVisualization
             VideoPlayer = new Player(Config);
             InitializeComponent();
             DataContext = this;
-            processedSessionsData = new ProcessedSessions();
-            actions = processedSessionsData.GetSelectedSessionActions();
-            sentences = processedSessionsData.SelectedSession.Sentences;
+            processedSessions = new ProcessedSessions();
+            actions = processedSessions.GetSelectedSessionActions();
+            sentences = processedSessions.SelectedSession.Sentences;
             videoTimer = new DispatcherTimer();
             loopTimer = new DispatcherTimer();
 

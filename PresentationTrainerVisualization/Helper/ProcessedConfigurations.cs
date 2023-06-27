@@ -9,6 +9,8 @@ namespace PresentationTrainerVisualization.Helper
 {
     public class ProcessedConfigurations
     {
+        private static ProcessedConfigurations instance;
+
         public Configuration ConfigurationLastDays { get; set; }
         public Configuration ConfigurationTimeSpan { get; set; }
 
@@ -16,6 +18,8 @@ namespace PresentationTrainerVisualization.Helper
 
         public ProcessedConfigurations()
         {
+            instance = this;
+
             if (File.Exists(Constants.PATH_TO_CONFIG_DATA))
             {
                 string json = File.ReadAllText(Constants.PATH_TO_CONFIG_DATA);
@@ -40,6 +44,14 @@ namespace PresentationTrainerVisualization.Helper
                 };
             }
 
+        }
+
+        public static ProcessedConfigurations GetInstace()
+        {
+            if (instance == null)
+                instance = new ProcessedConfigurations();
+
+            return instance;
         }
 
         public void UpdateConfiguration(Configuration configuration)

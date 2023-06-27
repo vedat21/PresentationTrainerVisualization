@@ -10,9 +10,13 @@ namespace PresentationTrainerVisualization.Helper
     class ProcessedGoals
     {
         private GoalsRoot goalsRoot;
+        private static ProcessedGoals instance;
+
 
         public ProcessedGoals()
         {
+            instance = this;
+
             if (File.Exists(Constants.PATH_TO_GOALSCONFIG_DATA))
             {
                 string json = File.ReadAllText(Constants.PATH_TO_GOALSCONFIG_DATA);
@@ -23,6 +27,14 @@ namespace PresentationTrainerVisualization.Helper
                 goalsRoot = new GoalsRoot();
                 goalsRoot.Goals = new List<Goal>();
             }
+        }
+
+        public static ProcessedGoals GetInstance()
+        {
+            if(instance == null)
+                instance = new ProcessedGoals();
+
+            return instance;
         }
 
         public Goal GetGoal(string label)

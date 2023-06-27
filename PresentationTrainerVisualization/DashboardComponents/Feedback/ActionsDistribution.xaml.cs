@@ -20,7 +20,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Feedback
         {
             InitializeComponent();
             processedSessions = ProcessedSessions.GetInstance();
-            processedConfiguration = new ProcessedConfigurations();
+            processedConfiguration = ProcessedConfigurations.GetInstace();
 
             PlotRadarWithActionsFromVideo();
         }
@@ -115,10 +115,10 @@ namespace PresentationTrainerVisualization.DashboardComponents.Feedback
             radar.GroupLabels = groupLabels;
             radar.LineColors = new Color[2]
             {
-                Color.FromArgb(255,171, 50, 50) ,Color.Gray
+                Color.FromArgb(255, Constants.TIMELINE_COLOR) ,Color.Gray
             };
             radar.FillColors = new Color[2] {
-               Color.FromArgb(50, 171, 50, 50), Color.FromArgb(50, Color.Gray),
+               Color.FromArgb(50, Constants.TIMELINE_COLOR), Color.FromArgb(50, Color.Gray),
             };
 
             plot.Plot.Title("Detected Actions");

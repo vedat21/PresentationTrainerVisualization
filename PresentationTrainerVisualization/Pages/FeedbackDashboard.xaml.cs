@@ -15,7 +15,7 @@ namespace PresentationTrainerVisualization.Pages
 
         public FeedbackDashboard()
         {
-            // In each dashboard component this instance is used
+            // In each dashboard component this instance is used. Has to be created here.
             processedSessions = new ProcessedSessions();
 
             // Has to be last

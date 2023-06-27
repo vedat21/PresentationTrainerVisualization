@@ -16,7 +16,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
         {
             InitializeComponent();
             processedSessions = ProcessedSessions.GetInstance();
-            processedConfigurations = new ProcessedConfigurations();
+            processedConfigurations = ProcessedConfigurations.GetInstace();
 
             PlotNumberOfSessionsInTimeLine();
         }

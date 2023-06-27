@@ -19,7 +19,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
         {
             InitializeComponent();
             processedSessions = ProcessedSessions.GetInstance();
-            processedGoals = new ProcessedGoals();
+            processedGoals = ProcessedGoals.GetInstance();
 
             PlotGoalNumberOfSessionsInDays();
         }

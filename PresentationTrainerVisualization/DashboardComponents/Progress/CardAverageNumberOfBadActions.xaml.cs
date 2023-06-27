@@ -19,7 +19,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
         private void PlotCard()
         {
             TextBlock text = (TextBlock)FindName("NumberOfBadActions");
-            text.Text = processedSessions.GetAverageNumberOfBadActions().ToString();
+            text.Text = processedSessions.GetAverageNumberOfActions(true).ToString();
         }
     }
 }

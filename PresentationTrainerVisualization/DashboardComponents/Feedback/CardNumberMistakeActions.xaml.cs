@@ -14,7 +14,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Feedback
         {
             InitializeComponent();
             processedSessions = ProcessedSessions.GetInstance();
-            processedGoals = new ProcessedGoals();
+            processedGoals = ProcessedGoals.GetInstance();
 
             PlotNumberOfMistakeActions();
         }
