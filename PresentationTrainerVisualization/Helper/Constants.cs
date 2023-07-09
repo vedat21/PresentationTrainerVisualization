@@ -52,7 +52,7 @@ namespace PresentationTrainerVisualization.Helper
             CONFIGURATION_DATES,
         }
 
-        public static Dictionary<string, string> ACTION_FROM_VIDEO = new Dictionary<string, string>()
+        public static Dictionary<string, string> ACTIONS_FROM_VIDEO = new Dictionary<string, string>()
         {
             {"ARMSCROSSED", "Arms crossed" },
             {"BIG_GESTURE", "Big Gesture"},
@@ -72,7 +72,7 @@ namespace PresentationTrainerVisualization.Helper
             {"SMILE", "Smile" },
         };
 
-        public static Dictionary<string, string> BAD_ACTION_FROM_VIDEO = new Dictionary<string, string>()
+        public static Dictionary<string, string> BAD_ACTIONS_FROM_VIDEO = new Dictionary<string, string>()
         {
             {"ARMSCROSSED", "Arms crossed" },
             {"DANCING", "Dancing"},
@@ -88,7 +88,7 @@ namespace PresentationTrainerVisualization.Helper
             {"RIGHTHANDNOTVISIBLE",  "Right Hand unvisable"},
         };
 
-        public static Dictionary<string, string> GOOD_ACTION_FROM_VIDEO = new Dictionary<string, string>()
+        public static Dictionary<string, string> GOOD_ACTIONS_FROM_VIDEO = new Dictionary<string, string>()
         {
             {"BIG_GESTURE", "Big Gesture"},
             {"GESTURE", "Gesture"},

@@ -37,7 +37,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
 
             double numberOfDaysLeft = (goal.StartDate.AddDays(int.Parse(goal.Description[Constants.GoalsDescription.number_of_days.ToString()])) - DateTime.Today).TotalDays;
             int numberOfSessionsGoals = int.Parse(goal.Description[Constants.GoalsDescription.number_of_sessions.ToString()]);
-            var numberOfSessionsToday = 3; //    var numberOfSessionsToday = processedSessionsData.GetNumberOfSessionsToday();
+            int numberOfSessionsToday = processedSessions.GetNumberOfSessionsToday();
             int numberOfSessionsMissingToday = numberOfSessionsGoals - numberOfSessionsToday;
 
             // Decide text and style based on data.

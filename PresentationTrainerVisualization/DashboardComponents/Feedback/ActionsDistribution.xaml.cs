@@ -81,7 +81,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Feedback
             {
                 values1.Add(result1.AggregatedObjects[i].Count);
                 values2.Add(result2.AggregatedObjects[i].Count);
-                categoryLabels.Add(Constants.ACTION_FROM_VIDEO[result1.AggregatedObjects[i].Label]);
+                categoryLabels.Add(Constants.ACTIONS_FROM_VIDEO[result1.AggregatedObjects[i].Label]);
             }
 
 
@@ -183,7 +183,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Feedback
             {
                 values1.Add(result1.AggregatedObjects[i].Count);
                 values2.Add(result2.AggregatedObjects[i].Count);
-                categoryLabels.Add(Constants.ACTION_FROM_VIDEO[result1.AggregatedObjects[i].Label]);
+                categoryLabels.Add(Constants.ACTIONS_FROM_VIDEO[result1.AggregatedObjects[i].Label]);
             }
 
             allValues.Add(values1);
@@ -278,7 +278,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Feedback
             {
                 values1.Add(result1.AggregatedObjects[i].Count);
                 values2.Add(result2.AggregatedObjects[i].Count);
-                categoryLabels.Add(Constants.ACTION_FROM_VIDEO[result2.AggregatedObjects[i].Label]);
+                categoryLabels.Add(Constants.ACTIONS_FROM_VIDEO[result2.AggregatedObjects[i].Label]);
             }
 
             allValues.Add(values1);

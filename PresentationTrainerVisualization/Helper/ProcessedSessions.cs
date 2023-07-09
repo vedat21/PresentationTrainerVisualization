@@ -3,6 +3,7 @@ using PresentationTrainerVisualization.models;
 using PresentationTrainerVisualization.models.json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -79,7 +80,7 @@ namespace PresentationTrainerVisualization.Helper
         }
 
         /// <summary>
-        /// Returns the total number of sessions.
+        /// Returns the total number of sessions. For User control needed.
         /// </summary>
         /// <returns></returns>
         public int GetNumberOfTotalSessions()
@@ -96,6 +97,17 @@ namespace PresentationTrainerVisualization.Helper
             int numberOfSessions = (from session in sessionsRoot.Sessions
                                     where processedConfigurations.ConfigurationTimeSpan.StartDate <= DateOnly.FromDateTime(session.Start) && DateOnly.FromDateTime(session.Start) <= processedConfigurations.ConfigurationTimeSpan.EndDate
                                     select session).Count();
+
+            return numberOfSessions;
+        }
+
+        /// <summary>
+        /// Returns the number of sessions that were today.
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumberOfSessionsToday()
+        {
+            int numberOfSessions = sessionsRoot.Sessions.Where(session => session.Start.Date == DateTime.Today).Count();
 
             return numberOfSessions;
         }

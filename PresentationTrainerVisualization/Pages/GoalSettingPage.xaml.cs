@@ -149,11 +149,11 @@ namespace PresentationTrainerVisualization.Pages
         /// </summary>
         private void InitListBoxesAction()
         {
-            foreach (var entry in Constants.BAD_ACTION_FROM_VIDEO)
+            foreach (var entry in Constants.BAD_ACTIONS_FROM_VIDEO)
                 badActions.Add(new Action(entry.Key, entry.Value));
             badActionsListBox.ItemsSource = badActions;
 
-            foreach (var entry in Constants.GOOD_ACTION_FROM_VIDEO)
+            foreach (var entry in Constants.GOOD_ACTIONS_FROM_VIDEO)
                 goodActions.Add(new Action(entry.Key, entry.Value));
             goodActionsListBox.ItemsSource = goodActions;
 

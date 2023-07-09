@@ -22,7 +22,7 @@ namespace PresentationTrainerVisualization.models.json
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            LogActionDisplay = Constants.ACTION_FROM_VIDEO[LogAction];
+            LogActionDisplay = Constants.ACTIONS_FROM_VIDEO[LogAction];
 
             // Actions that are labeled as mistake have negative timestamp in json file. 
             Start = Start.Duration();

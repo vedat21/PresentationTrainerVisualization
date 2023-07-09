@@ -66,7 +66,7 @@ namespace PresentationTrainerVisualization.Helper
 
             // No actions selected in goal setting window.
             if (goalBadActions == null)
-                selectedActions.Concat(Constants.BAD_ACTION_FROM_VIDEO.Keys.ToList());
+                selectedActions.Concat(Constants.BAD_ACTIONS_FROM_VIDEO.Keys.ToList());
             else
             {
                 var selectedBadActions = goalBadActions.Description[GoalsDescription.list_of_bad_actions.ToString()];
@@ -75,7 +75,7 @@ namespace PresentationTrainerVisualization.Helper
             }
             
             if (goalGoodActions == null)
-                selectedActions.Concat(Constants.GOOD_ACTION_FROM_VIDEO.Keys.ToList());
+                selectedActions.Concat(Constants.GOOD_ACTIONS_FROM_VIDEO.Keys.ToList());
             else
             {
                 var selectedGoodActions = goalGoodActions.Description[GoalsDescription.list_of_good_actions.ToString()];
