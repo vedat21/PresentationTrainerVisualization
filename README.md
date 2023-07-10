@@ -1,1 +1,2 @@
-# Self Regulated Learning Analytics Dashboard for Presentation Trainer
+# Self-Regulated Learning Analytics Dashboard for the Presentation Trainer
+
