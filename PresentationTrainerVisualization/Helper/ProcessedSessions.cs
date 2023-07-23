@@ -234,8 +234,6 @@ namespace PresentationTrainerVisualization.Helper
         }
 
 
-
-
         /// <summary>
         /// Returns the average number of actions that are in selected datespan. Depeneding on parameter counts only mistakes or no mistakes.
         /// </summary>
@@ -525,6 +523,8 @@ namespace PresentationTrainerVisualization.Helper
         public List<AggregatedSession> GetActionsBySession(bool mistake = true)
         {
             List<AggregatedSession> result = new List<AggregatedSession>();
+            List<string> selectedUserActions = processedGoals.GetSelectedActionsLog();
+
 
             foreach (var session in sessionsRoot.Sessions)
             {
@@ -532,7 +532,7 @@ namespace PresentationTrainerVisualization.Helper
                 int numberOfTargetActions = 0;
 
                 foreach (var action in session.Actions)
-                    if (mistake == action.Mistake)
+                    if (mistake == action.Mistake && selectedUserActions.Contains(action.LogAction.ToUpper()))
                         numberOfTargetActions++;
 
                 aggregatedObjects.Add(new AggregatedObject("count", numberOfTargetActions));

@@ -48,7 +48,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
             // Add datalabels and positions of label in chart
             List<string> dataLabels = new List<string>();
             for (int i = 0; i < resultGoodActions.Count; i++)
-                dataLabels.Add(resultGoodActions[i].SessionDate.ToString("MM/dd/yyyy\nhh:mm tt"));
+                dataLabels.Add(resultGoodActions[i].SessionDate.ToString("dd/MM/yyyy\nhh:mm tt"));
 
             double[] positions = Array.ConvertAll(Enumerable.Range(0, dataGood.Count).ToArray(), x => (double)x);
 
@@ -77,6 +77,9 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
             plot.Refresh();
         }
 
+        /// <summary>
+        /// Plots the number of actions by session in grouped bar chart.
+        /// </summary>
         private void PlotActionsGroupedBarChart()
         {
 
@@ -96,7 +99,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
             // Add datalabels 
             List<string> groupNames = new List<string>();
             for (int i = 0; i < resultGoodActions.Count; i++)
-                groupNames.Add(resultGoodActions[i].SessionDate.ToString("MM/dd/yyyy\nhh:mm tt"));
+                groupNames.Add(resultGoodActions[i].SessionDate.ToString("dd/MM/yyyy\nhh:mm tt"));
 
             string[] seriesNames = { "No Mistake", "Mistake" };
             double[][] valuesBySeries = { dataGood.ToArray(), dataBad.ToArray() };

@@ -32,12 +32,11 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
             // Add datalabels and positions of label in chart
             List<string> DataLabels = new List<string>();
             for (int i = 0; i < result.Count; i++)
-                DataLabels.Add(result[i].SessionDate.ToString("MM/dd/yyyy\nhh:mm tt"));
+                DataLabels.Add(result[i].SessionDate.ToString("dd/MM/yyyy\nhh:mm tt"));
 
             double[] positions = Array.ConvertAll(Enumerable.Range(0, result.Count).ToArray(), x => (double)x);
 
             // Create plot
-
             WpfPlot plot = (WpfPlot)FindName("DurationInTimeLinePlot");
             // if data is empty
             if (data.Length == 0)

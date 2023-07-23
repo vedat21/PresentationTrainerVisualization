@@ -18,6 +18,9 @@ namespace PresentationTrainerVisualization.Helper
         public static Color BAD_INDICATOR_COLOR = Color.Maroon;
         public static Color TIMELINE_COLOR = Color.LightSkyBlue;
 
+        public static System.Windows.Media.Color GOOD_INDICATOR_COLOR_MEDIA = System.Windows.Media.Color.FromArgb(GOOD_INDICATOR_COLOR.A, GOOD_INDICATOR_COLOR.R, GOOD_INDICATOR_COLOR.G, GOOD_INDICATOR_COLOR.B);
+        public static System.Windows.Media.Color BAD_INDICATOR_COLOR_MEDIA = System.Windows.Media.Color.FromArgb(BAD_INDICATOR_COLOR.A, BAD_INDICATOR_COLOR.R, BAD_INDICATOR_COLOR.G, BAD_INDICATOR_COLOR.B);
+
         // When user does not set configuration
         public static int CONFIG_DEFAULT_NUMBER_OF_SESSIONS = 7;
 

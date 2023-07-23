@@ -64,7 +64,7 @@
             <Style x:Key="PageHeaderTitle">
                 <Setter Property="TextBlock.FontFamily" Value="Microsoft YaHei UI" />
                 <Setter Property="TextBlock.FontSize" Value="48" />
-                <Setter Property="TextBlock.Foreground" Value="DarkGray" />
+                <Setter Property="TextBlock.Foreground" Value="#1c4e80" />
                 <Setter Property="TextBlock.FontWeight" Value="Bold" />
             </Style>
 

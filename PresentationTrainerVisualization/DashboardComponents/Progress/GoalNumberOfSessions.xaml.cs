@@ -44,13 +44,13 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
             if (numberOfSessionsMissingToday > 0)
             {
                 GoalNumber.Text = numberOfSessionsMissingToday + (numberOfSessionsMissingToday == 1 ? " Session" : " Sessions");
-                GoalNumber.Foreground = new SolidColorBrush(Colors.Red);
+                GoalNumber.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(Constants.BAD_INDICATOR_COLOR.A, Constants.BAD_INDICATOR_COLOR.R, Constants.BAD_INDICATOR_COLOR.G, Constants.BAD_INDICATOR_COLOR.B));
                 GoalText.Text = "Missing for today";
             }
             else  //if (numberOfSessionsMissingToday == 0)
             {
                 GoalNumber.Text = "Completed";
-                GoalNumber.Foreground = new SolidColorBrush(Colors.Green);
+                GoalNumber.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(Constants.GOOD_INDICATOR_COLOR.A, Constants.GOOD_INDICATOR_COLOR.R, Constants.GOOD_INDICATOR_COLOR.G, Constants.GOOD_INDICATOR_COLOR.B));
                 GoalText.Text = "Goal Achieved";
             }
             /*

@@ -1,7 +1,12 @@
-﻿using PresentationTrainerVisualization.Helper;
+﻿using PresentationTrainerVisualization.DashboardComponents.Progress;
+using PresentationTrainerVisualization.Helper;
+using PresentationTrainerVisualization.models;
+using PresentationTrainerVisualization.models.json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace PresentationTrainerVisualization.DashboardComponents.Feedback
 {
@@ -9,12 +14,14 @@ namespace PresentationTrainerVisualization.DashboardComponents.Feedback
     {
         private ProcessedSessions processedSessions;
         private ProcessedGoals processedGoals;
+        private ProcessedConfigurations processedConfigurations;
 
         public CardNumberMistakeActions()
         {
             InitializeComponent();
             processedSessions = ProcessedSessions.GetInstance();
             processedGoals = ProcessedGoals.GetInstance();
+            processedConfigurations = ProcessedConfigurations.GetInstace();
 
             PlotNumberOfMistakeActions();
         }
@@ -25,10 +32,50 @@ namespace PresentationTrainerVisualization.DashboardComponents.Feedback
         private void PlotNumberOfMistakeActions()
         {
             List<string> selectedGoalsActions = processedGoals.GetSelectedActionsLog();
+            int numberOfBadActions = (from action in processedSessions.SelectedSession.Actions
+                                      where action.Mistake == true && selectedGoalsActions.Contains(action.LogAction)
+                                      select action).Count();
 
-            NumberOfBadActions.Text = (from action in processedSessions.SelectedSession.Actions
-                                       where action.Mistake == true && selectedGoalsActions.Contains(action.LogAction)
-                                       select action).Count().ToString();
+            NumberOfBadActions.Text = numberOfBadActions.ToString();
+
+
+            Configuration configuration = processedConfigurations.ConfigurationLastDays;
+            List<AggregatedSession> actions = processedSessions.GetActionsBySession(true);
+            double percentageResult;
+
+            if (configuration.CompareWithLastSessions)
+            {
+                AggregatedSession averageSession = ProcessedSessionsHelper.GetAverageOfLastSessions(actions, configuration.NumberOfSessions);
+                if (averageSession.AggregatedObjects.Count == 0)
+                    return;
+
+                double averageActions = averageSession.AggregatedObjects.First().Count;
+                percentageResult = Math.Round((numberOfBadActions - averageActions) / numberOfBadActions * 100, 1);
+            }
+            else
+            {
+                AggregatedSession averageSession = ProcessedSessionsHelper.GetAverageOfLastDays(actions, configuration.NumberOfSessions);
+
+                if (averageSession.AggregatedObjects.Count == 0)
+                    return;
+
+                double averageActions = averageSession.AggregatedObjects.First().Count;
+                percentageResult = Math.Round((numberOfBadActions - averageActions) / numberOfBadActions * 100, 1);
+            }
+
+
+            if (percentageResult <= 0)
+            {
+                Percentage.Foreground = new SolidColorBrush(Constants.GOOD_INDICATOR_COLOR_MEDIA);
+                Percentage.Text = "▲ " + percentageResult.ToString() + "%";
+            }
+            else
+            {
+                Percentage.Foreground = new SolidColorBrush(Constants.BAD_INDICATOR_COLOR_MEDIA);
+                Percentage.Text = "▼ +" + percentageResult.ToString() + "%";
+            }
+
+
         }
     }
 }
