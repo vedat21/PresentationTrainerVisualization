@@ -199,20 +199,20 @@ namespace PresentationTrainerVisualization
 
         private void LoadProgressDashboard()
         {
-            ((Frame)FindName("MainContainer")).Content = new ProgressDashboard();
+            ((Frame)FindName("MainContainer")).Content = new ProgressPage();
             ((Grid)FindName("SelectDateSpan")).Visibility = Visibility.Visible;
             ((Grid)FindName("SelectLastSessions")).Visibility = Visibility.Collapsed;
         }
 
-        private void LoadFeedbackDashboard()
+        private void LoadSessionFeedbackDashboard()
         {
-            ((Frame)FindName("MainContainer")).Content = new FeedbackDashboard();
+            ((Frame)FindName("MainContainer")).Content = new SessionPage();
             ((Grid)FindName("SelectDateSpan")).Visibility = Visibility.Collapsed;
             ((Grid)FindName("SelectLastSessions")).Visibility = Visibility.Visible;
         }
 
         /// <summary>
-        /// Based on the selected value in combobox loads the progress or feedback dashboard
+        /// Based on the selected value in combobox loads the progress or session feedack dashboard
         /// </summary>
         private void LoadDashboard()
         {
@@ -222,7 +222,7 @@ namespace PresentationTrainerVisualization
             if (selectedString != null)
                 LoadProgressDashboard();
             else
-                LoadFeedbackDashboard();
+                LoadSessionFeedbackDashboard();
         }
     }
 }

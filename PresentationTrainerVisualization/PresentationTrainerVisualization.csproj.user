@@ -7,25 +7,25 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="DashboardComponents\Feedback\ActionsDistribution.xaml.cs">
+    <Compile Update="DashboardComponents\SessionFeedback\ActionsDistribution.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="DashboardComponents\Feedback\ActionsVideoTimeLine.xaml.cs">
+    <Compile Update="DashboardComponents\SessionFeedback\ActionsVideoTimeLine.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="DashboardComponents\Feedback\CardIdentifiedSentences.xaml.cs">
+    <Compile Update="DashboardComponents\SessionFeedback\CardIdentifiedSentences.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="DashboardComponents\Feedback\CardNumberActions.xaml.cs">
+    <Compile Update="DashboardComponents\SessionFeedback\CardNumberActions.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="DashboardComponents\Feedback\CardNumberMistakeActions.xaml.cs">
+    <Compile Update="DashboardComponents\SessionFeedback\CardNumberMistakeActions.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="DashboardComponents\Feedback\GoalDurationOfSession.xaml.cs">
+    <Compile Update="DashboardComponents\SessionFeedback\GoalDurationOfSession.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="DashboardComponents\Feedback\SentencesVideoTimeLine.xaml.cs">
+    <Compile Update="DashboardComponents\SessionFeedback\SentencesVideoTimeLine.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="DashboardComponents\Progress\ActionsInTimeLine.xaml.cs">
@@ -61,10 +61,10 @@
     <Compile Update="VideoPlayerWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\FeedbackDashboard.xaml.cs">
+    <Compile Update="Pages\SessionPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\ProgressDashboard.xaml.cs">
+    <Compile Update="Pages\ProgressPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\GoalSettingPage.xaml.cs">
@@ -75,25 +75,25 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="DashboardComponents\Feedback\ActionsDistribution.xaml">
+    <Page Update="DashboardComponents\SessionFeedback\ActionsDistribution.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DashboardComponents\Feedback\ActionsVideoTimeLine.xaml">
+    <Page Update="DashboardComponents\SessionFeedback\ActionsVideoTimeLine.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DashboardComponents\Feedback\CardIdentifiedSentences.xaml">
+    <Page Update="DashboardComponents\SessionFeedback\CardIdentifiedSentences.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DashboardComponents\Feedback\CardNumberActions.xaml">
+    <Page Update="DashboardComponents\SessionFeedback\CardNumberActions.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DashboardComponents\Feedback\CardNumberMistakeActions.xaml">
+    <Page Update="DashboardComponents\SessionFeedback\CardNumberMistakeActions.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DashboardComponents\Feedback\GoalDurationOfSession.xaml">
+    <Page Update="DashboardComponents\SessionFeedback\GoalDurationOfSession.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DashboardComponents\Feedback\SentencesVideoTimeLine.xaml">
+    <Page Update="DashboardComponents\SessionFeedback\SentencesVideoTimeLine.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="DashboardComponents\Progress\ActionsInTimeLine.xaml">
@@ -129,10 +129,10 @@
     <Page Update="VideoPlayerWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\FeedbackDashboard.xaml">
+    <Page Update="Pages\SessionPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\ProgressDashboard.xaml">
+    <Page Update="Pages\ProgressPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\GoalSettingPage.xaml">
