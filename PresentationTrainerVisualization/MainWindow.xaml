@@ -12,62 +12,66 @@
         Height="800" 
         Width="1300"
         Background="WhiteSmoke">
-    <Grid >
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.4*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
         <Grid x:Name="DashboardConfiguration" Grid.Column="1" VerticalAlignment="Top">
-            <ComboBox x:Name="ComboSessions" SelectionChanged="HandleComboBoxChanged" Width="200" HorizontalAlignment="Left" Margin="10">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontWeight="Bold" Text="Session: " />
-                            <TextBlock FontWeight="Bold" Text="{Binding TextForComboBox}" />
-                            <TextBlock Text=" " />
-                            <TextBlock FontWeight="Bold" Text="{Binding StartForComboBox, StringFormat=F}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <Grid x:Name="SelectDateSpan" Margin="10" HorizontalAlignment="Right" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel HorizontalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"> From</TextBlock>
-                    <DatePicker x:Name="StartDate"  VerticalAlignment="Center" HorizontalAlignment="Left" SelectedDateChanged="HandleDatePickerChanged"></DatePicker>
-                </StackPanel>
-                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"> To</TextBlock>
-                    <DatePicker x:Name="EndDate" VerticalAlignment="Center" HorizontalAlignment="Left"  SelectedDateChanged="HandleDatePickerChanged" ></DatePicker>
-                </StackPanel>
-            </Grid>
-            <Grid x:Name="SelectLastSessions" Visibility="Collapsed" HorizontalAlignment="Right" Background="GhostWhite">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Margin="5" Orientation="Horizontal">
-                    <Slider x:Name="NumberOfX" VerticalAlignment="Center" TickFrequency="1" IsSnapToTickEnabled="True" Width="200" Minimum="1" Grid.Row="1" Thumb.DragCompleted="HandleSliderDragCompleted" />
-                    <TextBox Text="{Binding ElementName=NumberOfX, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource GoalDescriptionStyle}" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Right" Width="50" Grid.Row="1" Grid.Column="1" />
-                </StackPanel>
-
-                <StackPanel Margin="5" Grid.Column="1" Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Left"> Last Days</TextBlock>
-                    <ToggleButton x:Name="DaysOrSessions" Click="HandleLastSessionsToggle" HorizontalAlignment="Center"/>
-                    <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right"> Last Sessions</TextBlock>
-                </StackPanel>
-            </Grid>
+            <Viewbox MaxWidth="300" HorizontalAlignment="Left">
+                <ComboBox x:Name="ComboSessions" SelectionChanged="HandleComboBoxChanged" Width="200" HorizontalAlignment="Left" Margin="10 5 0 0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontWeight="Bold" Text="Session: " />
+                                <TextBlock FontWeight="Bold" Text="{Binding TextForComboBox}" />
+                                <TextBlock Text=" " />
+                                <TextBlock FontWeight="Bold" Text="{Binding StartForComboBox, StringFormat=F}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Viewbox>
+            <Viewbox MaxWidth="300" HorizontalAlignment="Right">
+                <Grid x:Name="SelectDateSpan" Margin="10 5 0 0" HorizontalAlignment="Right" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel HorizontalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"> From</TextBlock>
+                        <DatePicker x:Name="StartDate"  VerticalAlignment="Center" HorizontalAlignment="Left" SelectedDateChanged="HandleDatePickerChanged"></DatePicker>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"> To</TextBlock>
+                        <DatePicker x:Name="EndDate" VerticalAlignment="Center" HorizontalAlignment="Left"  SelectedDateChanged="HandleDatePickerChanged" ></DatePicker>
+                    </StackPanel>
+                </Grid>
+            </Viewbox>
+            <Viewbox MaxWidth="450" HorizontalAlignment="Right">
+                <Grid x:Name="SelectLastSessions" Visibility="Collapsed" HorizontalAlignment="Right" Background="GhostWhite" Margin="10 5 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="5" Orientation="Horizontal">
+                        <Slider x:Name="NumberOfX" VerticalAlignment="Center" TickFrequency="1" IsSnapToTickEnabled="True" Width="200" Minimum="1" Grid.Row="1" Thumb.DragCompleted="HandleSliderDragCompleted" />
+                        <TextBox Text="{Binding ElementName=NumberOfX, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource GoalDescriptionStyle}" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Right" Width="50" Grid.Row="1" Grid.Column="1" />
+                    </StackPanel>
+                    <StackPanel Margin="5" Grid.Column="1" Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Left"> Last Days</TextBlock>
+                        <ToggleButton x:Name="DaysOrSessions" Click="HandleLastSessionsToggle" HorizontalAlignment="Center"/>
+                        <TextBlock Style="{StaticResource MaterialDesignButtonTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Right"> Last Sessions</TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Viewbox>
         </Grid>
 
-        <Border Name="Sidebar"  Grid.RowSpan="2" CornerRadius="8 0 0 8">
+        <Border Name="Sidebar" Grid.RowSpan="2" CornerRadius="8 0 0 8">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -88,14 +92,6 @@
                                     <TextBlock x:Name="TextDashboard1" Style="{StaticResource SidebarText}" Visibility="Hidden" VerticalAlignment="Center">Dashboard</TextBlock>
                                 </StackPanel>
                             </Button>
-                            <!--
-                            <Button ToolTip="Dashboard 2" Click="ButtonDashboard2Click" Margin="10" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource Default}"  >
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Foreground="WhiteSmoke" Height="30" Width="30" Kind="ViewDashboardVariantOutline"></materialDesign:PackIcon>
-                                    <TextBlock x:Name="TextDashboard2" Style="{StaticResource SidebarText}" Visibility="Hidden" VerticalAlignment="Center">Dashboard 2</TextBlock>
-                                </StackPanel>
-                            </Button>
-                             -->
                             <Button ToolTip="Goals" Click="HandleGoalClicked" Margin="10" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource Default}" >
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon  Foreground="WhiteSmoke" Height="30" Width="30" Kind="FlagOutline"></materialDesign:PackIcon>
@@ -103,17 +99,8 @@
                                 </StackPanel>
                             </Button>
                         </StackPanel>
-                        <!--
-                        <Button Grid.Row="2" ToolTip="Configurations" Click="TestClick" Margin="10" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource Default}" >
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Foreground="WhiteSmoke" Height="30" Width="30" Kind="SettingsOutline"></materialDesign:PackIcon>
-                                <TextBlock x:Name="TextConfiguration" Style="{StaticResource SidebarText}" Visibility="Hidden" VerticalAlignment="Center">Configurations</TextBlock>
-                            </StackPanel>
-                        </Button>
-                                                     -->
                     </Grid>
                 </Border>
-
                 <Grid Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="70"/>
@@ -140,11 +127,10 @@
                         </ToggleButton.Triggers>
                     </ToggleButton>
                 </Grid>
-
             </Grid>
         </Border>
 
-        <Frame x:Name="MainContainer" Margin="20" NavigationUIVisibility="Hidden" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"/>
+        <Frame x:Name="MainContainer" NavigationUIVisibility="Hidden" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2"/>
 
     </Grid>
 </Window> 

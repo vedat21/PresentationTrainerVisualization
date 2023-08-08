@@ -7,8 +7,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <materialDesign:Card Style="{StaticResource CardNormalComponent}">
+    <materialDesign:Card Style="{StaticResource CardNormalComponent}">
+        <Viewbox Style="{StaticResource CardViewBoxSize}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"></RowDefinition>
@@ -19,10 +19,12 @@
                     <ColumnDefinition Width="0.3*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="20" Text="Average Mistake Actions" />
+                <TextBlock Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="20">
+                    Average Mistake  <LineBreak /> Actions
+                </TextBlock>
                 <TextBlock x:Name="NumberOfBadActions" Grid.Row="0" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" />
-                <materialDesign:PackIcon  Kind="TaskAuto" Height="40" Width="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1"></materialDesign:PackIcon>
+                <materialDesign:PackIcon  Kind="ErrorOutline" Height="40" Width="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1"></materialDesign:PackIcon>
             </Grid>
-        </materialDesign:Card>     
-    </Grid>
+        </Viewbox>
+    </materialDesign:Card>
 </UserControl>

@@ -126,6 +126,8 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
 
             plot.Plot.Legend(location: Alignment.UpperRight);
             plot.Plot.Title("Actions by Session");
+            plot.Plot.SetAxisLimits(yMin: 0);
+            plot.Plot.Style(figureBackground: Color.GhostWhite, dataBackground: Color.GhostWhite);
             plot.Refresh();
         }
     }

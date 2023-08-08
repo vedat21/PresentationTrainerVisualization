@@ -43,6 +43,7 @@
             <Progress:CardAverageNumberOfGoodActions  Grid.Column="5" />
         </Grid>
 
+
         <Progress:NumberOfSessionsInTimeLine Margin="10" Grid.Row="2"  Grid.Column="0"  Grid.ColumnSpan="2"/>
         <Progress:PercentageOfIdentifiedInTimeLine Margin="10" Grid.Row="2"  Grid.Column="2"  Grid.ColumnSpan="2"/>
         <Progress:ActionsInTimeLine Margin="10" Grid.Row="3"  Grid.Column="0"  Grid.ColumnSpan="2"  />

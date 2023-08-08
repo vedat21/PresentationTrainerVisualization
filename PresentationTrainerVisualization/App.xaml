@@ -75,6 +75,11 @@
                 <Setter Property="TextBlock.FontWeight" Value="Bold" />
             </Style>
 
+            <Style x:Key="CardViewBoxSize" TargetType="Viewbox">
+                <Setter Property="MaxHeight" Value="170" />
+                <Setter Property="MaxWidth" Value="300"/>
+            </Style>
+
             <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
 
 
