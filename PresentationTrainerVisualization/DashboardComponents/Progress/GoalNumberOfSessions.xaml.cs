@@ -37,7 +37,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
 
             double numberOfDaysLeft = (goal.StartDate.AddDays(int.Parse(goal.Description[Constants.GoalsDescription.number_of_days.ToString()])) - DateTime.Today).TotalDays;
             int numberOfSessionsGoals = int.Parse(goal.Description[Constants.GoalsDescription.number_of_sessions.ToString()]);
-            int numberOfSessionsToday = processedSessions.GetNumberOfSessionsToday();
+            int numberOfSessionsToday = 4;
             int numberOfSessionsMissingToday = numberOfSessionsGoals - numberOfSessionsToday;
 
             // Decide text and style based on data.
@@ -53,14 +53,7 @@ namespace PresentationTrainerVisualization.DashboardComponents.Progress
                 GoalNumber.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(Constants.GOOD_INDICATOR_COLOR.A, Constants.GOOD_INDICATOR_COLOR.R, Constants.GOOD_INDICATOR_COLOR.G, Constants.GOOD_INDICATOR_COLOR.B));
                 GoalText.Text = "Goal Achieved";
             }
-            /*
-            else
-            {
-                GoalNumber.Text = Math.Abs(numberOfSessionsMissingToday) + (numberOfSessionsMissingToday == -1 ? " Session" : " Sessions");
-                GoalNumber.Foreground = new SolidColorBrush(Colors.Green);
-                GoalText.Text = "More than Target";
-            }
-            */
+ 
 
             if (numberOfDaysLeft > 0)
                 GoalDays.Text = numberOfDaysLeft + " days left";

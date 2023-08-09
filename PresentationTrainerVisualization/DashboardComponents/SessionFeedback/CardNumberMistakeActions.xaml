@@ -12,17 +12,28 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="0.9*"></RowDefinition>
+                    <RowDefinition Height="0.7*"></RowDefinition>
+                    <RowDefinition Height="0.4*"></RowDefinition>
+                    <RowDefinition Height="0.5*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                     <ColumnDefinition Width="0.3*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                
-                <TextBlock x:Name="NumberOfBadActions" Grid.Row="0" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Text="20"/>
-                <TextBlock x:Name="Percentage" Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="12" />
-                <TextBlock Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Center" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="20" Text="Mistake Actions" />
-                <materialDesign:PackIcon  Kind="TaskAuto" Height="40" Width="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1"></materialDesign:PackIcon>
+
+                <Viewbox Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Bottom">
+                    <TextBlock x:Name="NumberOfBadActions" Grid.Row="0" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Text="20"/>
+                </Viewbox>
+                <Viewbox  Grid.Row="2" HorizontalAlignment="Center"  VerticalAlignment="Top">
+                    <TextBlock x:Name="Percentage" Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="12" />
+                </Viewbox>
+                <Viewbox Grid.Row="3" HorizontalAlignment="Center"  VerticalAlignment="Bottom">
+                    <TextBlock Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Center" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="20" Text="Mistake Actions" />
+                </Viewbox>
+                <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="1" MaxHeight="60" MaxWidth="60">
+                    <materialDesign:PackIcon Kind="ErrorOutline" Height="40" Width="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1"></materialDesign:PackIcon>
+                </Viewbox>
+
             </Grid>
         </materialDesign:Card>
     </Grid>

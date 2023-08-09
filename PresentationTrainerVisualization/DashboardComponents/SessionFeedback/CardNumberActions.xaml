@@ -7,23 +7,31 @@
              xmlns:local="clr-namespace:PresentationTrainerVisualization.DashboardComponents.SessionFeedback"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <materialDesign:Card Style="{StaticResource CardNormalComponent}" Grid.Row="1" Grid.Column="3">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="0.9*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="0.3*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
+    <materialDesign:Card Style="{StaticResource CardNormalComponent}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="0.7*"></RowDefinition>
+                <RowDefinition Height="0.4*"></RowDefinition>
+                <RowDefinition Height="0.5*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="0.3*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-                <TextBlock x:Name="NumberOfGoodActions" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" Grid.Row="0" Text="40" />
-                <TextBlock x:Name="Percentage" Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="12" />
-                <TextBlock Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Center" FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="20" Text="Actions" />
-                <materialDesign:PackIcon  Kind="TaskAuto" Height="40" Width="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1"></materialDesign:PackIcon>
-            </Grid>
-        </materialDesign:Card>
-    </Grid>
+            <Viewbox Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Bottom">
+                <TextBlock x:Name="NumberOfGoodActions" FontWeight="Bold" FontSize="36" Text="40"/>
+            </Viewbox>
+            <Viewbox  Grid.Row="2" HorizontalAlignment="Center"  VerticalAlignment="Top">
+                <TextBlock x:Name="Percentage" FontSize="18" />
+            </Viewbox>
+            <Viewbox Grid.Row="3" HorizontalAlignment="Center"  VerticalAlignment="Bottom">
+                <TextBlock  FontWeight="Bold" Foreground="Gray" TextWrapping="Wrap" FontSize="36" Text="Actions" />
+            </Viewbox>
+            <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="1" MaxHeight="60" MaxWidth="60">
+                <materialDesign:PackIcon Kind="TaskAuto" MaxHeight="60" MaxWidth="60"></materialDesign:PackIcon>
+            </Viewbox>
+        </Grid>
+    </materialDesign:Card>
 </UserControl>

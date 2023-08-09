@@ -23,7 +23,7 @@
                     Average Mistake  <LineBreak /> Actions
                 </TextBlock>
                 <TextBlock x:Name="NumberOfBadActions" Grid.Row="0" HorizontalAlignment="Center"  VerticalAlignment="Bottom" FontWeight="Bold" FontSize="20" />
-                <materialDesign:PackIcon  Kind="ErrorOutline" Height="40" Width="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1"></materialDesign:PackIcon>
+                <materialDesign:PackIcon Kind="ErrorOutline" Height="40" Width="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1"></materialDesign:PackIcon>
             </Grid>
         </Viewbox>
     </materialDesign:Card>

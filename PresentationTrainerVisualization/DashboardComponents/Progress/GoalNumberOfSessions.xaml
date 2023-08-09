@@ -20,14 +20,20 @@
                     <ColumnDefinition Width="1.3*"></ColumnDefinition>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                     <ColumnDefinition Width="0.1*"></ColumnDefinition>
-
                 </Grid.ColumnDefinitions>
 
-                <TextBlock x:Name="GoalNumber" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"  TextWrapping="Wrap" FontSize="15" />
-                <TextBlock x:Name="GoalText" Grid.Row="2" HorizontalAlignment="Center"  VerticalAlignment="Top" FontWeight="Bold" FontSize="8" />
-                <TextBlock x:Name="GoalDays" Grid.Row="2" HorizontalAlignment="Left"  VerticalAlignment="Bottom" FontSize="9" Foreground="Gray" />
-
-                <WpfPlot x:Name="GoalPlot"  Grid.RowSpan="3" Grid.Column="1"/>
+                <Viewbox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center" MaxHeight="50" MaxWidth="100">
+                    <TextBlock x:Name="GoalNumber" TextWrapping="Wrap" FontSize="13" />
+                </Viewbox>
+                <Viewbox Grid.Row="2" HorizontalAlignment="Center"  VerticalAlignment="Top" MaxHeight="50" MaxWidth="100">
+                    <TextBlock x:Name="GoalText" FontWeight="Bold" FontSize="10" />
+                </Viewbox>
+                <Viewbox Grid.Row="2" HorizontalAlignment="Left"  VerticalAlignment="Bottom" MaxHeight="50" MaxWidth="70">
+                    <TextBlock x:Name="GoalDays" FontSize="8" Foreground="Gray" />
+                </Viewbox>
+                
+                <WpfPlot x:Name="GoalPlot" Grid.RowSpan="3" Grid.Column="1"/>
+                
             </Grid>
         </materialDesign:Card>
     </Grid>

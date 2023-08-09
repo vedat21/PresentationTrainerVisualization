@@ -14,8 +14,10 @@
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="0.2*"/>
                 </Grid.RowDefinitions>
-                <WpfPlot x:Name="PlotAverageOfIdentifiedSentences" VerticalAlignment="Top" />
-                <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Center" Foreground="Gray" Width="Auto" Height="Auto" TextWrapping="Wrap" FontSize="16">Average Identified Sentences</TextBlock>
+                <WpfPlot x:Name="PlotAverageOfIdentifiedSentences"/>
+                <Viewbox Grid.Row="1" HorizontalAlignment="Center">
+                    <TextBlock FontWeight="Bold"  Foreground="Gray" Width="Auto" Height="Auto" TextWrapping="Wrap" FontSize="16">Average Identified Sentences</TextBlock>
+                </Viewbox>
             </Grid>
         </materialDesign:Card>
     </Grid>
