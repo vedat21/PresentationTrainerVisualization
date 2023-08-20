@@ -16,11 +16,11 @@ namespace PresentationTrainerVisualization.Helper
     {
         public Session SelectedSession { get; set; } // selected session by user in dashboard 
 
-        private static ProcessedSessions instance;
         private SessionsRoot sessionsRoot;
-
         private ProcessedGoals processedGoals;
         private ProcessedConfigurations processedConfigurations;
+
+        private static ProcessedSessions instance;
 
         public ProcessedSessions()
         {
@@ -30,7 +30,7 @@ namespace PresentationTrainerVisualization.Helper
             processedGoals = new ProcessedGoals();
             processedConfigurations = new ProcessedConfigurations();
 
-            // Get selected session from combobox
+            // Get selected session from user selection in combobox
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.GetType() == typeof(MainWindow))
@@ -95,7 +95,8 @@ namespace PresentationTrainerVisualization.Helper
         public int GetNumberOfSessions()
         {
             int numberOfSessions = (from session in sessionsRoot.Sessions
-                                    where processedConfigurations.ConfigurationTimeSpan.StartDate <= DateOnly.FromDateTime(session.Start) && DateOnly.FromDateTime(session.Start) <= processedConfigurations.ConfigurationTimeSpan.EndDate
+                                    where processedConfigurations.ConfigurationTimeSpan.StartDate <= DateOnly.FromDateTime(session.Start) && 
+                                    DateOnly.FromDateTime(session.Start) <= processedConfigurations.ConfigurationTimeSpan.EndDate
                                     select session).Count();
 
             return numberOfSessions;
@@ -134,7 +135,10 @@ namespace PresentationTrainerVisualization.Helper
             return totalTime;
         }
 
-
+        /// <summary>
+        /// Returns the number of days between today and first sessions that uses has made. Used to set max value in slider in session view.
+        /// </summary>
+        /// <returns></returns>
         public int GetNumberOfDaysBetweenFirstSessionAndToday()
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
@@ -358,7 +362,6 @@ namespace PresentationTrainerVisualization.Helper
             return result;
         }
 
-
         /// <summary>
         /// Determines the number of actions recognized with video by each session. Every list of AggregatedObjects represents a session.
         /// Parameter all determines if all actions should be included.
@@ -493,7 +496,9 @@ namespace PresentationTrainerVisualization.Helper
 
 
 
-        // Not used currently.
+
+
+        // ATTENTION: Not used currently.
 
         public Dictionary<DateOnly, int> GetDurationByDate()
         {
